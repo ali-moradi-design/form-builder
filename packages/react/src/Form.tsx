@@ -5,7 +5,7 @@ import {
   type FieldRegistry,
   type FieldState,
 } from "@formweave/engine";
-import { isRtl, resolveText, type DigitStyle } from "@formweave/engine/i18n";
+import { isRtl, localizeDigits, resolveText, type DigitStyle } from "@formweave/engine/i18n";
 import { en, fa, formatIssue, type MessageCatalog } from "@formweave/engine/messages";
 import type { FormDocument, Locale } from "@formweave/schema";
 import {
@@ -42,11 +42,27 @@ export interface FormLabels {
   readonly back: string;
   /** Button that submits the form. */
   readonly submit: string;
+  /** Button that confirms one answer in the focus layout. */
+  readonly ok: string;
+  /** Question counter in the focus layout; `{n}` and `{total}` are replaced. */
+  readonly question: string;
 }
 
 const LABELS: Readonly<Record<string, FormLabels>> = {
-  en: { next: "Next", back: "Back", submit: "Submit" },
-  fa: { next: "مرحلهٔ بعد", back: "قبلی", submit: "ارسال" },
+  en: {
+    next: "Next",
+    back: "Back",
+    submit: "Submit",
+    ok: "OK",
+    question: "Question {n} of {total}",
+  },
+  fa: {
+    next: "مرحلهٔ بعد",
+    back: "قبلی",
+    submit: "ارسال",
+    ok: "تأیید",
+    question: "پرسش {n} از {total}",
+  },
 };
 
 /**
@@ -96,6 +112,15 @@ export interface FormProps {
    * @param data - The cleaned values.
    */
   readonly onSubmit: (data: Readonly<Values>) => void | Promise<void>;
+  /**
+   * How questions are laid out.
+   *
+   * - `"classic"`: one step per page, all its fields at once.
+   * - `"focus"`: one question per page with a progress bar; Enter confirms.
+   *
+   * @defaultValue `"classic"`
+   */
+  readonly layout?: "classic" | "focus" | undefined;
   /** Class name of the `<form>` element. */
   readonly className?: string | undefined;
 }
@@ -204,28 +229,56 @@ export function Form(props: FormProps): ReactNode {
   }, [methods, store]);
 
   const state = useSyncExternalStore(store.subscribe, store.get, store.get);
+  const layout = props.layout ?? "classic";
+  const fallback = schema.locales.default;
   const visibleSteps = form.steps.filter((s) => state.steps[s.key]?.visible);
-  const [stepIndex, setStepIndex] = useState(0);
-  const current = visibleSteps[Math.min(stepIndex, visibleSteps.length - 1)];
-  const isLast = stepIndex >= visibleSteps.length - 1;
-  const stepDef = schema.steps.find((s) => s.key === current?.key);
+  const pages = visibleSteps.flatMap((step) => {
+    const top = step.fields.filter(
+      (k) => form.fields.get(k)?.parent === undefined && state.fields[k]?.visible,
+    );
+    const within = (root: string): string[] =>
+      step.fields.filter((k) => {
+        let f = form.fields.get(k);
+        while (f) {
+          if (f.key === root) return state.fields[k]?.visible === true;
+          f = f.parent === undefined ? undefined : form.fields.get(f.parent);
+        }
+        return false;
+      });
+    if (layout === "focus") {
+      return top.map((k) => ({ step: step.key, fields: [k], check: within(k) }));
+    }
+    return [
+      { step: step.key, fields: top, check: step.fields.filter((k) => state.fields[k]?.visible) },
+    ];
+  });
+  const [pageIndex, setPageIndex] = useState(0);
+  const index = Math.max(0, Math.min(pageIndex, pages.length - 1));
+  const page = pages[index];
+  const isLast = index >= pages.length - 1;
+  const stepDef = schema.steps.find((s) => s.key === page?.step);
+  const stepIndex = visibleSteps.findIndex((s) => s.key === page?.step);
+  const firstOfStep = pages.findIndex((p) => p.step === page?.step) === index;
 
   const next = async (): Promise<void> => {
-    if (!current) return;
-    const keys = current.fields.filter((k) => state.fields[k]?.visible);
-    if (await methods.trigger(keys, { shouldFocus: true })) setStepIndex((i) => i + 1);
+    if (!page) return;
+    if (await methods.trigger(page.check, { shouldFocus: true })) setPageIndex(index + 1);
   };
 
   const ctx = useMemo<FormweaveContextValue>(
-    () => ({ form, store, renderers, locale, fallback: schema.locales.default, idPrefix }),
-    [form, store, renderers, locale, schema.locales.default, idPrefix],
+    () => ({ form, store, renderers, locale, fallback, idPrefix }),
+    [form, store, renderers, locale, fallback, idPrefix],
   );
+
+  const showStepHeading = layout === "classic" || firstOfStep;
+  const progress = pages.length ? Math.round(((index + 1) / pages.length) * 100) : 0;
 
   return (
     <Ctx.Provider value={ctx}>
       <FormProvider {...methods}>
         <form
           className={props.className ?? "fw-form"}
+          data-layout={layout}
           dir={isRtl(locale) ? "rtl" : "ltr"}
           lang={locale}
           noValidate
@@ -238,52 +291,73 @@ export function Form(props: FormProps): ReactNode {
             void methods.handleSubmit((data) => onSubmit(data))(e);
           }}
         >
-          {visibleSteps.length > 1 && (
-            <ol className="fw-steps" aria-label={resolveText(schema.title, locale, ctx.fallback)}>
-              {visibleSteps.map((s, i) => (
-                <li
-                  key={s.key}
-                  data-state={i < stepIndex ? "done" : i === stepIndex ? "current" : "todo"}
-                  aria-current={i === stepIndex ? "step" : undefined}
-                >
-                  {resolveText(
-                    schema.steps.find((d) => d.key === s.key)?.title,
-                    locale,
-                    ctx.fallback,
-                  )}
-                </li>
-              ))}
-            </ol>
+          {layout === "focus" ? (
+            <div className="fw-progress">
+              <div
+                className="fw-progress-bar"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={progress}
+                aria-label={resolveText(schema.title, locale, fallback)}
+              >
+                <span style={{ inlineSize: `${String(progress)}%` }} />
+              </div>
+              <span className="fw-counter">
+                {localizeDigits(
+                  labels.question
+                    .replace("{n}", String(index + 1))
+                    .replace("{total}", String(pages.length)),
+                  digits === "native" ? locale : "en",
+                )}
+              </span>
+            </div>
+          ) : (
+            visibleSteps.length > 1 && (
+              <ol className="fw-steps" aria-label={resolveText(schema.title, locale, fallback)}>
+                {visibleSteps.map((s, i) => (
+                  <li
+                    key={s.key}
+                    data-state={i < stepIndex ? "done" : i === stepIndex ? "current" : "todo"}
+                    aria-current={i === stepIndex ? "step" : undefined}
+                  >
+                    {resolveText(
+                      schema.steps.find((d) => d.key === s.key)?.title,
+                      locale,
+                      fallback,
+                    )}
+                  </li>
+                ))}
+              </ol>
+            )
           )}
-          {stepDef?.title !== undefined && (
-            <h2 className="fw-step-title">{resolveText(stepDef.title, locale, ctx.fallback)}</h2>
+          {showStepHeading && stepDef?.title !== undefined && (
+            <h2 className="fw-step-title">{resolveText(stepDef.title, locale, fallback)}</h2>
           )}
-          {stepDef?.description !== undefined && (
+          {showStepHeading && stepDef?.description !== undefined && (
             <p className="fw-step-description">
-              {resolveText(stepDef.description, locale, ctx.fallback)}
+              {resolveText(stepDef.description, locale, fallback)}
             </p>
           )}
           <div className="fw-fields">
-            {current?.fields
-              .filter((k) => form.fields.get(k)?.parent === undefined)
-              .map((k) => (
-                <Field key={k} fieldKey={k} />
-              ))}
+            {page?.fields.map((k) => (
+              <Field key={k} fieldKey={k} />
+            ))}
           </div>
           <div className="fw-actions">
-            {stepIndex > 0 && (
+            {index > 0 && (
               <button
                 type="button"
                 className="fw-button"
                 onClick={() => {
-                  setStepIndex((i) => i - 1);
+                  setPageIndex(index - 1);
                 }}
               >
                 {labels.back}
               </button>
             )}
             <button type="submit" className="fw-button fw-button-primary">
-              {isLast ? labels.submit : labels.next}
+              {isLast ? labels.submit : layout === "focus" ? labels.ok : labels.next}
             </button>
           </div>
         </form>
