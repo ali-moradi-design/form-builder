@@ -181,9 +181,10 @@ Enforced, not hoped for:
 
 - `eslint-plugin-jsdoc` requires a comment on every export and on every
   property of exported types.
-- API Extractor writes an API report per package; CI fails on undocumented
-  exports (`ae-undocumented`) and on unreviewed API changes.
-- TypeDoc builds the reference docs site from the same comments.
+- TypeDoc builds the reference docs (`pnpm docs:api`) with `notDocumented`
+  validation and warnings as errors, so CI fails on any undocumented export.
+  (API Extractor was planned first; it needs one config per subpath entry, so
+  TypeDoc's validation does the same job with less setup.)
 
 ## Build and publishing
 

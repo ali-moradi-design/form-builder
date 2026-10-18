@@ -13,4 +13,6 @@ export default defineConfig({
   platform: "neutral",
   dts: true,
   sourcemap: true,
+  // Keep one output file per source file so bundlers can drop unused modules.
+  unbundle: true,
 });

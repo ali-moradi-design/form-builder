@@ -3,7 +3,9 @@
   "compilerOptions": {
     "types": ["node"],
     "isolatedDeclarations": false,
-    "declaration": false
+    "declaration": false,
+    "allowJs": true,
+    "checkJs": false
   },
-  "include": ["*.js", "*.ts", "packages/*/*.ts"]
+  "include": ["*.js", "*.ts", "packages/*/*.ts", "scripts/*.mjs"]
 }

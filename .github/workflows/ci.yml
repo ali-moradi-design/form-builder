@@ -31,3 +31,5 @@ jobs:
       - run: pnpm test
       - run: pnpm check:package
       - run: pnpm size
+      - run: pnpm check:treeshake
+      - run: pnpm docs:api
