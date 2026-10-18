@@ -27,6 +27,14 @@
       "types": "./dist/fields/all.d.ts",
       "default": "./dist/fields/all.js"
     },
+    "./i18n": {
+      "types": "./dist/i18n.d.ts",
+      "default": "./dist/i18n.js"
+    },
+    "./messages": {
+      "types": "./dist/messages.d.ts",
+      "default": "./dist/messages.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -48,10 +56,10 @@
   },
   "size-limit": [
     {
-      "name": "core (compile + evaluate)",
+      "name": "core (compile + evaluate + validate)",
       "path": "dist/index.js",
-      "import": "{ compile, evaluate, createRegistry }",
-      "limit": "3 kB"
+      "import": "{ compile, evaluate, validate, createRegistry }",
+      "limit": "4 kB"
     },
     {
       "name": "expr",
@@ -68,6 +76,17 @@
       "name": "all fields",
       "path": "dist/fields/all.js",
       "limit": "3 kB"
+    },
+    {
+      "name": "i18n",
+      "path": "dist/i18n.js",
+      "limit": "1 kB"
+    },
+    {
+      "name": "messages (en)",
+      "path": "dist/messages.js",
+      "import": "{ en, formatIssue }",
+      "limit": "1 kB"
     }
   ],
   "peerDependencies": {
