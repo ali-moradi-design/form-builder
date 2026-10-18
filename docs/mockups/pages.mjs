@@ -1,6 +1,7 @@
 // Mockup pages. Static HTML only; no app code.
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { makeVariants } from "./variants.mjs";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 const i = (name, cls = "") =>
@@ -389,7 +390,7 @@ export const pages = [
   { name: "03-builder-json-dark", title: "Builder JSON", body: builder(jsonPanel, "json"), theme: "dark" },
   { name: "04-publish", title: "Publish", body: publish },
   { name: "05-create-form-wizard", title: "Create form", body: wizard, height: 1010 },
-  { name: "06-hosted-form-fa", title: "Hosted form", body: hostedFa, lang: "fa", height: 1000 },
+  ...makeVariants({ i, fa, P, art }),
   { name: "07-hosted-form-fa-mobile-dark", title: "Hosted form mobile", body: mobileFa, lang: "fa", theme: "dark", width: 390, height: 844 },
   { name: "08-responses", title: "Responses", body: responses },
   { name: "09-analytics-dark", title: "Analytics", body: summary, theme: "dark" },
