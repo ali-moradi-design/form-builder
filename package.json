@@ -1,0 +1,38 @@
+{
+  "name": "formweave-monorepo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck && tsc -p tsconfig.json",
+    "test": "turbo run test",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:package": "turbo run check:package",
+    "size": "turbo run size",
+    "changeset": "changeset"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "@changesets/cli": "3.0.3",
+    "@eslint/js": "10.0.1",
+    "@size-limit/preset-small-lib": "14.2.0",
+    "@types/node": "24.19.2",
+    "eslint": "10.13.0",
+    "eslint-plugin-jsdoc": "65.3.12",
+    "globals": "17.13.0",
+    "prettier": "3.9.10",
+    "publint": "0.3.25",
+    "size-limit": "14.2.0",
+    "tsdown": "0.23.1",
+    "turbo": "2.11.9",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2",
+    "vitest": "5.0.5"
+  }
+}

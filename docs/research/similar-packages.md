@@ -7,22 +7,23 @@ design observations so our engine and builder avoid known problems.
 
 ## Candidates
 
-| Package | Kind | Weekly downloads | License | Last release | Notes |
-|---|---|---|---|---|---|
-| `@rjsf/core` (react-jsonschema-form) | JSON Schema renderer | ~692k | Apache-2.0 | 2026-09 | Most used. Themes for MUI, antd, shadcn, Mantine and more. No builder. |
-| `survey-core` + `survey-creator-core` (SurveyJS) | Engine + builder | ~184k / ~83k | MIT / **commercial** | 2026-10 | Closest to our product. Creator needs a paid license. |
-| `@jsonforms/core` + `@jsonforms/react` | JSON Schema + UI schema renderer | ~164k / ~124k | MIT | 2026-06 | Rule system, schema generator from data. No builder. |
-| `@formio/js` + `@formio/react` | Engine + builder + hosted platform | ~26k / ~16k | MIT (platform parts paid) | 2026-10 | Full product like ours, very heavy. |
-| `@autoform/react` | Zod schema → form | ~21k | MIT | 2026-07 | Schema lives in code, not JSON. |
-| `@formily/react` (Alibaba) | Schema renderer | ~13k | MIT | 2025-05 | Slowing down; expressions run with `new Function`. |
-| `@data-driven-forms/react-form-renderer` | Schema renderer | ~9k | Apache-2.0 | 2026-07 | Good condition model (and/or/not, set values). |
-| `@react-form-builder/core` + `designer` (FormEngine) | Engine + builder | ~2.6k / ~1.7k | MIT / **commercial EULA** | 2026-10 | MobX based; designer is paid. |
-| `@coltorapps/builder` | Headless builder toolkit | ~2.5k | MIT | 2025-07 | Zero deps, full-stack validation; no ready UI. |
-| `@ginkgo-bioworks/react-json-schema-form-builder` | Builder for rjsf | ~2k | Apache-2.0 | 2026-09 | MUI only, small field set. |
+| Package                                              | Kind                               | Weekly downloads | License                   | Last release | Notes                                                                  |
+| ---------------------------------------------------- | ---------------------------------- | ---------------- | ------------------------- | ------------ | ---------------------------------------------------------------------- |
+| `@rjsf/core` (react-jsonschema-form)                 | JSON Schema renderer               | ~692k            | Apache-2.0                | 2026-09      | Most used. Themes for MUI, antd, shadcn, Mantine and more. No builder. |
+| `survey-core` + `survey-creator-core` (SurveyJS)     | Engine + builder                   | ~184k / ~83k     | MIT / **commercial**      | 2026-10      | Closest to our product. Creator needs a paid license.                  |
+| `@jsonforms/core` + `@jsonforms/react`               | JSON Schema + UI schema renderer   | ~164k / ~124k    | MIT                       | 2026-06      | Rule system, schema generator from data. No builder.                   |
+| `@formio/js` + `@formio/react`                       | Engine + builder + hosted platform | ~26k / ~16k      | MIT (platform parts paid) | 2026-10      | Full product like ours, very heavy.                                    |
+| `@autoform/react`                                    | Zod schema → form                  | ~21k             | MIT                       | 2026-07      | Schema lives in code, not JSON.                                        |
+| `@formily/react` (Alibaba)                           | Schema renderer                    | ~13k             | MIT                       | 2025-05      | Slowing down; expressions run with `new Function`.                     |
+| `@data-driven-forms/react-form-renderer`             | Schema renderer                    | ~9k              | Apache-2.0                | 2026-07      | Good condition model (and/or/not, set values).                         |
+| `@react-form-builder/core` + `designer` (FormEngine) | Engine + builder                   | ~2.6k / ~1.7k    | MIT / **commercial EULA** | 2026-10      | MobX based; designer is paid.                                          |
+| `@coltorapps/builder`                                | Headless builder toolkit           | ~2.5k            | MIT                       | 2025-07      | Zero deps, full-stack validation; no ready UI.                         |
+| `@ginkgo-bioworks/react-json-schema-form-builder`    | Builder for rjsf                   | ~2k              | Apache-2.0                | 2026-09      | MUI only, small field set.                                             |
 
 ## Observations per package
 
 ### react-jsonschema-form (rjsf)
+
 - Strengths: standard JSON Schema, many UI themes (including shadcn), pluggable
   validators (ajv8, ata, cfworker), so the same schema validates on a server.
 - Weaknesses seen in code: `Form` is a class component that keeps the whole form
@@ -32,10 +33,11 @@ design observations so our engine and builder avoid known problems.
   "set value" or "disable" effects. No calculated fields, no repeater min/max UI
   beyond array keywords, no builder, no response storage.
 - Lesson: JSON Schema alone is a poor authoring format for business logic. Keep
-  our own form schema and *generate* a Zod (and optionally JSON Schema) validator
+  our own form schema and _generate_ a Zod (and optionally JSON Schema) validator
   from it.
 
 ### SurveyJS
+
 - Strengths: the richest field set (matrix, ranking, signature, image picker,
   dynamic panels, rating, slider, expression question), its own expression
   language (no `eval`), Persian translation, RTL, a large test suite
@@ -45,11 +47,12 @@ design observations so our engine and builder avoid known problems.
   (`Question`, `PanelModel`) rather than plain data; its own JSON format that is
   not typed with TypeScript for the author; no backend (responses, export,
   analytics are separate paid products or your own job).
-- Lesson: copy the *breadth* of field types and the safe expression language
+- Lesson: copy the _breadth_ of field types and the safe expression language
   idea; stay open source end to end, keep the schema plain typed data, and keep
   the bundle small and tree-shakeable.
 
 ### JSON Forms
+
 - Strengths: clean separation of data schema and UI schema, rules with
   `SHOW/HIDE/ENABLE/DISABLE` and `AND/OR` composition, `Generate.jsonSchema(data)`
   infers a schema from sample data.
@@ -61,6 +64,7 @@ design observations so our engine and builder avoid known problems.
   emails, URLs and arrays of objects; our rules need `require` and `setValue`.
 
 ### Form.io
+
 - Strengths: the most complete product (builder, renderer, API server,
   wizard, data grids, signature).
 - Weaknesses seen in code: 35 runtime dependencies (`moment`, `lodash`,
@@ -75,13 +79,15 @@ design observations so our engine and builder avoid known problems.
   and drop (dnd-kit) from the start.
 
 ### AutoForm
+
 - Strengths: tiny (`@autoform/core` 30 KB), Zod first, shadcn theme.
 - Weaknesses: the schema is a Zod object in source code, so it cannot be stored
   in a database, edited by a builder or sent over an API; field type inference
   covers only basic Zod types; conditions are limited.
-- Lesson: our source of truth is serializable JSON; Zod is *generated* from it.
+- Lesson: our source of truth is serializable JSON; Zod is _generated_ from it.
 
 ### Formily
+
 - Strengths: fine-grained reactivity, good performance on large forms.
 - Weaknesses seen in code: schema expressions (`{{ ... }}`) are compiled with
   `new Function('$root', 'with($root) { return (...) }')`, unsafe with
@@ -91,8 +97,9 @@ design observations so our engine and builder avoid known problems.
   for performance, and a CSP-safe engine (no `eval`, no `new Function`).
 
 ### Data Driven Forms
+
 - Strengths: the best condition model in this group: nested `and`/`or`/`not`,
-  many operators, and `then`/`else` actions that can show/hide and *set values*;
+  many operators, and `then`/`else` actions that can show/hide and _set values_;
   many UI mappers.
 - Weaknesses: built on `final-form` (less active than React Hook Form) and
   `lodash`; `set` actions may also be JavaScript functions (not serializable);
@@ -100,6 +107,7 @@ design observations so our engine and builder avoid known problems.
 - Lesson: adopt a similar condition shape, but data-only so it survives JSON.
 
 ### FormEngine (optimajet)
+
 - Strengths: engine plus visual designer, many UI kits, Persian (`fa-IR`)
   translation, repeaters, localization through Fluent.
 - Weaknesses seen in code: calculated properties are JavaScript source compiled
@@ -108,16 +116,18 @@ design observations so our engine and builder avoid known problems.
 - Lesson: an open-source builder is a real differentiator.
 
 ### @coltorapps/builder
-- Strengths: the closest *architecture* to ours: entities with attributes
+
+- Strengths: the closest _architecture_ to ours: entities with attributes
   validated by Zod, a framework-free core, the same schema validated on the
   server, zero dependencies.
 - Weaknesses: headless toolkit only (no field set, no UI, no drag and drop, no
   responses); low activity since 2025-07; version 0.x.
 - Lesson: confirms the registry idea (each field = settings schema + validator
-  + renderer). We go further by shipping the fields, the builder UI and the
-  backend.
+  - renderer). We go further by shipping the fields, the builder UI and the
+    backend.
 
 ### Ginkgo react-json-schema-form-builder
+
 - A builder on top of rjsf, MUI only, few field types, no logic editor. Shows
   the limits of building a visual editor directly on raw JSON Schema.
 

@@ -13,6 +13,13 @@ decisions are in `docs/brief.md`; read it before starting new work.
 - Never copy code from other form libraries; `docs/research/similar-packages.md`
   lists what to learn from them and which mistakes to avoid.
 
+## Commands
+
+Node 24, pnpm 10. From the repo root: `pnpm install`, `pnpm build`,
+`pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm check:package`, `pnpm size`,
+`pnpm format`. CI runs all of them (`.github/workflows/ci.yml`). Add a
+changeset (`pnpm changeset`) for changes to published packages.
+
 ## graphify (keep token use low)
 
 A code graph is kept in `graphify-out/` (git-ignored). It is built with the
