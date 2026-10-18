@@ -4,3 +4,5 @@ docs/mockups
 docs/brand
 graphify-out
 docs-site
+test-results
+playwright-report

@@ -2,6 +2,11 @@
 
 Short log of what the user agreed. Newest first.
 
+- 2026-10-18: Accessibility fix found by axe: the faint text color of the
+  mockups (`#8b9396`) fails 4.5:1 on white. The renderer uses `#666f72` (light)
+  and `#93a2a5` (dark), and a darker accent `#c44f0d` for small orange text.
+  The web app must use the same values.
+
 - 2026-10-18: Product name is **formweave**; npm packages are planned as
   `@formweave/schema`, `@formweave/engine` and `@formweave/react` (scope to be
   registered when the npm account exists). Logo files are in `docs/brand`;
