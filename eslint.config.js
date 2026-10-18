@@ -19,7 +19,9 @@ export default defineConfig(
     files: ["packages/*/src/**/*.ts"],
     ignores: ["**/*.test.ts"],
     extends: [jsdoc.configs["flat/recommended-typescript-error"]],
+    settings: { jsdoc: { tagNamePreference: { template: "typeParam" } } },
     rules: {
+      "jsdoc/require-throws-type": "off",
       "jsdoc/require-jsdoc": [
         "error",
         {

@@ -1,0 +1,107 @@
+import type * as z from "zod/mini";
+
+/**
+ * What a field definition receives when it builds the validator for a value.
+ *
+ * @typeParam S - The field's settings type.
+ * @since 0.1.0
+ */
+export interface ValidatorContext<S> {
+  /** The field's settings, already checked against {@link FieldDefinition.settings}. */
+  readonly settings: S;
+}
+
+/**
+ * Describes one field type: its settings, its default value and how its value
+ * is validated. Register definitions with {@link createRegistry}; the core
+ * never needs to change to add a type.
+ *
+ * Validators report problems with a message that is an issue code such as
+ * `"required"` or `"tooLong"`, not a sentence. The renderer turns codes into
+ * text in the reader's language.
+ *
+ * @typeParam S - Settings stored in the field's `settings` object.
+ * @typeParam V - The value the field produces.
+ * @since 0.1.0
+ */
+export interface FieldDefinition<S = unknown, V = unknown> {
+  /** The `type` string used in form documents, for example `"shortText"`. */
+  readonly type: string;
+  /** Schema for the field's `settings`. An empty object is passed when a field has none. */
+  readonly settings: z.ZodMiniType<S>;
+  /**
+   * Value of a new, untouched field.
+   *
+   * @param settings - The field's settings.
+   * @returns The starting value, or `undefined` for an empty field.
+   */
+  readonly defaultValue: (settings: S) => V | undefined;
+  /**
+   * Builds the validator for a non-empty value. Emptiness and the `required`
+   * rule are handled by the engine, so this only checks values that exist.
+   *
+   * @param ctx - Settings of the field.
+   * @returns A Zod schema for the value.
+   */
+  readonly validator: (ctx: ValidatorContext<S>) => z.ZodMiniType<V>;
+  /**
+   * Whether a value counts as empty for the `required` rule.
+   *
+   * @defaultValue `undefined`, `null`, `""` and `[]` are empty.
+   */
+  readonly isEmpty?: ((value: unknown) => boolean) | undefined;
+  /**
+   * `true` for types that only hold other fields (for example a group). They
+   * have no value of their own.
+   *
+   * @defaultValue `false`
+   */
+  readonly container?: boolean | undefined;
+}
+
+/**
+ * Identity helper that keeps the settings and value types of a definition
+ * connected, so `defaultValue` and `validator` are checked against `settings`.
+ *
+ * @param definition - The field definition.
+ * @returns The same definition.
+ * @example
+ * ```ts
+ * const rating = defineField({
+ *   type: "rating",
+ *   settings: z.object({ max: z._default(z.number(), 5) }),
+ *   defaultValue: () => undefined,
+ *   validator: ({ settings }) => z.number().check(z.gte(1), z.lte(settings.max)),
+ * });
+ * ```
+ * @since 0.1.0
+ */
+export function defineField<S, V>(definition: FieldDefinition<S, V>): FieldDefinition<S, V> {
+  return definition;
+}
+
+/**
+ * Field definitions available to {@link compile}, looked up by `type`.
+ *
+ * @since 0.1.0
+ */
+export type FieldRegistry = ReadonlyMap<string, FieldDefinition>;
+
+/**
+ * Builds a {@link FieldRegistry} from field definitions. Only the types passed
+ * here are bundled, which keeps forms that use few types small.
+ *
+ * @param definitions - Field definitions; a later one replaces an earlier one with the same `type`.
+ * @returns The registry.
+ * @example
+ * ```ts
+ * import { shortText, email } from "@formweave/engine/fields";
+ * const registry = createRegistry([shortText, email]);
+ * ```
+ * @since 0.1.0
+ */
+export function createRegistry(definitions: Iterable<FieldDefinition<never>>): FieldRegistry {
+  const map = new Map<string, FieldDefinition>();
+  for (const d of definitions) map.set(d.type, d as unknown as FieldDefinition);
+  return map;
+}
