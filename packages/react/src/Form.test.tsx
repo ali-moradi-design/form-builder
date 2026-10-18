@@ -133,4 +133,32 @@ describe("<Form>", () => {
     expect(renders.b).toBe(before);
     expect(renders.a).toBeGreaterThan(5);
   });
+
+  it("shows one question at a time in the focus layout", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    render(
+      <Form
+        schema={doc}
+        registry={registry}
+        renderers={renderers}
+        locale="fa"
+        layout="focus"
+        onSubmit={onSubmit}
+      />,
+    );
+    expect(screen.getByText("پرسش ۱ از ۲")).toBeTruthy();
+    expect(screen.queryByLabelText("تیمی")).toBeNull();
+    await user.click(screen.getByRole("button", { name: "تأیید" }));
+    expect(await screen.findByText("پاسخ به این پرسش لازم است.")).toBeTruthy();
+    await user.type(screen.getByLabelText(/نام/), "سارا{Enter}");
+    await user.click(await screen.findByLabelText("تیمی"));
+    expect(screen.getByText("پرسش ۲ از ۳")).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "تأیید" }));
+    await user.type(await screen.findByLabelText(/Seats/), "3");
+    await user.click(screen.getByRole("button", { name: "ارسال" }));
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({ name: "سارا", plan: "team", seats: 3 });
+    });
+  });
 });

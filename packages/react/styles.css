@@ -259,6 +259,49 @@
     color: var(--fw-primary-text);
   }
 
+  .fw-progress {
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+  }
+  .fw-progress-bar {
+    inline-size: 100%;
+    block-size: 4px;
+    border-radius: 4px;
+    background: var(--fw-line);
+    overflow: hidden;
+  }
+  .fw-progress-bar span {
+    display: block;
+    block-size: 100%;
+    background: var(--fw-accent);
+    transition: inline-size 200ms;
+  }
+  .fw-counter {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fw-accent);
+  }
+  .fw-form[data-layout="focus"] {
+    --fw-gap: 28px;
+  }
+  .fw-form[data-layout="focus"] .fw-fields > .fw-field > .fw-label {
+    font-size: clamp(22px, 4vw, 34px);
+    line-height: 1.35;
+    font-weight: 700;
+  }
+  .fw-form[data-layout="focus"] .fw-step-title {
+    font-size: 14px;
+    color: var(--fw-muted);
+  }
+  .fw-form[data-layout="focus"] .fw-actions {
+    justify-content: flex-start;
+  }
+  .fw-form[data-layout="focus"] .fw-button-primary {
+    margin-inline-start: 0;
+    order: -1;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .fw-form * {
       transition: none !important;
