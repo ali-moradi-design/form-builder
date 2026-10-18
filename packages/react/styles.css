@@ -1,0 +1,267 @@
+/*
+ * Default look of @formweave/react. Everything sits in the `formweave` cascade
+ * layer, so any style of the host page wins without !important. Change the
+ * look by overriding the --fw-* variables. Logical properties only: the same
+ * rules work for left-to-right and right-to-left forms.
+ */
+@layer formweave {
+  .fw-form {
+    --fw-font: inherit;
+    --fw-text: #141a1c;
+    --fw-muted: #5a6366;
+    --fw-faint: #8b9396;
+    --fw-surface: #ffffff;
+    --fw-surface-2: #f3f4f3;
+    --fw-line: #d5d8d5;
+    --fw-primary: #0f4c5c;
+    --fw-primary-text: #ffffff;
+    --fw-primary-soft: #e4eff1;
+    --fw-accent: #e36414;
+    --fw-danger: #9a031e;
+    --fw-danger-soft: #fbe6e9;
+    --fw-radius: 10px;
+    --fw-gap: 20px;
+    --fw-control-height: 42px;
+
+    display: grid;
+    gap: var(--fw-gap);
+    font-family: var(--fw-font);
+    color: var(--fw-text);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  @media (prefers-color-scheme: dark) {
+    .fw-form:where(:not([data-theme="light"])) {
+      --fw-text: #eaf0f0;
+      --fw-muted: #a2afb1;
+      --fw-faint: #6e7d80;
+      --fw-surface: #151e20;
+      --fw-surface-2: #1b2628;
+      --fw-line: #314246;
+      --fw-primary: #13617a;
+      --fw-primary-soft: #16343b;
+      --fw-danger: #e2566b;
+      --fw-danger-soft: #3a1820;
+    }
+  }
+  .fw-form[data-theme="dark"] {
+    --fw-text: #eaf0f0;
+    --fw-muted: #a2afb1;
+    --fw-faint: #6e7d80;
+    --fw-surface: #151e20;
+    --fw-surface-2: #1b2628;
+    --fw-line: #314246;
+    --fw-primary: #13617a;
+    --fw-primary-soft: #16343b;
+    --fw-danger: #e2566b;
+    --fw-danger-soft: #3a1820;
+  }
+
+  .fw-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--fw-gap) 16px;
+  }
+  .fw-field,
+  .fw-group {
+    grid-column: 1 / -1;
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .fw-field[data-width="half"] {
+    grid-column: auto / span 1;
+  }
+  @media (max-width: 560px) {
+    .fw-field[data-width="half"] {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .fw-label {
+    font-weight: 600;
+    font-size: 14px;
+    padding: 0;
+  }
+  .fw-required {
+    color: var(--fw-danger);
+    margin-inline-start: 3px;
+  }
+  .fw-help {
+    margin: 0;
+    font-size: 13px;
+    color: var(--fw-faint);
+  }
+  .fw-error {
+    margin: 0;
+    font-size: 13px;
+    color: var(--fw-danger);
+  }
+
+  .fw-input {
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-block-size: var(--fw-control-height);
+    padding-block: 8px;
+    padding-inline: 12px;
+    border: 1px solid var(--fw-line);
+    border-radius: var(--fw-radius);
+    background: var(--fw-surface);
+    color: inherit;
+    font: inherit;
+  }
+  .fw-textarea {
+    resize: vertical;
+  }
+  .fw-input:focus-visible,
+  .fw-choice input:focus-visible,
+  .fw-switch input:focus-visible,
+  .fw-button:focus-visible {
+    outline: 3px solid var(--fw-primary-soft);
+    outline-offset: 1px;
+    border-color: var(--fw-primary);
+  }
+  .fw-field[data-invalid] .fw-input {
+    border-color: var(--fw-danger);
+    box-shadow: 0 0 0 3px var(--fw-danger-soft);
+  }
+  .fw-input:disabled {
+    background: var(--fw-surface-2);
+    color: var(--fw-muted);
+  }
+
+  .fw-choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .fw-choice {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-block-size: var(--fw-control-height);
+    padding-inline: 12px;
+    border: 1px solid var(--fw-line);
+    border-radius: var(--fw-radius);
+    background: var(--fw-surface);
+    cursor: pointer;
+  }
+  .fw-choice:has(input:checked) {
+    border-color: var(--fw-primary);
+    background: var(--fw-primary-soft);
+    font-weight: 600;
+  }
+  .fw-choice input {
+    accent-color: var(--fw-primary);
+    margin: 0;
+  }
+
+  .fw-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .fw-switch input {
+    appearance: none;
+    inline-size: 38px;
+    block-size: 22px;
+    margin: 0;
+    border-radius: 999px;
+    background: var(--fw-line);
+    position: relative;
+    cursor: pointer;
+    transition: background 120ms;
+  }
+  .fw-switch input::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 3px;
+    inset-inline-start: 3px;
+    inline-size: 16px;
+    block-size: 16px;
+    border-radius: 50%;
+    background: #fff;
+    transition: inset-inline-start 120ms;
+  }
+  .fw-switch input:checked {
+    background: var(--fw-primary);
+  }
+  .fw-switch input:checked::after {
+    inset-inline-start: 19px;
+  }
+
+  .fw-group {
+    gap: 12px;
+    padding-block: 4px;
+  }
+  .fw-group-title {
+    font-weight: 700;
+    font-size: 16px;
+    padding: 0;
+  }
+
+  .fw-steps {
+    display: flex;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+    color: var(--fw-faint);
+  }
+  .fw-steps li {
+    flex: 1;
+    padding-block-start: 8px;
+    border-block-start: 4px solid var(--fw-line);
+  }
+  .fw-steps li[data-state="done"] {
+    border-color: var(--fw-primary);
+    color: var(--fw-muted);
+  }
+  .fw-steps li[data-state="current"] {
+    border-color: var(--fw-accent);
+    color: var(--fw-text);
+    font-weight: 600;
+  }
+  .fw-step-title {
+    margin: 0;
+    font-size: 22px;
+  }
+  .fw-step-description {
+    margin: 0;
+    color: var(--fw-muted);
+  }
+
+  .fw-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+  }
+  .fw-button {
+    min-block-size: var(--fw-control-height);
+    padding-inline: 20px;
+    border: 1px solid var(--fw-line);
+    border-radius: var(--fw-radius);
+    background: var(--fw-surface);
+    color: inherit;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .fw-button-primary {
+    margin-inline-start: auto;
+    border-color: var(--fw-primary);
+    background: var(--fw-primary);
+    color: var(--fw-primary-text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fw-form * {
+      transition: none !important;
+    }
+  }
+}

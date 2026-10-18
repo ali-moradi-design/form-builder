@@ -1,10 +1,14 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "entryPointStrategy": "packages",
-  "entryPoints": ["packages/schema", "packages/engine"],
+  "entryPoints": ["packages/schema", "packages/engine", "packages/react"],
   "name": "formweave",
   "out": "docs-site",
   "includeVersion": false,
-  "validation": { "notExported": true, "invalidLink": true, "notDocumented": true },
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": true
+  },
   "treatWarningsAsErrors": true
 }

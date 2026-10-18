@@ -1,0 +1,79 @@
+{
+  "name": "@formweave/react",
+  "version": "0.0.0",
+  "description": "React renderer for formweave forms, built on React Hook Form.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ali-moradi-design/form-builder.git",
+    "directory": "packages/react"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./fields": {
+      "types": "./dist/fields/index.d.ts",
+      "default": "./dist/fields/index.js"
+    },
+    "./styles.css": "./styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "styles.css"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check:package": "publint --strict && attw --pack . --profile esm-only --exclude-entrypoints styles.css",
+    "size": "size-limit"
+  },
+  "dependencies": {
+    "@formweave/engine": "workspace:^",
+    "@formweave/schema": "workspace:^"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-hook-form": "^7.60.0",
+    "zod": "^4.6.0"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.8",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "happy-dom": "21.0.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-hook-form": "7.90.0",
+    "zod": "4.6.7"
+  },
+  "size-limit": [
+    {
+      "name": "Form + engine core",
+      "path": "dist/index.js",
+      "import": "{ Form, createRenderers }",
+      "limit": "8 kB"
+    },
+    {
+      "name": "one renderer (shortText)",
+      "path": "dist/fields/index.js",
+      "import": "{ shortTextRenderer }",
+      "limit": "1 kB"
+    },
+    {
+      "name": "all basic renderers",
+      "path": "dist/fields/index.js",
+      "import": "{ basicRenderers }",
+      "limit": "3 kB"
+    }
+  ]
+}
