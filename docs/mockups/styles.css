@@ -5,6 +5,7 @@
 @import url("node_modules/@fontsource/geist-sans/600.css");
 @import url("node_modules/@fontsource/geist-mono/400.css");
 @import url("node_modules/@fontsource/geist-mono/500.css");
+@import url("node_modules/@fontsource/comic-neue/700.css");
 @import url("node_modules/@fontsource/vazirmatn/400.css");
 @import url("node_modules/@fontsource/vazirmatn/500.css");
 @import url("node_modules/@fontsource/vazirmatn/600.css");
@@ -549,3 +550,4 @@ tr.sel td { background: var(--mark-soft); }
 .credit .heart { color: var(--carmine); fill: var(--carmine); width: 13px; height: 13px; }
 :root[data-theme="dark"] .credit .heart { color: #e2566b; fill: #e2566b; }
 .v2-foot { position: absolute; inset-block-end: 30px; inset-inline: 0; }
+.wm { font-family: "Comic Neue", cursive; font-weight: 700; font-size: 18px; letter-spacing: 0; }

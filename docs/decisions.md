@@ -4,7 +4,8 @@ Short log of what the user agreed. Newest first.
 
 - 2026-10-18: Product name is **formweave**; npm packages are planned as
   `@formweave/schema`, `@formweave/engine` and `@formweave/react` (scope to be
-  registered when the npm account exists). Logo files are in `docs/brand`.
+  registered when the npm account exists). Logo files are in `docs/brand`;
+  the wordmark uses Comic Neue Bold.
 - 2026-10-18: Every app and hosted form shows the credit "Made with ♥ by Ali
   Moradi" (Persian: «ساخته‌شده با ♥ توسط علی مرادی»).
 

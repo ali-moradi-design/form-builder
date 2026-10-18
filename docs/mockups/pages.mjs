@@ -54,7 +54,7 @@ const sidebar = (on, dark = false) => {
   const sub = (t, extra = "") => `<div class="nav ${on === t ? "on" : ""}">${t}${extra}</div>`;
   return `
 <aside class="sb">
-  <div class="sb-brand"><span class="logo">${LOGO}</span>formweave<div class="grow"></div><span class="faint">${i("panel-left")}</span></div>
+  <div class="sb-brand"><span class="logo">${LOGO}</span><span class="wm">formweave</span><div class="grow"></div><span class="faint">${i("panel-left")}</span></div>
   <div class="sb-search">${i("search", "icon-sm")}Search<div class="grow"></div><span class="kbd">⌘ K</span></div>
   <div class="sb-label">Main menu</div>
   ${nav("layout-dashboard", "Dashboard")}

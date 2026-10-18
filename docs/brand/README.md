@@ -7,5 +7,8 @@
 - `preview.png`: the logo at several sizes on light and dark.
 
 Colors: plum `#5f0f40` background, amber `#fb8b24`, orange `#e36414`, cream
-`#fff4e8`. The wordmark is Geist SemiBold, converted to outlines so it renders
+`#fff4e8`. The wordmark is Comic Neue Bold, converted to outlines so it renders
 the same everywhere.
+
+Regenerate with `python3 docs/brand/make-logo.py <comic-neue-latin-700-normal.woff> docs/brand`
+(the font file comes from `@fontsource/comic-neue` in `docs/mockups`).

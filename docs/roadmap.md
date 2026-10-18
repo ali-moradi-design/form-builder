@@ -1,4 +1,4 @@
-# Roadmap (proposed)
+# Roadmap (approved 2026-10-18)
 
 Each version ends with something that can be shown and used. Versions are
 built as small PRs; the user approves each step.
