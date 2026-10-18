@@ -15,6 +15,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./meta": {
+      "types": "./dist/meta.d.ts",
+      "default": "./dist/meta.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -29,8 +33,25 @@
   },
   "size-limit": [
     {
+      "name": "types and constants",
       "path": "dist/index.js",
-      "limit": "200 B"
+      "limit": "300 B"
+    },
+    {
+      "name": "meta-schema with zod/mini",
+      "path": "dist/meta.js",
+      "limit": "2 kB"
     }
-  ]
+  ],
+  "devDependencies": {
+    "zod": "4.6.7"
+  },
+  "peerDependencies": {
+    "zod": "^4.6.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    }
+  }
 }
