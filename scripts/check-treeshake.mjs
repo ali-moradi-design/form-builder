@@ -1,5 +1,7 @@
-// Bundles tiny entry files that import one thing each and fails when code for
+// Also checks the stylesheet size budget. Bundles tiny entry files that import one thing each and fails when code for
 // other features ends up in the output. Run after `pnpm build`.
+import { readFileSync } from "node:fs";
+import { gzipSync } from "node:zlib";
 import { build } from "esbuild";
 
 const cases = [
@@ -18,17 +20,23 @@ const cases = [
     code: 'import { compile, evaluate } from "@formweave/engine"; console.log(compile, evaluate);',
     mustNotContain: ["invalidEmail", "Intl.NumberFormat", "This field is required."],
   },
+  {
+    name: "one React renderer",
+    code: 'import { shortTextRenderer } from "@formweave/react/fields"; console.log(shortTextRenderer);',
+    mustNotContain: ["fw-choices", "fw-switch", "normalizeDigits"],
+    resolveDir: "packages/react",
+  },
 ];
 
 let failed = false;
 for (const c of cases) {
   const out = await build({
-    stdin: { contents: c.code, resolveDir: "packages/engine", loader: "js" },
+    stdin: { contents: c.code, resolveDir: c.resolveDir ?? "packages/engine", loader: "js" },
     bundle: true,
     write: false,
     format: "esm",
     minify: false,
-    external: ["zod", "zod/*"],
+    external: ["zod", "zod/*", "react", "react/*", "react-dom", "react-hook-form"],
     logLevel: "silent",
   });
   const text = out.outputFiles[0]?.text ?? "";
@@ -40,4 +48,13 @@ for (const c of cases) {
     console.log(`✓ ${c.name} (${String(text.length)} bytes unminified)`);
   }
 }
+// size-limit cannot measure plain CSS, so the stylesheet budget is checked here.
+const css = gzipSync(readFileSync("packages/react/styles.css")).length;
+if (css > 2048) {
+  failed = true;
+  console.error(`✗ default stylesheet is ${String(css)} B gzip (budget 2048 B)`);
+} else {
+  console.log(`✓ default stylesheet ${String(css)} B gzip (budget 2048 B)`);
+}
+
 if (failed) process.exit(1);

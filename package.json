@@ -29,6 +29,7 @@
     "eslint": "10.13.0",
     "eslint-plugin-jsdoc": "65.3.12",
     "globals": "17.13.0",
+    "happy-dom": "21.0.3",
     "prettier": "3.9.10",
     "publint": "0.3.25",
     "size-limit": "14.2.0",
