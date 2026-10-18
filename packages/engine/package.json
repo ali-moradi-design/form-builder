@@ -15,6 +15,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./expr": {
+      "types": "./dist/expr.d.ts",
+      "default": "./dist/expr.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -24,6 +28,20 @@
     "build": "tsdown",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
-    "check:package": "publint --strict && attw --pack . --profile esm-only"
-  }
+    "check:package": "publint --strict && attw --pack . --profile esm-only",
+    "size": "size-limit"
+  },
+  "dependencies": {
+    "@formweave/schema": "workspace:^"
+  },
+  "devDependencies": {
+    "fast-check": "4.10.2"
+  },
+  "size-limit": [
+    {
+      "name": "expr",
+      "path": "dist/expr.js",
+      "limit": "2 kB"
+    }
+  ]
 }
