@@ -1,0 +1,16 @@
+{
+  "name": "form-builder-mockups",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "node render.mjs"
+  },
+  "devDependencies": {
+    "@fontsource/comic-neue": "5.3.0",
+    "@fontsource/geist-mono": "5.3.0",
+    "@fontsource/geist-sans": "5.3.0",
+    "@fontsource/vazirmatn": "5.3.0",
+    "lucide-static": "0.548.0",
+    "playwright": "1.56.1"
+  }
+}
