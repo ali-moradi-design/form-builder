@@ -57,7 +57,7 @@ on any runtime.
   email, URL, nested object → group, array of objects → repeater).
 - `i18n`: picks the label for a locale with fallback, formats Persian digits.
 - **Field registry**: `defineField({ type, settings, defaultValue, toZod,
-  dependsOn })`, where `settings` is itself a Zod schema. The builder renders a
+dependsOn })`, where `settings` is itself a Zod schema. The builder renders a
   field's settings panel from that schema with the engine itself
   (dogfooding).
 - Types: `InferValues<typeof schema>` gives the TypeScript type of the
@@ -119,14 +119,14 @@ Tree-shaking rules for every package:
 
 Budgets (min + gzip, peers excluded; tightened once real numbers exist):
 
-| Entry | Budget |
-|---|---|
-| `form-engine` core (compile, evaluate, validator) | 6 KB |
-| `form-engine/expr` | 2 KB |
-| one basic field definition | 0.5 KB |
-| `form-react` core (`<Form>`, hooks, headless parts) | 8 KB |
-| one basic field renderer | 1 KB |
-| default stylesheet | 6 KB |
+| Entry                                               | Budget |
+| --------------------------------------------------- | ------ |
+| `form-engine` core (compile, evaluate, validator)   | 6 KB   |
+| `form-engine/expr`                                  | 2 KB   |
+| one basic field definition                          | 0.5 KB |
+| `form-react` core (`<Form>`, hooks, headless parts) | 8 KB   |
+| one basic field renderer                            | 1 KB   |
+| default stylesheet                                  | 6 KB   |
 
 Zod is a peer dependency. Zod 4 ships a smaller functional build
 (`zod/mini`); whether the engine targets it is decided after reading the
@@ -189,7 +189,7 @@ Enforced, not hoped for:
 
 - pnpm workspaces + Turborepo; TypeScript project references.
 - ESM only, `exports` map per entry, `sideEffects: false`, types next to code;
-  built with tsup.
+  built with tsdown (see `docs/research/library-notes.md`).
 - `react`, `react-hook-form` and `zod` are peer dependencies.
 - Changesets for versions; publish from GitHub Actions with npm provenance.
 - CI checks: lint, typecheck, unit tests (Vitest), type tests

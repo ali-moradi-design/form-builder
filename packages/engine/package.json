@@ -1,0 +1,29 @@
+{
+  "name": "@formweave/engine",
+  "version": "0.0.0",
+  "description": "Framework-free formweave engine: compile, evaluate, validate.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ali-moradi-design/form-builder.git",
+    "directory": "packages/engine"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "check:package": "publint --strict && attw --pack . --profile esm-only"
+  }
+}
