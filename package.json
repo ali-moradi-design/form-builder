@@ -15,7 +15,9 @@
     "format:check": "prettier --check .",
     "check:package": "turbo run check:package",
     "size": "turbo run size",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "check:treeshake": "node scripts/check-treeshake.mjs",
+    "docs:api": "typedoc"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
@@ -23,6 +25,7 @@
     "@eslint/js": "10.0.1",
     "@size-limit/preset-small-lib": "14.2.0",
     "@types/node": "24.19.2",
+    "esbuild": "0.28.2",
     "eslint": "10.13.0",
     "eslint-plugin-jsdoc": "65.3.12",
     "globals": "17.13.0",
@@ -31,6 +34,7 @@
     "size-limit": "14.2.0",
     "tsdown": "0.23.1",
     "turbo": "2.11.9",
+    "typedoc": "0.28.20",
     "typescript": "6.0.3",
     "typescript-eslint": "8.71.2",
     "vitest": "5.0.5"

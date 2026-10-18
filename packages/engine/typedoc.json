@@ -1,0 +1,12 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "src/index.ts",
+    "src/expr.ts",
+    "src/fields/index.ts",
+    "src/fields/all.ts",
+    "src/i18n.ts",
+    "src/messages.ts"
+  ],
+  "tsconfig": "tsconfig.json"
+}

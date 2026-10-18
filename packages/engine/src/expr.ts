@@ -168,7 +168,7 @@ function run(expr: Expression, read: ValueReader, depth: number): unknown {
 }
 
 /**
- * Evaluates an {@link Expression} against the current form values.
+ * Evaluates an `Expression` (from `@formweave/schema`) against the current form values.
  *
  * Total and safe: it never throws and never runs code. Operators with bad
  * input return `null` (for example dividing by zero, or adding text to a

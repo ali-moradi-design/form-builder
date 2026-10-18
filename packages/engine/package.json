@@ -45,7 +45,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
     "check:package": "publint --strict && attw --pack . --profile esm-only",
-    "size": "size-limit"
+    "size": "size-limit",
+    "bench": "vitest bench --run"
   },
   "dependencies": {
     "@formweave/schema": "workspace:^"
