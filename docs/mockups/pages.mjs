@@ -272,53 +272,6 @@ const wizard = shell("All forms", ["Forms", "Create new form"], `
   </div>
 </div>`);
 
-/* ---------------- 06/07 Hosted form in Persian (reference 2) ---------------- */
-const swatches = [[P.teal, 1], [P.orange, 1], [P.amber, 0], [P.plum, 1], [P.carmine, 0], ["#2f6f73", 0], ["#141a1c", 0], ["#f3eee6", 0]];
-const stars = (n) => [1, 2, 3, 4, 5].map((k) => i("star", k <= n ? "" : "off")).join("");
-const faFields = (mobile) => `
-  <div><span class="label">از نسخهٔ جدید چقدر راضی هستید؟<span class="req">*</span></span><div class="rating">${stars(4)}</div></div>
-  <div><span class="label">چقدر احتمال دارد ما را به دوستتان پیشنهاد کنید؟<span class="req">*</span></span>
-    <div class="nps">${[...Array(11).keys()].map((n) => `<span class="${n === 9 ? "on" : ""}">${fa(n)}</span>`).join("")}</div>
-    <div class="nps-ends"><span>اصلاً</span><span>حتماً</span></div></div>
-  <div><span class="label">رنگ‌های دلخواه برای پوستهٔ تازه</span>
-    <div class="swatches">${swatches.map(([c, on]) => `<span class="swatch ${on ? "on" : ""}" style="background:${c}">${on ? i("check", "icon-sm") : ""}</span>`).join("")}<span class="swatch add">${i("plus", "icon-sm")}</span></div>
-    ${mobile ? "" : `<div class="picked">${[[P.teal, "سبز کبود"], [P.orange, "نارنجی"], [P.plum, "آلویی"]].map(([c, n]) => `<span class="pk"><span class="sw" style="background:${c}"></span>${n}</span>`).join("")}</div>`}
-    <p class="hint">${fa(3)} رنگ انتخاب شده؛ حداکثر ${fa(4)} رنگ.</p></div>
-  <div><span class="label">ایمیل برای پیگیری</span><div class="input error" dir="ltr" style="justify-content:flex-end">sara@example</div>
-    <p class="err">${i("circle-alert", "icon-sm")}نشانی ایمیل کامل نیست؛ مثلاً sara@example.com</p></div>`;
-const faStepper = `
-  <div class="nstep"><span class="ns done"><b>${i("check", "icon-sm")}</b>تجربهٔ شما</span><span class="ns cur"><b>${fa(2)}</b>سلیقهٔ شما</span><span class="ns"><b>${fa(3)}</b>راه ارتباط</span></div>
-  <div class="track2" style="margin-top:12px"><span class="f" style="width:34%"></span><span class="c" style="width:22%"></span><span class="r"></span></div>`;
-const hostedFa = `
-<div class="pub">
-  <header class="pub-top"><span class="logo">${i("braces")}</span><b style="font-weight:600;font-size:15px">نظرسنجی محصول</b><div class="grow"></div>
-    <button class="btn ghost">${i("bookmark", "icon-sm")}ذخیره و ادامه در زمان دیگر</button><button class="btn">${i("languages", "icon-sm")}English</button></header>
-  <div class="pub-main">
-    <div class="card" style="display:flex;flex-direction:column;min-height:0">
-      <div style="padding:20px 24px 0">${faStepper}</div>
-      <div style="padding:18px 24px 0"><div class="hero" style="min-height:150px;padding:22px 26px"><div><h2>پوستهٔ تازه را با هم بسازیم</h2><p>نظر شما مستقیم روی رنگ‌ها و چیدمان نسخهٔ بعدی اثر می‌گذارد. حدود ${fa(3)} دقیقه وقت می‌گیرد.</p></div>${art}</div></div>
-      <div style="padding:22px 24px;display:grid;gap:24px;flex:1;align-content:start">${faFields(false)}</div>
-      <div class="foot-actions"><button class="btn lg">قبلی</button><span class="faint">مرحلهٔ ${fa(2)} از ${fa(3)}</span><button class="btn primary lg">مرحلهٔ بعد</button></div>
-    </div>
-    <div style="display:grid;gap:14px;align-content:start">
-      <div class="card"><div class="sum"><h2>خلاصهٔ پاسخ‌ها</h2>
-        <div class="cap">تجربهٔ شما</div><div class="kv"><span>چند وقت است استفاده می‌کنید؟</span><b>بیش از یک سال</b></div><div class="kv"><span>استفادهٔ روزانه</span><b>بله</b></div>
-        <div class="cap">سلیقهٔ شما</div><div class="kv"><span>رضایت</span><b>${fa(4)} از ${fa(5)}</b></div><div class="kv"><span>پیشنهاد به دیگران</span><b>${fa(9)}</b></div>
-        <div class="kv"><span>رنگ‌ها</span><b class="row" style="gap:4px">${[P.teal, P.orange, P.plum].map((c) => `<span class="sw" style="background:${c}"></span>`).join("")}</b></div></div>
-        <div class="total"><span>پیشرفت</span><b>${fa(56)}٪</b></div></div>
-      <div class="card card-pad row" style="gap:12px;align-items:flex-start"><span class="tile t">${i("shield-check")}</span><div><b style="font-weight:600">پاسخ‌ها محرمانه‌اند</b><p class="muted" style="font-size:12.5px;margin-top:2px">فقط تیم محصول آن‌ها را می‌بیند و ایمیل شما با کسی به اشتراک گذاشته نمی‌شود.</p></div></div>
-    </div>
-  </div>
-</div>`;
-const mobileFa = `
-<div class="pub">
-  <header class="pub-top" style="padding-inline:18px;height:58px"><span class="logo">${i("braces")}</span><b style="font-weight:600">نظرسنجی محصول</b><div class="grow"></div><span class="faint">${fa(2)} از ${fa(3)}</span></header>
-  <div style="padding:16px 18px 0;background:var(--surface)"><div class="track2"><span class="f" style="width:34%"></span><span class="c" style="width:22%"></span><span class="r"></span></div>
-    <p style="margin-top:10px;font-weight:600">سلیقهٔ شما</p></div>
-  <div style="padding:16px 18px;display:grid;gap:22px;align-content:start;flex:1;background:var(--surface)">${faFields(true)}</div>
-  <div class="foot-actions" style="background:var(--surface);gap:10px;padding:12px 18px 24px"><button class="btn lg" style="flex:1">قبلی</button><button class="btn primary lg" style="flex:2">مرحلهٔ بعد</button></div>
-</div>`;
-
 /* ---------------- 08 Responses ---------------- */
 const rows = [
   ["SA", P.teal, "sara@example.com", "Oct 18, 14:02", 3, 5, 10, [P.teal, P.amber], "Team"],
@@ -390,8 +343,7 @@ export const pages = [
   { name: "03-builder-json-dark", title: "Builder JSON", body: builder(jsonPanel, "json"), theme: "dark" },
   { name: "04-publish", title: "Publish", body: publish },
   { name: "05-create-form-wizard", title: "Create form", body: wizard, height: 1010 },
-  ...makeVariants({ i, fa, P, art }),
-  { name: "07-hosted-form-fa-mobile-dark", title: "Hosted form mobile", body: mobileFa, lang: "fa", theme: "dark", width: 390, height: 844 },
+  ...makeVariants({ i, fa, P }),
   { name: "08-responses", title: "Responses", body: responses },
   { name: "09-analytics-dark", title: "Analytics", body: summary, theme: "dark" },
 ];

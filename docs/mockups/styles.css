@@ -536,3 +536,10 @@ tr.sel td { background: var(--mark-soft); }
 .v4-prog span { display: block; height: 100%; background: var(--amber); border-radius: 999px; }
 .v4-bar .btn:not(.accent) { background: transparent; color: #fff; border-color: rgb(255 255 255 / 0.25); box-shadow: none; }
 .b-d { grid-column: 1 / span 2; }
+.v2-q.m h1 { font-size: 26px; margin-block: 12px 6px; }
+.strip-m { height: 72px; }
+.strip-m > div { padding: 8px; font-size: 13px; }
+.mini-sw span { flex: none; }
+.mini-sw span.used { opacity: 1; box-shadow: inset 0 0 0 3px var(--frame), 0 0 0 2px var(--ink-3); }
+:root[data-theme="dark"] .mini-sw span:not(.pip) { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16); }
+:root[data-theme="dark"] .mini-sw span.used { box-shadow: inset 0 0 0 3px var(--frame), 0 0 0 2px var(--ink-3); }

@@ -1,6 +1,6 @@
 # Package architecture
 
-Status: proposed 2026-10-18. Decisions already agreed are in `docs/decisions.md`.
+Status: approved 2026-10-18. Decisions already agreed are in `docs/decisions.md`.
 
 ## Goals
 
@@ -92,6 +92,98 @@ Thin adapter: state lives in React Hook Form, logic lives in the engine.
 `views` to avoid a clash with Next.js. Builder state (commands, undo/redo with
 patches) starts as a feature here and moves into a package only if another app
 needs it. Layer rules are checked with Steiger in CI.
+
+## Size, tree-shaking and performance
+
+Bundle size and runtime speed are first-class requirements, checked in CI.
+
+Tree-shaking rules for every package:
+
+- ESM only, `"sideEffects": false`, no code runs at import time.
+- Plain functions and plain objects; no classes with large prototypes, no TS
+  `enum` (string unions and `as const` objects instead).
+- Nothing registers itself. Field types are imported and passed in explicitly:
+  ```ts
+  import { createRegistry } from "@scope/form-engine";
+  import { text, email, rating } from "@scope/form-engine/fields";
+  const registry = createRegistry([text, email, rating]);
+  ```
+  A convenience preset (`@scope/form-engine/fields/all`) exists, but only apps
+  that import it pay for it.
+- Subpath exports for optional features: `/expr`, `/infer`, `/migrate`,
+  `/i18n`, `/fields/*`, and the same per renderer in `form-react`.
+- Heavy renderers (rich text, signature, image crop, color picker) are loaded
+  with dynamic `import()` only when the form contains that field.
+- A CI test bundles "one text field" with esbuild and fails if code for other
+  fields or features ends up in the output.
+
+Budgets (min + gzip, peers excluded; tightened once real numbers exist):
+
+| Entry | Budget |
+|---|---|
+| `form-engine` core (compile, evaluate, validator) | 6 KB |
+| `form-engine/expr` | 2 KB |
+| one basic field definition | 0.5 KB |
+| `form-react` core (`<Form>`, hooks, headless parts) | 8 KB |
+| one basic field renderer | 1 KB |
+| default stylesheet | 6 KB |
+
+Zod is a peer dependency. Zod 4 ships a smaller functional build
+(`zod/mini`); whether the engine targets it is decided after reading the
+current Zod docs, with a size comparison in the PR.
+
+Performance budgets, measured with `vitest bench` on a 500-field schema:
+
+- `compile`: under 5 ms.
+- `evaluate` after one change: under 0.5 ms (walks only dependants).
+- One keystroke re-renders the edited field and its dependants only; a React
+  Profiler test fails on any other render.
+
+## Documented public API (TSDoc)
+
+Every exported function, type, interface, option and prop is documented with
+TSDoc, the way well-maintained packages do, so editors show full help on hover:
+
+```ts
+/**
+ * Options for {@link compile}.
+ */
+export interface CompileOptions {
+  /**
+   * Field types that may appear in the schema. A field whose `type` is not in
+   * the registry makes `compile` throw a {@link SchemaError}.
+   */
+  registry: FieldRegistry;
+  /**
+   * Run {@link migrate} first when `schemaVersion` is older than the current one.
+   * @defaultValue `true`
+   */
+  migrate?: boolean;
+}
+
+/**
+ * Turns a form document into a compiled form: field index, default values
+ * and the dependency graph used by {@link evaluate}.
+ *
+ * @param schema - A form document; it is validated against the meta-schema.
+ * @param options - See {@link CompileOptions}.
+ * @returns A frozen compiled form. Safe to cache per published version.
+ * @throws {@link SchemaError} when the document is invalid.
+ * @example
+ * const form = compile(doc, { registry });
+ * const state = evaluate(form, { plan: "team" });
+ * @since 0.1.0
+ */
+export function compile(schema: FormDocument, options: CompileOptions): CompiledForm;
+```
+
+Enforced, not hoped for:
+
+- `eslint-plugin-jsdoc` requires a comment on every export and on every
+  property of exported types.
+- API Extractor writes an API report per package; CI fails on undocumented
+  exports (`ae-undocumented`) and on unreviewed API changes.
+- TypeDoc builds the reference docs site from the same comments.
 
 ## Build and publishing
 

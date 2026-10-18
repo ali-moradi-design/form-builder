@@ -1,0 +1,15 @@
+# Roadmap (proposed)
+
+Each version ends with something that can be shown and used. Versions are
+built as small PRs; the user approves each step.
+
+| Version | Theme | Main content |
+|---|---|---|
+| 0.1 | Foundations | Monorepo (pnpm, Turborepo, Node 24), CI (lint, typecheck, tests, size budgets, API report), `form-schema` meta-schema, `form-engine` core (`compile`, `evaluate`, expression AST, Zod validator), basic fields: short/long text, email, number, select, radio, checkboxes, switch, date. |
+| 0.2 | Renderer | `form-react`: `<Form schema>`, headless hooks, default stylesheet, light/dark, English/Persian with RTL and Persian digits, steps (one question per screen and classic layout), playground page. |
+| 0.3 | Builder | `apps/web` (FSD): palette, drag and drop, settings panel rendered by the engine, two-way JSON editor, undo/redo, autosave, preview. |
+| 0.4 | Publish and collect | Postgres + Drizzle, accounts + demo account, immutable versions, hosted link `/f/<slug>`, public API with server validation, rate limit and honeypot. |
+| 0.5 | Responses | Responses table with filters and detail view, per-field summaries and charts, CSV/Excel/JSON export, webhooks. |
+| 0.6 | Rich fields and logic | Logic editor, calculated fields, groups, repeaters, rating, NPS, color and color set, phone, URL, date range, time, file and image upload, signature, matrix, ranking, address, hidden fields, dynamic options. |
+| 0.7 | Distribution | Embed script, `<Form formId>` loader, infer from sample JSON, template gallery, npm publishing with Changesets. |
+| 1.0 | Release | Accessibility audit, performance tuning against budgets, docs site (TypeDoc), nightly demo reset, deploy pipeline. |
