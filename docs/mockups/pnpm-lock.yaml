@@ -8,15 +8,15 @@ importers:
 
   .:
     devDependencies:
-      '@fontsource/ibm-plex-mono':
-        specifier: 5.2.7
-        version: 5.2.7
-      '@fontsource/ibm-plex-sans':
-        specifier: 5.2.8
-        version: 5.2.8
-      '@fontsource/ibm-plex-sans-arabic':
-        specifier: 5.2.8
-        version: 5.2.8
+      '@fontsource/geist-mono':
+        specifier: 5.3.0
+        version: 5.3.0
+      '@fontsource/geist-sans':
+        specifier: 5.3.0
+        version: 5.3.0
+      '@fontsource/vazirmatn':
+        specifier: 5.3.0
+        version: 5.3.0
       lucide-static:
         specifier: 0.548.0
         version: 0.548.0
@@ -26,14 +26,14 @@ importers:
 
 packages:
 
-  '@fontsource/ibm-plex-mono@5.2.7':
-    resolution: {integrity: sha512-MKAb8qV+CaiMQn2B0dIi1OV3565NYzp3WN5b4oT6LTkk+F0jR6j0ZN+5BKJiIhffDC3rtBULsYZE65+0018z9w==}
+  '@fontsource/geist-mono@5.3.0':
+    resolution: {integrity: sha512-UtJ1BBBCVpMYdIcW7nEB45UAoAw5M53ZXs2t0ciPW+IokuAAIc56M8+kW5tXbRJCTpDw4XTtU7proT6NdQAHTg==}
 
-  '@fontsource/ibm-plex-sans-arabic@5.2.8':
-    resolution: {integrity: sha512-zqBKzZt6WTnCEUlgnRMQ7arRjd0t59gEWWIcIgQIQNThsHMp36i9/4X5YvpmTZs33oJO6hQvLSTkh001XsgzoQ==}
+  '@fontsource/geist-sans@5.3.0':
+    resolution: {integrity: sha512-AmG7cE1AvE4NHROPaOl1sN+a02cB5xy6pA/ZV76HXqWTCsJTV2SCBc9DTFHfJqnVOODm7HhXIYtUIb75NP5QXQ==}
 
-  '@fontsource/ibm-plex-sans@5.2.8':
-    resolution: {integrity: sha512-eztSXjDhPhcpxNIiGTgMebdLP9qS4rWkysuE1V7c+DjOR0qiezaiDaTwQE7bTnG5HxAY/8M43XKDvs3cYq6ZYQ==}
+  '@fontsource/vazirmatn@5.3.0':
+    resolution: {integrity: sha512-XC/2yN2r5gwhFT3klSuWaqncODX2DOfRYfNmbyzgtWYxHxMC+tcoaX+tgggrm6hSkEgpR1TuSDEf1PiI91G7qg==}
 
   fsevents@2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
@@ -55,11 +55,11 @@ packages:
 
 snapshots:
 
-  '@fontsource/ibm-plex-mono@5.2.7': {}
+  '@fontsource/geist-mono@5.3.0': {}
 
-  '@fontsource/ibm-plex-sans-arabic@5.2.8': {}
+  '@fontsource/geist-sans@5.3.0': {}
 
-  '@fontsource/ibm-plex-sans@5.2.8': {}
+  '@fontsource/vazirmatn@5.3.0': {}
 
   fsevents@2.3.2:
     optional: true
