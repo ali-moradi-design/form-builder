@@ -1,10 +1,15 @@
-/**
- * Version of the form document format that this package describes.
- *
- * Every form document stores the version it was written with in its
- * `schemaVersion` field. Documents with an older version are upgraded by
- * `migrate` from `@formweave/engine` before they are used.
- *
- * @since 0.1.0
- */
-export const SCHEMA_VERSION = 1 as const;
+export { OPERATORS, SCHEMA_VERSION } from "./types.js";
+export type {
+  Call,
+  Expression,
+  FieldNode,
+  FieldWidth,
+  FormDocument,
+  FormLocales,
+  Literal,
+  Locale,
+  LocalizedText,
+  Operator,
+  Step,
+  VarRef,
+} from "./types.js";
