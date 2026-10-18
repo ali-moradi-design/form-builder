@@ -1,0 +1,87 @@
+import type { Locale } from "@formweave/schema";
+import { formatNumber, type DigitStyle } from "./i18n.js";
+import type { ValidationIssue } from "./validate.js";
+
+/**
+ * Text for each issue code. `{min}` and `{max}` are replaced with the limits
+ * of the check that failed.
+ *
+ * @since 0.1.0
+ */
+export type MessageCatalog = Readonly<Record<string, string>>;
+
+/**
+ * English messages for the built-in issue codes.
+ *
+ * @since 0.1.0
+ */
+export const en: MessageCatalog = {
+  required: "This field is required.",
+  invalid: "This value is not valid.",
+  invalidType: "This value is not valid.",
+  tooShort: "Use at least {min} characters.",
+  tooLong: "Use at most {max} characters.",
+  invalidEmail: "Enter a full email address, such as name@example.com.",
+  tooSmall: "Enter {min} or more.",
+  tooBig: "Enter {max} or less.",
+  notInteger: "Enter a whole number.",
+  invalidOption: "Choose one of the options.",
+  duplicate: "Each option can be chosen once.",
+  tooFew: "Choose at least {min}.",
+  tooMany: "Choose at most {max}.",
+  invalidDate: "Enter a valid date.",
+  tooEarly: "Choose a later date.",
+  tooLate: "Choose an earlier date.",
+};
+
+/**
+ * Persian messages for the built-in issue codes.
+ *
+ * @since 0.1.0
+ */
+export const fa: MessageCatalog = {
+  required: "پاسخ به این پرسش لازم است.",
+  invalid: "این مقدار درست نیست.",
+  invalidType: "این مقدار درست نیست.",
+  tooShort: "دست‌کم {min} نویسه بنویسید.",
+  tooLong: "حداکثر {max} نویسه بنویسید.",
+  invalidEmail: "نشانی ایمیل کامل را بنویسید؛ مثلاً name@example.com",
+  tooSmall: "عددی برابر {min} یا بیشتر بنویسید.",
+  tooBig: "عددی برابر {max} یا کمتر بنویسید.",
+  notInteger: "یک عدد صحیح بنویسید.",
+  invalidOption: "یکی از گزینه‌ها را انتخاب کنید.",
+  duplicate: "هر گزینه را فقط یک بار می‌توانید انتخاب کنید.",
+  tooFew: "دست‌کم {min} گزینه انتخاب کنید.",
+  tooMany: "حداکثر {max} گزینه انتخاب کنید.",
+  invalidDate: "یک تاریخ درست وارد کنید.",
+  tooEarly: "تاریخ دیرتری انتخاب کنید.",
+  tooLate: "تاریخ زودتری انتخاب کنید.",
+};
+
+/**
+ * Turns a {@link ValidationIssue} into text.
+ *
+ * @param issue - The issue from `validate`.
+ * @param catalog - Messages to use, for example {@link en} or {@link fa}, or your own.
+ * @param locale - Locale used to format numbers in the message.
+ * @param digits - Digit style for numbers.
+ * @returns The message; falls back to the catalog's `invalid` text, then to the code.
+ * @example
+ * ```ts
+ * formatIssue({ key: "name", code: "tooShort", params: { min: 2 } }, fa, "fa");
+ * // "دست‌کم ۲ نویسه بنویسید."
+ * ```
+ * @since 0.1.0
+ */
+export function formatIssue(
+  issue: ValidationIssue,
+  catalog: MessageCatalog,
+  locale: Locale,
+  digits: DigitStyle = "native",
+): string {
+  const template = catalog[issue.code] ?? catalog.invalid ?? issue.code;
+  return template.replace(/\{(min|max)\}/g, (match, name: "min" | "max") => {
+    const n = issue.params?.[name];
+    return typeof n === "number" ? formatNumber(n, locale, digits) : match;
+  });
+}
