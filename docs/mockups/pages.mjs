@@ -9,6 +9,16 @@ const i = (name, cls = "") =>
     .replace(/<!--.*?-->/gs, "")
     .replace("<svg", `<svg class="icon ${cls}"`);
 const fa = (v) => String(v).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
+export const LOGO = `<svg class="mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="formweave"><g transform="translate(0 0) scale(1)">
+  <rect width="64" height="64" rx="16" fill="#5f0f40"/>
+  <path d="M22 50.5 V27 Q22 18.5 30.5 18.5 H47.5" fill="none" stroke-linecap="round" stroke="#fb8b24" stroke-width="9.5"/>
+  <path d="M13.5 35 H39" fill="none" stroke-linecap="round" stroke="#5f0f40" stroke-width="16"/>
+  <path d="M13.5 35 H39" fill="none" stroke-linecap="round" stroke="#fff4e8" stroke-width="9.5"/>
+  <circle cx="45.5" cy="47" r="5" fill="#e36414"/>
+</g></svg>`;
+const heart = () => i("heart", "icon-sm heart");
+export const CREDIT_EN = () => `<div class="credit">Made with ${heart()} by Ali Moradi</div>`;
+export const CREDIT_FA = () => `<div class="credit">ساخته‌شده با ${heart()} توسط علی مرادی</div>`;
 const P = { plum: "#5f0f40", carmine: "#9a031e", amber: "#fb8b24", orange: "#e36414", teal: "#0f4c5c" };
 
 /* ---------------- Illustration (paper checklist + pencil), drawn for the hero banner ---------------- */
@@ -44,7 +54,7 @@ const sidebar = (on, dark = false) => {
   const sub = (t, extra = "") => `<div class="nav ${on === t ? "on" : ""}">${t}${extra}</div>`;
   return `
 <aside class="sb">
-  <div class="sb-brand"><span class="logo">${i("braces")}</span>form-builder<div class="grow"></div><span class="faint">${i("panel-left")}</span></div>
+  <div class="sb-brand"><span class="logo">${LOGO}</span>formweave<div class="grow"></div><span class="faint">${i("panel-left")}</span></div>
   <div class="sb-search">${i("search", "icon-sm")}Search<div class="grow"></div><span class="kbd">⌘ K</span></div>
   <div class="sb-label">Main menu</div>
   ${nav("layout-dashboard", "Dashboard")}
@@ -65,6 +75,7 @@ const sidebar = (on, dark = false) => {
   <div class="sb-foot">
     ${nav("settings", "Settings")}
     <div class="nav">${i("moon")}Dark mode<div class="grow"></div><span class="toggle ${dark ? "on" : ""}"></span></div>
+    ${CREDIT_EN()}
   </div>
 </aside>`;
 };
@@ -138,7 +149,7 @@ const palette = `
 </section>`;
 const builderBar = (status) => `
 <header class="btop">
-  <span class="logo">${i("braces")}</span>
+  <span class="logo">${LOGO}</span>
   <div class="crumbs"><span>Forms</span><span class="faint">/</span><span class="here">Job application</span>${status}</div>
   <div class="grow"></div>
   <div class="seg"><span class="on">${i("pen-line", "icon-sm")}Build</span><span>${i("git-branch", "icon-sm")}Logic</span><span>${i("eye", "icon-sm")}Preview</span><span>${i("inbox", "icon-sm")}Responses</span></div>
@@ -343,7 +354,7 @@ export const pages = [
   { name: "03-builder-json-dark", title: "Builder JSON", body: builder(jsonPanel, "json"), theme: "dark" },
   { name: "04-publish", title: "Publish", body: publish },
   { name: "05-create-form-wizard", title: "Create form", body: wizard, height: 1010 },
-  ...makeVariants({ i, fa, P }),
+  ...makeVariants({ i, fa, P, LOGO, CREDIT_FA }),
   { name: "08-responses", title: "Responses", body: responses },
   { name: "09-analytics-dark", title: "Analytics", body: summary, theme: "dark" },
 ];

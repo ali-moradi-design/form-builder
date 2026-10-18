@@ -2,6 +2,12 @@
 
 Short log of what the user agreed. Newest first.
 
+- 2026-10-18: Product name is **formweave**; npm packages are planned as
+  `@formweave/schema`, `@formweave/engine` and `@formweave/react` (scope to be
+  registered when the npm account exists). Logo files are in `docs/brand`.
+- 2026-10-18: Every app and hosted form shows the credit "Made with ♥ by Ali
+  Moradi" (Persian: «ساخته‌شده با ♥ توسط علی مرادی»).
+
 - 2026-10-18: Package architecture in `docs/architecture.md` is approved.
   Bundle size and performance are top priorities: full tree-shaking, size
   budgets in CI, and TSDoc on every exported symbol and property.

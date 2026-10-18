@@ -1,7 +1,7 @@
 // Hosted (public) form in Persian: chosen design is "focus mode" (one question per
 // screen, variant B) with the palette-strip color picker from variant C.
 
-export function makeVariants({ i, fa, P }) {
+export function makeVariants({ i, fa, P, LOGO, CREDIT_FA }) {
   const sel = [P.teal, P.orange, P.plum];
   const palette = [P.teal, P.orange, P.amber, P.plum, P.carmine, "#2f6f73", "#141a1c", "#f3eee6", "#7aa6a1", "#f2c18d"];
   const stack = `<b class="stack">${sel.map((c) => `<span style="background:${c}"></span>`).join("")}</b>`;
@@ -24,7 +24,7 @@ export function makeVariants({ i, fa, P }) {
   const focus = (q, cur, answers) => `
 <div class="pub v2">
   <div class="v2-progress"><span style="width:${cur * 20 + 10}%"></span></div>
-  <header class="pub-top" style="background:transparent;border:0"><span class="logo">${i("braces")}</span><b style="font-weight:600">نظرسنجی محصول</b><div class="grow"></div>
+  <header class="pub-top" style="background:transparent;border:0"><span class="logo">${LOGO}</span><b style="font-weight:600">نظرسنجی محصول</b><div class="grow"></div>
     <div class="row prev-ans">${answers}</div>
     <button class="btn">${i("languages", "icon-sm")}English</button></header>
   <div class="v2-body">
@@ -33,6 +33,7 @@ export function makeVariants({ i, fa, P }) {
       <div class="row" style="margin-top:34px;gap:14px"><button class="btn primary lg">تأیید ${i("check", "icon-sm")}</button><span class="faint">یا <span class="kbd">Enter ↵</span> بزنید</span></div>
     </div>
   </div>
+  <div class="v2-foot">${CREDIT_FA()}</div>
   <div class="v2-nav"><button class="btn square">${i("arrow-right")}</button><button class="btn square">${i("arrow-left")}</button></div>
 </div>`;
 
@@ -43,10 +44,11 @@ export function makeVariants({ i, fa, P }) {
   const mobile = `
 <div class="pub v2">
   <div class="v2-progress"><span style="width:70%"></span></div>
-  <header class="pub-top" style="background:transparent;border:0;padding-inline:18px;height:58px"><span class="logo">${i("braces")}</span><b style="font-weight:600">نظرسنجی محصول</b><div class="grow"></div><span class="faint">${fa(4)} از ${fa(5)}</span></header>
+  <header class="pub-top" style="background:transparent;border:0;padding-inline:18px;height:58px"><span class="logo">${LOGO}</span><b style="font-weight:600">نظرسنجی محصول</b><div class="grow"></div><span class="faint">${fa(4)} از ${fa(5)}</span></header>
   <div class="row" style="padding:0 18px;gap:8px">${pa("رضایت", "خوب")}${pa("پیشنهاد", fa(9))}</div>
   <div class="v2-q m" style="padding:26px 18px 0;flex:1">${colorQ(true)}</div>
   <div class="foot-actions" style="gap:10px;padding:12px 18px 24px;border:0"><button class="btn lg square" style="width:48px;height:48px">${i("arrow-right")}</button><button class="btn primary lg" style="flex:1;height:48px">تأیید ${i("check", "icon-sm")}</button></div>
+  <div style="padding:0 0 18px">${CREDIT_FA()}</div>
 </div>`;
 
   return [
