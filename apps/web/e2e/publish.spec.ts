@@ -104,6 +104,13 @@ test("publishes a form and collects a response on the hosted page", async ({ pag
   const xlsx = await page.request.get(exportUrl("xlsx"));
   expect(xlsx.status()).toBe(200);
   expect((await xlsx.body()).subarray(0, 2).toString()).toBe("PK");
+
+  await page.keyboard.press("Escape");
+  await page.getByRole("link", { name: "Analytics" }).click();
+  await expect(page.getByRole("heading", { name: "Responses per day" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Your city" })).toContainText("Shiraz");
+  const charts = await new AxeBuilder({ page }).analyze();
+  expect(charts.violations.map((v) => v.id)).toEqual([]);
 });
 
 test("shows 404 for an unknown form", async ({ page }) => {

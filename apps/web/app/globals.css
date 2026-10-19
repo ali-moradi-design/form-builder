@@ -20,6 +20,8 @@
   --primary-fg: var(--teal);
   --primary-soft: #e4eff1;
   --accent-text: #c44f0d;
+  /* Single-series chart marks (checked with the dataviz palette validator). */
+  --chart: #0a87a3;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -35,6 +37,7 @@
     --primary-fg: #7ec3d2;
     --primary-soft: #16343b;
     --accent-text: #fb8b24;
+    --chart: #1aa3c2;
   }
   .fw-form {
     --fw-text: #eaf0f0;
