@@ -65,6 +65,19 @@ export const feedbackTemplate: FormDocument = {
           required: true,
         },
         {
+          type: "colorSet",
+          key: "colors",
+          label: {
+            en: "Which colours do you like for the new theme?",
+            fa: "کدام رنگ‌ها را برای پوستهٔ تازه دوست دارید؟",
+          },
+          help: {
+            en: "Pick up to 4, in order of preference.",
+            fa: "تا ۴ رنگ انتخاب کنید؛ ترتیب انتخاب مهم است.",
+          },
+          settings: { maxColors: 4 },
+        },
+        {
           type: "nps",
           key: "recommend",
           label: {

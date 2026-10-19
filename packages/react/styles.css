@@ -385,9 +385,6 @@
     flex: 1;
     accent-color: var(--fw-primary);
   }
-  .fw-range[data-empty] {
-    opacity: 0.6;
-  }
   .fw-slider-value {
     min-inline-size: 3ch;
     font-weight: 600;
@@ -403,5 +400,85 @@
   .fw-divider {
     border: 0;
     border-block-start: 1px solid var(--fw-line);
+  }
+
+  .fw-mono {
+    font-family: ui-monospace, monospace;
+  }
+  .fw-color {
+    display: flex;
+    gap: 8px;
+  }
+  .fw-color-native {
+    inline-size: 44px;
+    block-size: var(--fw-control-height);
+    border: 1px solid var(--fw-line);
+    border-radius: var(--fw-radius);
+  }
+  .fw-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .fw-swatch {
+    inline-size: 32px;
+    block-size: 32px;
+    padding: 0;
+    border: 1px solid var(--fw-line);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .fw-swatch[aria-pressed="true"] {
+    outline: 2px solid var(--fw-text);
+    outline-offset: 2px;
+  }
+  .fw-eyedropper {
+    display: grid;
+    place-items: center;
+    background: var(--fw-surface);
+    border-style: dashed;
+  }
+  .fw-eyedropper svg {
+    inline-size: 16px;
+    fill: none;
+    stroke: currentColor;
+  }
+  .fw-colorset {
+    display: flex;
+    min-block-size: 88px;
+    overflow: hidden;
+    border: 1px solid var(--fw-line);
+    border-radius: 14px;
+  }
+  .fw-colorset-item,
+  .fw-colorset-add {
+    position: relative;
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 10px 12px;
+  }
+  .fw-colorset-add {
+    align-items: center;
+    justify-content: center;
+    color: var(--fw-muted);
+    background: repeating-linear-gradient(135deg, transparent 0 8px, var(--fw-surface-2) 8px 16px);
+    cursor: pointer;
+  }
+  .fw-colorset-add:focus-within {
+    outline: 3px solid var(--fw-primary-soft);
+  }
+  .fw-colorset-remove {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    inline-size: 26px;
+    block-size: 26px;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(0 0 0 / 0.25);
+    color: #fff;
+    cursor: pointer;
   }
 }

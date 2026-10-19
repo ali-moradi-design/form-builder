@@ -222,4 +222,37 @@ describe("<Form>", () => {
       expect(onSubmit).toHaveBeenCalledWith({ source: "mail", stars: 4, nps: 9 });
     });
   });
+
+  it("picks colours from swatches and removes them", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    const colors: FormDocument = {
+      ...doc,
+      steps: [
+        {
+          key: "main",
+          fields: [
+            { type: "colorSet", key: "palette", label: "Palette", settings: { maxColors: 2 } },
+          ],
+        },
+      ],
+    };
+    render(
+      <Form
+        schema={colors}
+        registry={registry}
+        renderers={createRenderers(allRenderers)}
+        onSubmit={onSubmit}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "#e36414" }));
+    await user.click(screen.getByRole("button", { name: "#0f4c5c" }));
+    // At the limit, more swatches are ignored.
+    await user.click(screen.getByRole("button", { name: "#5f0f40" }));
+    await user.click(screen.getByRole("button", { name: "× #e36414" }));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({ palette: ["#0f4c5c"] });
+    });
+  });
 });

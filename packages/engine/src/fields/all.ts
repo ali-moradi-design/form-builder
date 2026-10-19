@@ -1,6 +1,8 @@
 import type { FieldDefinition } from "../registry.js";
 import {
   checkboxes,
+  color,
+  colorSet,
   date,
   dateTime,
   divider,
@@ -52,4 +54,6 @@ export const allFields: readonly FieldDefinition<never>[] = [
   heading,
   paragraph,
   divider,
+  color,
+  colorSet,
 ] as unknown as readonly FieldDefinition<never>[];

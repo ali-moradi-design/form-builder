@@ -54,7 +54,8 @@
       "numbers": "عدد",
       "choice": "گزینه‌ای",
       "dateTime": "تاریخ و زمان",
-      "structure": "ساختار"
+      "structure": "ساختار",
+      "color": "رنگ"
     },
     "add": "افزودن {type}",
     "newField": "پرسش تازه",
@@ -121,7 +122,9 @@
     "minTime": "زودترین",
     "maxTime": "دیرترین",
     "text": "متن",
-    "hiddenPreview": "فیلد پنهان: به افراد نشان داده نمی‌شود."
+    "hiddenPreview": "فیلد پنهان: به افراد نشان داده نمی‌شود.",
+    "minColors": "کمترین تعداد رنگ",
+    "maxColors": "بیشترین تعداد رنگ"
   },
   "fieldTypes": {
     "shortText": "متن کوتاه",
@@ -144,7 +147,9 @@
     "hidden": "پنهان",
     "heading": "سرتیتر",
     "paragraph": "متن توضیحی",
-    "divider": "جداکننده"
+    "divider": "جداکننده",
+    "color": "رنگ",
+    "colorSet": "مجموعهٔ رنگ"
   },
   "languages": {
     "en": "English",

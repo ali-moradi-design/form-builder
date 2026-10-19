@@ -14,10 +14,12 @@ import {
   Link,
   Mail,
   Minus,
+  Palette,
   Phone,
   Pilcrow,
   SlidersHorizontal,
   SquareCheck,
+  SwatchBook,
   Star,
   ToggleLeft,
   Type,
@@ -25,7 +27,14 @@ import {
 } from "lucide-react";
 
 /** Palette sections, in display order. */
-export const FIELD_GROUPS = ["text", "numbers", "choice", "dateTime", "structure"] as const;
+export const FIELD_GROUPS = [
+  "text",
+  "numbers",
+  "choice",
+  "color",
+  "dateTime",
+  "structure",
+] as const;
 
 /** A palette section. */
 export type FieldGroup = (typeof FIELD_GROUPS)[number];
@@ -97,6 +106,14 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
     create: choice("checkboxes"),
   },
   { type: "switch", group: "choice", icon: ToggleLeft, keyBase: "yes", create: simple("switch") },
+  { type: "color", group: "color", icon: Palette, keyBase: "color", create: simple("color") },
+  {
+    type: "colorSet",
+    group: "color",
+    icon: SwatchBook,
+    keyBase: "colors",
+    create: simple("colorSet"),
+  },
   { type: "date", group: "dateTime", icon: Calendar, keyBase: "date", create: simple("date") },
   { type: "time", group: "dateTime", icon: Clock, keyBase: "time", create: simple("time") },
   {
@@ -152,3 +169,6 @@ export const DISPLAY_TYPES: ReadonlySet<string> = new Set([
 
 /** Field types whose answers are numbers (summarised with statistics). */
 export const NUMBER_TYPES: ReadonlySet<string> = new Set(["number", "rating", "nps", "slider"]);
+
+/** Field types whose answers are colours (summarised with swatches). */
+export const COLOR_TYPES: ReadonlySet<string> = new Set(["color", "colorSet"]);

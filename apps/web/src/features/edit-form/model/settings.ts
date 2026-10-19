@@ -134,6 +134,9 @@ export function fieldSettingsDocument(
   } else if (node.type === "checkboxes") {
     addNumber("minSelected", t("minSelected"));
     addNumber("maxSelected", t("maxSelected"));
+  } else if (node.type === "colorSet") {
+    addNumber("minColors", t("minColors"));
+    addNumber("maxColors", t("maxColors"));
   } else if (node.type === "rating") {
     fields.push({
       type: "number",
@@ -222,6 +225,13 @@ export function fieldPatch(
   } else if (node.type === "date" || node.type === "time" || node.type === "dateTime") {
     set("min", str(values.min));
     set("max", str(values.max));
+  } else if (node.type === "colorSet") {
+    const count = (v: unknown) => {
+      const n = num(v);
+      return n !== undefined && Number.isInteger(n) && n >= 1 && n <= 12 ? n : undefined;
+    };
+    set("minColors", count(values.minColors));
+    set("maxColors", count(values.maxColors));
   } else if (node.type === "rating") {
     const max = num(values.max);
     set(

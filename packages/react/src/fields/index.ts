@@ -1,5 +1,6 @@
 import type { FieldRenderer } from "../renderers.js";
 import { checkboxesRenderer, radioRenderer, selectRenderer } from "./choice.js";
+import { colorRenderer, colorSetRenderer } from "./color.js";
 import { dateRenderer } from "./date.js";
 import { groupRenderer } from "./group.js";
 import { numberRenderer } from "./number.js";
@@ -11,6 +12,7 @@ import { dateTimeRenderer, timeRenderer } from "./time.js";
 import { phoneRenderer, urlRenderer } from "./web.js";
 
 export { checkboxesRenderer, radioRenderer, selectRenderer } from "./choice.js";
+export { colorRenderer, colorSetRenderer } from "./color.js";
 export { dateRenderer } from "./date.js";
 export { groupRenderer } from "./group.js";
 export { numberRenderer } from "./number.js";
@@ -43,7 +45,8 @@ export const basicRenderers: readonly FieldRenderer[] = [
 
 /**
  * Renderers for the field types added in version 0.6: URL, phone, time,
- * date-time, rating, NPS, slider, hidden, heading, paragraph and divider.
+ * date-time, rating, NPS, slider, hidden, heading, paragraph, divider,
+ * colour and colour set.
  *
  * @since 0.6.0
  */
@@ -59,6 +62,8 @@ export const richRenderers: readonly FieldRenderer[] = [
   headingRenderer,
   paragraphRenderer,
   dividerRenderer,
+  colorRenderer,
+  colorSetRenderer,
 ];
 
 /**
@@ -89,4 +94,6 @@ export const allRenderers: readonly FieldRenderer[] = [
   headingRenderer,
   paragraphRenderer,
   dividerRenderer,
+  colorRenderer,
+  colorSetRenderer,
 ];

@@ -131,7 +131,6 @@ export const sliderRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("slide
           max={max}
           step={step ?? 1}
           value={value ?? min}
-          data-empty={value === undefined ? "" : undefined}
           onChange={(e) => {
             p.onChange(Number(e.target.value));
           }}
