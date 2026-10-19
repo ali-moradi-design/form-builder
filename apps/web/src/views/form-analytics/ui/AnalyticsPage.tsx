@@ -114,7 +114,18 @@ export async function AnalyticsPage({
                 key={b.label}
                 className="grid grid-cols-[minmax(0,9rem)_1fr_auto] items-center gap-3 text-[13.5px]"
               >
-                <span className="truncate">{b.label}</span>
+                <span className="flex min-w-0 items-center gap-2 truncate">
+                  {s.colors && (
+                    <span
+                      aria-hidden
+                      className="size-4 shrink-0 rounded border border-line"
+                      style={{ background: b.label }}
+                    />
+                  )}
+                  <span className={s.colors ? "font-mono text-[12.5px]" : "truncate"} dir="auto">
+                    {b.label}
+                  </span>
+                </span>
                 <span className="h-2.5 overflow-hidden rounded-full bg-surface-2" aria-hidden>
                   <span
                     className="block h-full rounded-full bg-[var(--chart)]"

@@ -20,3 +20,5 @@ export { divider, heading, paragraph } from "./static.js";
 export { dateTime, time } from "./time.js";
 export type { TimeSettings } from "./time.js";
 export { url } from "./url.js";
+export { color, colorSet, DEFAULT_SWATCHES, normalizeHex } from "./color.js";
+export type { ColorSetSettings, ColorSettings } from "./color.js";

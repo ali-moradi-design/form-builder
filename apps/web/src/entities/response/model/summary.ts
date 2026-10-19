@@ -1,4 +1,4 @@
-import { NUMBER_TYPES } from "@/shared/config";
+import { COLOR_TYPES, NUMBER_TYPES } from "@/shared/config";
 import type { ResponseColumn } from "./columns";
 
 /** Count of one option or value. */
@@ -16,6 +16,8 @@ export type FieldSummary =
       readonly answered: number;
       /** True when one person can pick several (percentages are of people). */
       readonly multiple: boolean;
+      /** True when the labels are colours (`#rrggbb`), drawn as swatches. */
+      readonly colors?: boolean;
       readonly buckets: readonly Bucket[];
     }
   | {
@@ -96,6 +98,26 @@ export function summarize(
           { label: yesNo[0], count: yes },
           { label: yesNo[1], count: total - yes },
         ],
+      };
+    }
+    if (COLOR_TYPES.has(c.type)) {
+      const counts = new Map<string, number>();
+      for (const v of values) {
+        for (const item of Array.isArray(v) ? v : [v]) {
+          if (typeof item === "string") counts.set(item, (counts.get(item) ?? 0) + 1);
+        }
+      }
+      return {
+        kind: "choice",
+        key: c.key,
+        label: c.label,
+        answered: values.length,
+        multiple: c.type === "colorSet",
+        colors: true,
+        buckets: [...counts]
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 12)
+          .map(([label, count]) => ({ label, count })),
       };
     }
     if (CHOICE.has(c.type)) {

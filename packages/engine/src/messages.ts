@@ -36,6 +36,7 @@ export const en: MessageCatalog = {
   invalidPhone: "Enter the number with its country code, such as +44 20 7946 0958.",
   invalidTime: "Enter a valid time.",
   invalidStep: "Choose one of the marked values.",
+  invalidColor: "Choose a colour or type a hex code such as #0f4c5c.",
 };
 
 /**
@@ -64,6 +65,7 @@ export const fa: MessageCatalog = {
   invalidPhone: "شماره را با کد کشور بنویسید؛ مثلاً ‎+98 912 123 4567‎",
   invalidTime: "یک زمان درست وارد کنید.",
   invalidStep: "یکی از مقدارهای مشخص‌شده را انتخاب کنید.",
+  invalidColor: "یک رنگ انتخاب کنید یا کد آن را بنویسید؛ مثلاً ‎#0f4c5c‎",
 };
 
 /**

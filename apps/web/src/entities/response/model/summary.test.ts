@@ -86,4 +86,18 @@ describe("summaries", () => {
       { label: "2026-10-19", count: 1 },
     ]);
   });
+
+  it("counts colours, most picked first", () => {
+    const set: ResponseColumn = { key: "c", label: "Colours", type: "colorSet" };
+    const [colors] = summarize([set], [{ c: ["#0f4c5c", "#e36414"] }, { c: ["#e36414"] }]);
+    expect(colors).toMatchObject({
+      kind: "choice",
+      colors: true,
+      multiple: true,
+      buckets: [
+        { label: "#e36414", count: 2 },
+        { label: "#0f4c5c", count: 1 },
+      ],
+    });
+  });
 });

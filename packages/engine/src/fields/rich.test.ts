@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { FieldDefinition } from "../registry.js";
 import {
+  color,
+  colorSet,
   dateTime,
   hidden,
+  normalizeHex,
   normalizePhone,
   nps,
   phone,
@@ -61,5 +64,19 @@ describe("rich fields", () => {
     expect(issues(hidden, { fromUrl: "utm_source" }, "newsletter")).toEqual([]);
     expect(issues(hidden, {}, "x".repeat(1001))).toEqual(["tooLong"]);
     expect(() => hidden.settings.parse({ fromUrl: "a b" })).toThrow();
+  });
+
+  it("colour fields want lower-case hex codes", () => {
+    expect(issues(color, {}, "#0f4c5c")).toEqual([]);
+    expect(issues(color, {}, "#0F4C5C")).toEqual(["invalidColor"]);
+    expect(issues(colorSet, { maxColors: 2 }, ["#000000", "#ffffff", "#ff0000"])).toEqual([
+      "tooMany",
+    ]);
+    expect(issues(colorSet, { minColors: 2 }, ["#000000"])).toEqual(["tooFew"]);
+    expect(issues(colorSet, {}, ["#000000", "#000000"])).toEqual(["duplicate"]);
+    expect(normalizeHex("#F80")).toBe("#ff8800");
+    expect(normalizeHex(" 0F4C5C ")).toBe("#0f4c5c");
+    expect(normalizeHex("red")).toBeUndefined();
+    expect(() => color.settings.parse({ swatches: ["blue"] })).toThrow();
   });
 });

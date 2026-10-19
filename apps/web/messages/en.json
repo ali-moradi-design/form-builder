@@ -54,7 +54,8 @@
       "numbers": "Numbers",
       "choice": "Choice",
       "dateTime": "Date and time",
-      "structure": "Structure"
+      "structure": "Structure",
+      "color": "Colour"
     },
     "add": "Add {type}",
     "newField": "New question",
@@ -121,7 +122,9 @@
     "minTime": "Earliest",
     "maxTime": "Latest",
     "text": "Text",
-    "hiddenPreview": "Hidden field: not shown to people."
+    "hiddenPreview": "Hidden field: not shown to people.",
+    "minColors": "Fewest colours",
+    "maxColors": "Most colours"
   },
   "fieldTypes": {
     "shortText": "Short text",
@@ -144,7 +147,9 @@
     "hidden": "Hidden",
     "heading": "Heading",
     "paragraph": "Paragraph",
-    "divider": "Divider"
+    "divider": "Divider",
+    "color": "Colour",
+    "colorSet": "Colour set"
   },
   "languages": {
     "en": "English",
