@@ -47,3 +47,38 @@ Issue codes are the engine's codes (`required`, `tooShort`, `invalidOption`,
 - **Honeypot**: a request that sets `"_hp"` to anything gets `201` with
   `{ "id": null, "version": null }` and nothing is stored. The hosted page
   has a hidden field for this that people never see.
+
+## Webhooks
+
+Owners add up to five webhook URLs per form on the form's **Integrations**
+page. After a response is stored, each enabled webhook gets a `POST` with
+this JSON body:
+
+```json
+{
+  "event": "response.created",
+  "form": { "id": "…", "slug": "product-feedback", "version": 3 },
+  "response": {
+    "id": "…",
+    "submittedAt": "2026-10-19T10:00:00.000Z",
+    "locale": "en",
+    "data": { "name": "Sara" }
+  }
+}
+```
+
+Headers:
+
+- `X-Formweave-Event`: `response.created`, or `ping` for the test button.
+- `X-Formweave-Timestamp`: Unix seconds.
+- `X-Formweave-Signature`: `sha256=` + hex HMAC-SHA256 of
+  `<timestamp>.<raw body>` with the webhook's secret (`whsec_…`).
+
+Check the signature with a constant-time compare and reject timestamps older
+than a few minutes. Any 2xx answer counts as delivered. Network errors, 429
+and 5xx are retried after 1, 5 and 25 seconds; other answers are not. Every
+attempt is listed on the Integrations page.
+
+Only `https://` URLs whose host resolves to public addresses are accepted,
+both when saving and before each delivery, and redirects are not followed.
+`WEBHOOK_ALLOW_PRIVATE=1` lifts this for local development only.

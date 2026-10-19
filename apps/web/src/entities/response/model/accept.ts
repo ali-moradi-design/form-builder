@@ -6,7 +6,15 @@ const registry = createRegistry(allFields);
 
 /** Outcome of {@link acceptResponse}. */
 export type AcceptResult =
-  | { readonly ok: true; readonly id: string; readonly version: number }
+  | {
+      readonly ok: true;
+      readonly id: string;
+      readonly version: number;
+      readonly formId: string;
+      readonly slug: string;
+      readonly locale: string;
+      readonly data: Readonly<Record<string, unknown>>;
+    }
   | { readonly ok: false; readonly reason: "notFound" }
   | { readonly ok: false; readonly reason: "invalid"; readonly issues: readonly ValidationIssue[] };
 
@@ -29,11 +37,13 @@ export async function acceptResponse(
   const result = validate(form, isRecord(values) ? values : {});
   if (!result.success) return { ok: false, reason: "invalid", issues: result.issues };
   const supported = live.document.locales.supported ?? [live.document.locales.default];
+  const stored = locale && supported.includes(locale) ? locale : live.document.locales.default;
+  const data = { ...result.data };
   const id = await addResponse(db, {
     formId: live.formId,
     versionId: live.versionId,
-    data: { ...result.data },
-    locale: locale && supported.includes(locale) ? locale : live.document.locales.default,
+    data,
+    locale: stored,
   });
-  return { ok: true, id, version: live.version };
+  return { ok: true, id, version: live.version, formId: live.formId, slug, locale: stored, data };
 }

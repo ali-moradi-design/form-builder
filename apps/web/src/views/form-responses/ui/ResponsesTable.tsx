@@ -1,10 +1,10 @@
 "use client";
 
-import { Columns3, Trash2 } from "lucide-react";
+import { Columns3, Trash2, X } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Popover } from "radix-ui";
+import { Dialog, Popover } from "radix-ui";
 import { useState, useTransition } from "react";
 import { Button } from "@/shared/ui";
 
@@ -41,6 +41,7 @@ export function ResponsesTable({
   const [hidden, setHidden] = useState<ReadonlySet<string>>(new Set());
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
   const [pending, start] = useTransition();
+  const [open, setOpen] = useState<Row | null>(null);
   const visible = columns.filter((c) => !hidden.has(c.key));
   const href = (p: number) => {
     const next = new URLSearchParams(params);
@@ -177,11 +178,19 @@ export function ResponsesTable({
                     }}
                   />
                 </td>
-                <td className="px-3 py-2.5 whitespace-nowrap text-ink-2">
-                  {format.dateTime(new Date(r.createdAt), {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  })}
+                <td className="px-3 py-2.5 whitespace-nowrap">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(r);
+                    }}
+                    className="rounded text-primary-fg underline-offset-2 hover:underline focus-visible:outline-3 focus-visible:outline-primary-soft"
+                  >
+                    {format.dateTime(new Date(r.createdAt), {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
+                  </button>
                 </td>
                 <td className="px-3 py-2.5">
                   <span className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[12px] text-ink-2">
@@ -222,6 +231,50 @@ export function ResponsesTable({
           <Button disabled>{t("next")}</Button>
         )}
       </nav>
+      <Dialog.Root
+        open={open !== null}
+        onOpenChange={(o) => {
+          if (!o) setOpen(null);
+        }}
+      >
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 z-40 bg-[rgb(20_26_28/0.45)]" />
+          <Dialog.Content className="fixed top-1/2 left-1/2 z-50 grid max-h-[85dvh] w-[min(560px,calc(100vw-32px))] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_1fr] rounded-[16px] border border-line bg-surface shadow-[0_30px_80px_-20px_rgb(0_0_0/0.35)]">
+            {open && (
+              <>
+                <div className="flex items-start gap-3 border-b border-line px-5 py-4">
+                  <div className="grow">
+                    <Dialog.Title className="text-base font-semibold">{t("detail")}</Dialog.Title>
+                    <Dialog.Description className="text-[13px] text-ink-2">
+                      {format.dateTime(new Date(open.createdAt), {
+                        dateStyle: "full",
+                        timeStyle: "short",
+                      })}{" "}
+                      · v{open.version}
+                      {open.locale ? ` · ${open.locale}` : ""}
+                    </Dialog.Description>
+                  </div>
+                  <Dialog.Close asChild>
+                    <Button variant="ghost" size="icon" aria-label={t("close")}>
+                      <X size={16} aria-hidden />
+                    </Button>
+                  </Dialog.Close>
+                </div>
+                <dl className="grid gap-3 overflow-y-auto px-5 py-4">
+                  {columns.map((c) => (
+                    <div key={c.key} className="grid gap-0.5">
+                      <dt className="text-[12.5px] text-ink-2">{c.label}</dt>
+                      <dd className="text-[14px] whitespace-pre-wrap" dir="auto">
+                        {open.cells[c.key] || <span className="text-ink-3">—</span>}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </>
+            )}
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </section>
   );
 }

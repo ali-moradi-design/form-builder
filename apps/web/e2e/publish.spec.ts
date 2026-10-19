@@ -69,6 +69,15 @@ test("publishes a form and collects a response on the hosted page", async ({ pag
   await expect(table.getByRole("columnheader", { name: "Your city" })).toBeVisible();
   await expect(table.getByRole("cell", { name: "Tabriz" })).toBeVisible();
   await expect(table.getByRole("cell", { name: "Shiraz" })).toBeVisible();
+  // Detail view: every answer of one response.
+  await table
+    .getByRole("row", { name: /Shiraz/ })
+    .getByRole("button")
+    .click();
+  const detail = page.getByRole("dialog", { name: "Response" });
+  await expect(detail.getByText("Your city")).toBeVisible();
+  await expect(detail.getByText("Shiraz")).toBeVisible();
+  await detail.getByRole("button", { name: "Close" }).click();
   const a11y = await new AxeBuilder({ page }).analyze();
   expect(a11y.violations.map((v) => v.id)).toEqual([]);
 

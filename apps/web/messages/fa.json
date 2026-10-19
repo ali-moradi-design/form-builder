@@ -214,7 +214,9 @@
     "format": "قالب",
     "onlyFilters": "فقط با فیلترهای فعلی",
     "download": "دانلود {format}",
-    "language": "زبان"
+    "language": "زبان",
+    "detail": "پاسخ",
+    "close": "بستن"
   },
   "analytics": {
     "title": "تحلیل",
@@ -233,6 +235,39 @@
     "lastWeek": "۷ روز گذشته",
     "versions": "نسخه‌های منتشرشده",
     "perDay": "پاسخ در هر روز",
-    "days": "{count} روز"
+    "days": "{count} روز",
+    "integrations": "اتصال‌ها"
+  },
+  "integrations": {
+    "title": "اتصال‌ها",
+    "subtitle": "هر پاسخ تازه را به سامانه‌های دیگر بفرستید.",
+    "webhooks": "وب‌هوک‌ها",
+    "webhooksText": "هر پاسخ تازه به‌صورت JSON و امضاشده با کلید مخفی به این آدرس‌ها فرستاده می‌شود. ارسال ناموفق سه بار دیگر (پس از ۱، ۵ و ۲۵ ثانیه) تکرار می‌شود. حداکثر ۵ آدرس برای هر فرم.",
+    "none": "هنوز وب‌هوکی نیست.",
+    "enabled": "روشن",
+    "test": "ارسال آزمایشی",
+    "testOk": "ارسال آزمایشی رسید (HTTP {status}).",
+    "testFailed": "ارسال آزمایشی نشد: {error}",
+    "delete": "حذف وب‌هوک {url}",
+    "confirmDelete": "این وب‌هوک و گزارش ارسال‌هایش حذف شود؟",
+    "secret": "کلید امضا",
+    "show": "نمایش کلید",
+    "hide": "پنهان کردن کلید",
+    "copySecret": "کپی کلید",
+    "url": "آدرس مقصد",
+    "add": "افزودن وب‌هوک",
+    "problem": {
+      "invalid": "این آدرس معتبر نیست.",
+      "protocol": "از آدرس https:// استفاده کنید.",
+      "private": "آدرس‌های شبکهٔ خصوصی و محلی مجاز نیستند.",
+      "unresolved": "این نام میزبان پیدا نشد.",
+      "limit": "هر فرم حداکثر ۵ وب‌هوک می‌تواند داشته باشد."
+    },
+    "deliveries": "ارسال‌های اخیر",
+    "delivered": "رسید",
+    "failed": "نرسید",
+    "attempt": "تلاش {n}",
+    "verifyTitle": "بررسی امضا",
+    "verifyText": "هر درخواست سرآیندهای X-Formweave-Event و X-Formweave-Timestamp و X-Formweave-Signature دارد. HMAC رشتهٔ «timestamp.body» را با کلیدتان حساب و مقایسه کنید:"
   }
 }

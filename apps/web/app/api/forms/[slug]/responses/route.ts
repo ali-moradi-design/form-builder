@@ -1,4 +1,5 @@
-import { clientIp, HONEYPOT, submit } from "@/entities/response";
+import { after } from "next/server";
+import { clientIp, HONEYPOT, notifyWebhooks, submit } from "@/entities/response";
 import { getDb } from "@/shared/db";
 
 const cors = {
@@ -38,13 +39,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
     return error(400, { error: "invalidJson" });
   }
   const input = typeof body === "object" && body !== null ? (body as Record<string, unknown>) : {};
-  const result = await submit(await getDb(), {
+  const db = await getDb();
+  const result = await submit(db, {
     slug: (await params).slug,
     values: input.values,
     locale: typeof input.locale === "string" ? input.locale : undefined,
     honeypot: input[HONEYPOT],
     ip: clientIp(request.headers),
   });
+  after(() => notifyWebhooks(db, result));
   if (result.ok)
     return Response.json(
       { id: result.id, version: result.version },
