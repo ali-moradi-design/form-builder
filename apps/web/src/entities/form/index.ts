@@ -7,3 +7,19 @@ export {
   useDrafts,
 } from "./model/drafts";
 export type { Draft } from "./model/drafts";
+export {
+  addStep,
+  allFields,
+  findField,
+  insertField,
+  moveField,
+  moveStep,
+  removeField,
+  removeStep,
+  renameField,
+  uniqueKey,
+  updateField,
+  updateForm,
+  updateStep,
+} from "./model/commands";
+export type { FieldPlace, FoundField } from "./model/commands";
