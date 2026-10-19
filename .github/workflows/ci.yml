@@ -23,6 +23,8 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # Known advisories in the dependencies that ship or run in production.
+      - run: pnpm audit --prod --audit-level moderate
       - run: pnpm format:check
       # Build first: packages import each other's types from dist.
       - run: pnpm build

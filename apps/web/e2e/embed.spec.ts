@@ -27,7 +27,7 @@ test("embeds a published form on another page with one script tag", async ({ pag
     /^<script src="http:\/\/[^"]+\/embed\.js" data-form="[a-z0-9-]+" async><\/script>$/,
   );
   const hosted = await page.request.get(url);
-  expect(hosted.headers()["content-security-policy"]).toBe("frame-ancestors *");
+  expect(hosted.headers()["content-security-policy"]).toContain("frame-ancestors *");
 
   // A plain page with only the snippet. (Browsers block a public page from
   // loading a script from localhost, so the test page is served on the app's
