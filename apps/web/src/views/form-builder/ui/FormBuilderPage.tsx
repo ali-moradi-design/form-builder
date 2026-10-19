@@ -8,5 +8,7 @@ export async function FormBuilderPage({ id }: { id: string }) {
   const user = await getUser();
   const form = user ? await getForm(await getDb(), user.id, id) : undefined;
   if (!form) notFound();
-  return <FormBuilder id={form.id} initial={form.draft} />;
+  const live =
+    form.slug && form.liveVersion !== null ? { slug: form.slug, version: form.liveVersion } : null;
+  return <FormBuilder id={form.id} initial={form.draft} live={live} />;
 }

@@ -147,5 +147,38 @@
     "artTeam": "Team",
     "artTitle": "One schema. A builder for people, an engine for code.",
     "artText": "Design a form by drag and drop, publish it as a link, an embed or a React component, and read the answers in one place."
+  },
+  "publish": {
+    "draft": "Draft",
+    "live": "Live, v{version}",
+    "publish": "Publish",
+    "failed": "Publishing failed. Try again.",
+    "liveTitle": "Version {version} is live",
+    "liveText": "Pick how people reach the form. Every option serves this version.",
+    "close": "Close",
+    "hosted": {
+      "title": "Hosted link",
+      "text": "A page on our domain. Share it anywhere."
+    },
+    "embed": {
+      "title": "Embed",
+      "text": "One script tag on any website."
+    },
+    "react": {
+      "title": "React package",
+      "text": "<Form formId /> in your own app."
+    },
+    "soon": "Coming in version 0.7",
+    "copy": "Copy link",
+    "copied": "Copied",
+    "versionNote": "Responses keep the version they were filled in. Edits from now on go into a draft of version {next}.",
+    "open": "Open form",
+    "done": "Done"
+  },
+  "hosted": {
+    "thanks": "Thank you!",
+    "sent": "Your answers were sent.",
+    "again": "Send another response",
+    "failed": "We couldn't save your answers. Check them and try again."
   }
 }

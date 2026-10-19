@@ -4,7 +4,8 @@ import type { FormDocument } from "@formweave/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getUser } from "@/shared/auth";
-import { createForm, deleteForm, getDb, saveDraft } from "@/shared/db";
+import { resolveText } from "@formweave/engine/i18n";
+import { createForm, deleteForm, getDb, publishForm, saveDraft, type Published } from "@/shared/db";
 
 async function owner(): Promise<string> {
   const user = await getUser();
@@ -45,4 +46,18 @@ export async function importMyDrafts(documents: readonly FormDocument[]): Promis
   }
   revalidatePath("/forms");
   return imported;
+}
+
+/**
+ * Saves the given draft and publishes it as the next immutable version.
+ * Returns the version number and the public slug.
+ */
+export async function publishMyForm(id: string, document: FormDocument): Promise<Published | null> {
+  const db = await getDb();
+  const ownerId = await owner();
+  if (!(await saveDraft(db, ownerId, id, document))) return null;
+  const title = resolveText(document.title, "en", document.locales.default);
+  const published = await publishForm(db, ownerId, id, title);
+  revalidatePath("/forms");
+  return published ?? null;
 }
