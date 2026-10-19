@@ -1,6 +1,6 @@
 import type { FieldNode, FormDocument } from "@formweave/schema";
 import { describe, expect, it } from "vitest";
-import { placeForNew } from "./actions";
+import { dropField, placeForNew } from "./actions";
 import { fieldPatch, fieldSettingsDocument, formPatch, readText } from "./settings";
 
 const doc: FormDocument = {
@@ -103,5 +103,13 @@ describe("settings panel mapping", () => {
     });
     expect(placeForNew(doc, { kind: "step", key: "one" })).toEqual({ step: "one", index: 2 });
     expect(placeForNew(doc, { kind: "form" })).toEqual({ step: "two", index: 0 });
+  });
+
+  it("drops a field into a slot, counting slots before the move", () => {
+    const order = (d: FormDocument) => d.steps.map((s) => s.fields.map((f) => f.key));
+    expect(order(dropField(doc, "age", { step: "one", index: 2 }))).toEqual([["box", "age"], []]);
+    expect(dropField(doc, "age", { step: "one", index: 1 })).toBe(doc);
+    expect(order(dropField(doc, "box", { step: "two", index: 0 }))).toEqual([["age"], ["box"]]);
+    expect(dropField(doc, "box", { step: "one", parent: "box", index: 0 })).toBe(doc);
   });
 });

@@ -95,7 +95,9 @@
     "languages": "Languages",
     "defaultLanguage": "Default language",
     "invalidSchema": "The document has errors and can't be shown.",
-    "shortcuts": "Shortcuts: Ctrl+Z undo, Ctrl+Shift+Z redo, Delete removes, Ctrl+D duplicates, Alt+↑/↓ moves."
+    "shortcuts": "Shortcuts: Ctrl+Z undo, Ctrl+Shift+Z redo, Delete removes, Ctrl+D duplicates, Alt+↑/↓ moves.",
+    "dropHere": "Drop here",
+    "dragHandle": "Drag to move"
   },
   "fieldTypes": {
     "shortText": "Short text",

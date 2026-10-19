@@ -95,7 +95,9 @@
     "languages": "زبان‌ها",
     "defaultLanguage": "زبان پیش‌فرض",
     "invalidSchema": "سند خطا دارد و نمایش داده نمی‌شود.",
-    "shortcuts": "میان‌برها: Ctrl+Z واگرد، Ctrl+Shift+Z ازنو، Delete حذف، Ctrl+D تکثیر، Alt+↑/↓ جابه‌جایی."
+    "shortcuts": "میان‌برها: Ctrl+Z واگرد، Ctrl+Shift+Z ازنو، Delete حذف، Ctrl+D تکثیر، Alt+↑/↓ جابه‌جایی.",
+    "dropHere": "اینجا رها کنید",
+    "dragHandle": "برای جابه‌جایی بکشید"
   },
   "fieldTypes": {
     "shortText": "متن کوتاه",

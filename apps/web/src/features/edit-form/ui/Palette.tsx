@@ -3,9 +3,11 @@
 import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { FIELD_GROUPS, FIELD_TYPES } from "@/shared/config";
+import { FIELD_GROUPS, FIELD_TYPES, type FieldTypeInfo } from "@/shared/config";
+import { cn } from "@/shared/lib";
 import { addField } from "../model/actions";
 import { useBuilderApi } from "../model/context";
+import { useBuilderDraggable } from "./dnd";
 
 /** Field types to add, grouped, with a search box. */
 export function Palette() {
@@ -47,25 +49,54 @@ export function Palette() {
             </h3>
             <div className="grid grid-cols-2 gap-1.5">
               {items.map((f) => (
-                <button
+                <PaletteItem
                   key={f.type}
-                  type="button"
-                  aria-label={t("add", { type: tt(f.type) })}
-                  onClick={() => {
+                  info={f}
+                  name={tt(f.type)}
+                  label={t("add", { type: tt(f.type) })}
+                  onAdd={() => {
                     addField(store, f, t("newField"));
                   }}
-                  className="flex h-9 items-center gap-2 rounded-[9px] border border-line bg-surface px-2 text-start text-[12.5px] shadow-xs hover:border-line-strong focus-visible:outline-3 focus-visible:outline-primary-soft"
-                >
-                  <span className="grid size-6 shrink-0 place-items-center rounded-md bg-surface-2 text-primary-fg">
-                    <f.icon size={14} aria-hidden />
-                  </span>
-                  <span className="truncate">{tt(f.type)}</span>
-                </button>
+                />
               ))}
             </div>
           </section>
         );
       })}
     </nav>
+  );
+}
+
+function PaletteItem({
+  info,
+  name,
+  label,
+  onAdd,
+}: {
+  info: FieldTypeInfo;
+  name: string;
+  label: string;
+  onAdd: () => void;
+}) {
+  const { ref, isDragSource } = useBuilderDraggable(`palette:${info.type}`, {
+    kind: "new",
+    type: info.type,
+  });
+  return (
+    <button
+      ref={ref}
+      type="button"
+      aria-label={label}
+      onClick={onAdd}
+      className={cn(
+        "flex h-9 cursor-grab items-center gap-2 rounded-[9px] border border-line bg-surface px-2 text-start text-[12.5px] shadow-xs hover:border-line-strong focus-visible:outline-3 focus-visible:outline-primary-soft",
+        isDragSource && "opacity-50",
+      )}
+    >
+      <span className="grid size-6 shrink-0 place-items-center rounded-md bg-surface-2 text-primary-fg">
+        <info.icon size={14} aria-hidden />
+      </span>
+      <span className="truncate">{name}</span>
+    </button>
   );
 }

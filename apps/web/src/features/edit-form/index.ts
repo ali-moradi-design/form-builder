@@ -10,6 +10,7 @@ export type {
   Selection,
 } from "./model/store";
 export { Canvas } from "./ui/Canvas";
+export { BuilderDnd } from "./ui/dnd";
 export { Inspector } from "./ui/Inspector";
 export { Palette } from "./ui/Palette";
 export { Toolbar } from "./ui/Toolbar";

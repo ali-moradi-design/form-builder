@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { saveDraft, useDraft } from "@/entities/form";
 import {
+  BuilderDnd,
   BuilderProvider,
   Canvas,
   Inspector,
@@ -32,7 +33,9 @@ export function FormBuilder({ id }: { id: string }) {
         saveDraft(id, doc);
       }}
     >
-      <Workspace id={id} />
+      <BuilderDnd>
+        <Workspace id={id} />
+      </BuilderDnd>
     </BuilderProvider>
   );
 }

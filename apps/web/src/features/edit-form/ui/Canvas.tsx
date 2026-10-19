@@ -3,15 +3,16 @@
 import { compile, type CompiledForm } from "@formweave/engine";
 import { isRtl, resolveText } from "@formweave/engine/i18n";
 import type { FieldNode, FormDocument, Locale } from "@formweave/schema";
-import { ArrowDown, ArrowUp, Copy, GitBranch, Plus, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Copy, GitBranch, GripVertical, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useMemo, type ReactNode } from "react";
+import { Fragment, useMemo, type ReactNode } from "react";
 import { addStep, uniqueKey } from "@/entities/form";
 import { registry, renderers } from "@/shared/formweave";
 import { cn } from "@/shared/lib";
 import { Button } from "@/shared/ui";
 import { duplicateSelected, nudgeField, removeSelected } from "../model/actions";
 import { useBuilder, useBuilderApi } from "../model/context";
+import { DropSlot, useBuilderDraggable } from "./dnd";
 
 /** The form as it will look, with selectable steps and fields. */
 export function Canvas({ locale }: { locale: Locale }) {
@@ -72,13 +73,17 @@ export function Canvas({ locale }: { locale: Locale }) {
             <span className="font-medium">{text(step.title) || t("stepN", { n: i + 1 })}</span>
             {step.visibleWhen !== undefined && <ConditionBadge />}
           </button>
-          {step.fields.length === 0 ? (
-            <p className="rounded-xl border border-dashed border-line-strong p-6 text-center text-[13px] text-ink-3">
-              {t("emptyStep")}
-            </p>
-          ) : (
-            <FieldList fields={step.fields} form={compiled} locale={locale} />
-          )}
+          <FieldList
+            fields={step.fields}
+            form={compiled}
+            locale={locale}
+            step={step.key}
+            empty={
+              <p className="rounded-xl border border-dashed border-line-strong p-6 text-center text-[13px] text-ink-3">
+                {t("emptyStep")}
+              </p>
+            }
+          />
         </section>
       ))}
       <Button
@@ -114,23 +119,36 @@ function FieldList({
   fields,
   form,
   locale,
+  step,
+  parent,
+  empty,
 }: {
   fields: readonly FieldNode[];
   form: CompiledForm;
   locale: Locale;
+  step: string;
+  parent?: string;
+  empty: ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
       {fields.map((f, i) => (
-        <FieldCard
-          key={f.key}
-          node={f}
-          form={form}
-          locale={locale}
-          first={i === 0}
-          last={i === fields.length - 1}
-        />
+        <Fragment key={f.key}>
+          <DropSlot place={{ step, parent, index: i }} />
+          <FieldCard
+            node={f}
+            form={form}
+            locale={locale}
+            step={step}
+            first={i === 0}
+            last={i === fields.length - 1}
+          />
+        </Fragment>
       ))}
+      <DropSlot
+        place={{ step, parent, index: fields.length }}
+        empty={fields.length === 0 ? empty : undefined}
+      />
     </div>
   );
 }
@@ -139,12 +157,14 @@ function FieldCard({
   node,
   form,
   locale,
+  step,
   first,
   last,
 }: {
   node: FieldNode;
   form: CompiledForm;
   locale: Locale;
+  step: string;
   first: boolean;
   last: boolean;
 }) {
@@ -156,6 +176,10 @@ function FieldCard({
   const select = () => {
     store.getState().select({ kind: "field", key: node.key });
   };
+  const { ref, handleRef, isDragSource } = useBuilderDraggable(`field:${node.key}`, {
+    kind: "field",
+    key: node.key,
+  });
   const conditional =
     node.visibleWhen !== undefined ||
     node.requiredWhen !== undefined ||
@@ -166,13 +190,18 @@ function FieldCard({
     body = (
       <div className="flex flex-col gap-2">
         {label && <p className="font-medium">{label}</p>}
-        {node.fields && node.fields.length > 0 ? (
-          <FieldList fields={node.fields} form={form} locale={locale} />
-        ) : (
-          <p className="rounded-lg border border-dashed border-line-strong p-4 text-center text-[13px] text-ink-3">
-            {t("emptyGroup")}
-          </p>
-        )}
+        <FieldList
+          fields={node.fields ?? []}
+          form={form}
+          locale={locale}
+          step={step}
+          parent={node.key}
+          empty={
+            <p className="rounded-lg border border-dashed border-line-strong p-4 text-center text-[13px] text-ink-3">
+              {t("emptyGroup")}
+            </p>
+          }
+        />
       </div>
     );
   } else {
@@ -185,6 +214,7 @@ function FieldCard({
 
   return (
     <div
+      ref={ref}
       data-selected={selected ? "" : undefined}
       onClick={(e) => {
         e.stopPropagation();
@@ -193,11 +223,21 @@ function FieldCard({
       className={cn(
         "group/card relative rounded-xl border border-transparent p-3 hover:border-line-strong",
         node.width === "half" ? "col-span-2 sm:col-span-1" : "col-span-2",
+        isDragSource && "opacity-40",
         selected &&
           "border-orange bg-[color-mix(in_oklab,var(--amber)_8%,transparent)] hover:border-orange",
       )}
     >
-      <div className="mb-1 flex items-center gap-2">
+      <div className="mb-1 flex items-center gap-1">
+        <button
+          type="button"
+          ref={handleRef}
+          aria-label={t("dragHandle")}
+          title={t("dragHandle")}
+          className="grid h-6 w-5 cursor-grab place-items-center rounded text-ink-3 hover:bg-surface-2 hover:text-ink focus-visible:outline-3 focus-visible:outline-primary-soft"
+        >
+          <GripVertical size={14} aria-hidden />
+        </button>
         <button
           type="button"
           aria-pressed={selected}
