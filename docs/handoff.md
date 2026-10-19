@@ -25,9 +25,8 @@ Where the build stands, for a new working session. Read `CLAUDE.md`,
 
 1. 0.7: npm publishing with Changesets. Needs an npm account and token from
    the user (`NPM_TOKEN` secret); ask before publishing.
-2. 1.0: docs site
-   (TypeDoc), nightly demo reset, deploy pipeline (ask the user where it
-   will be hosted).
+2. 1.0: docs site (TypeDoc), nightly demo reset, deploy pipeline (ask the
+   user where it will be hosted).
 
 ## How the work is done
 
