@@ -644,3 +644,29 @@ tr.sel td { background: var(--mark-soft); }
 .ad-box { display: grid; gap: 12px; }
 .ad-l { display: block; font-size: 12.5px; color: var(--ink-2); margin-bottom: 6px; }
 .ch-card .input { display: flex; align-items: center; gap: 8px; }
+
+/* Template gallery */
+.tg-filters { display: flex; align-items: center; gap: 12px; }
+.tg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.tg-card { display: flex; flex-direction: column; overflow: hidden; }
+.tg-thumb { position: relative; height: 150px; background: var(--surface-2); border-block-end: 1px solid var(--line); padding: 18px 26px 0; overflow: hidden; }
+.tg-sheet { background: var(--surface); border: 1px solid var(--line); border-radius: 10px 10px 0 0; height: 100%; padding: 14px 16px; display: grid; gap: 9px; align-content: start; box-shadow: var(--shadow); }
+.tg-sheet .bar-t { height: 9px; width: 55%; border-radius: 5px; background: var(--ink); opacity: 0.8; }
+.tg-sheet .ln { height: 7px; border-radius: 4px; background: var(--line-strong); }
+.tg-sheet .box { height: 22px; border-radius: 6px; border: 1px solid var(--line-strong); }
+.tg-sheet .chips { display: flex; gap: 5px; }
+.tg-sheet .chips i { height: 18px; flex: 1; border-radius: 5px; background: var(--surface-2); border: 1px solid var(--line); }
+.tg-sheet .chips i.on { background: var(--accent-soft); border-color: var(--accent); }
+.tg-sheet .steps { display: flex; gap: 4px; } .tg-sheet .steps i { height: 4px; flex: 1; border-radius: 2px; background: var(--line); } .tg-sheet .steps i.on { background: var(--primary); }
+.tg-body { padding: 14px 16px 6px; display: grid; gap: 6px; flex: 1; align-content: start; }
+.tg-body h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.tg-body p { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.tg-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-block-start: 4px; }
+.tg-foot { display: flex; align-items: center; gap: 8px; padding: 12px 16px 14px; }
+.tg-cat { position: absolute; inset-block-start: 10px; inset-inline-start: 12px; }
+.tg-blank { border-style: dashed; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 8px; padding: 24px; background: transparent; box-shadow: none; }
+.tg-prev { display: grid; grid-template-columns: 1fr 290px; min-height: 560px; }
+.tg-prev-form { background: var(--frame); padding: 22px 26px; border-inline-end: 1px solid var(--line); display: grid; gap: 14px; align-content: start; }
+.tg-prev-side { padding: 22px; display: grid; gap: 14px; align-content: start; }
+.tg-list { display: grid; gap: 8px; font-size: 13px; padding: 0; margin: 6px 0 0; }
+.tg-list li { display: flex; align-items: center; gap: 8px; list-style: none; color: var(--ink-2); }

@@ -20,6 +20,19 @@ const newForm = async (page: Page, kind: RegExp) => {
   await page.waitForURL(/\/forms\/[^/]+$/);
 };
 
+/** Signs up and creates a form from the product feedback template in the gallery. */
+const fromTemplate = async (page: Page) => {
+  await signUp(page);
+  await page.getByRole("link", { name: /From a template|از روی قالب/ }).click();
+  await page.waitForURL(/\/templates$/);
+  await page
+    .getByRole("button", {
+      name: /Use template: Product feedback|استفاده از قالب: نظرسنجی محصول/,
+    })
+    .click();
+  await page.waitForURL(/\/forms\/[^/]+$/);
+};
+
 test("builds a form, previews it and submits", async ({ page }) => {
   await newForm(page, /Blank form/);
   await page.getByRole("button", { name: "Add Short text" }).click();
@@ -55,7 +68,7 @@ test("creates a form from a sample JSON record", async ({ page }) => {
 });
 
 test("moves, undoes and keeps edits after a reload", async ({ page }) => {
-  await newForm(page, /From a template/);
+  await fromTemplate(page);
   const keys = page.locator("[data-field-key]");
   await expect(keys.first()).toHaveAttribute("data-field-key", "name");
   await keys.first().click();
@@ -71,7 +84,7 @@ test("moves, undoes and keeps edits after a reload", async ({ page }) => {
 });
 
 test("logic editor writes a condition", async ({ page }) => {
-  await newForm(page, /From a template/);
+  await fromTemplate(page);
   await page.locator('[data-field-key="comment"]').click();
   const logic = page.getByRole("region", { name: "Logic" });
   await logic
@@ -99,7 +112,7 @@ test("logic editor writes a condition", async ({ page }) => {
 });
 
 test("renaming a key updates the conditions that read it", async ({ page }) => {
-  await newForm(page, /From a template/);
+  await fromTemplate(page);
   await page.locator('[data-field-key="plan"]').click();
   await page.getByLabel(/^Key/).fill("tier");
   await page.getByRole("tab", { name: "JSON" }).click();
@@ -138,7 +151,7 @@ test("drags a field from the palette onto the canvas", async ({ page }) => {
 for (const locale of ["en", "fa"]) {
   test(`builder has no accessibility violations (${locale})`, async ({ page, context }) => {
     await context.addCookies([{ name: "locale", value: locale, url: "http://localhost:3200" }]);
-    await newForm(page, locale === "fa" ? /از روی الگو/ : /From a template/);
+    await fromTemplate(page);
     await expect(page.locator("html")).toHaveAttribute("dir", locale === "fa" ? "rtl" : "ltr");
     const results = await new AxeBuilder({ page }).analyze();
     expect(

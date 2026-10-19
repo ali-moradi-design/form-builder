@@ -10,17 +10,25 @@ import { Logo } from "@/shared/ui";
 /** Sidebar, top bar and credit line around every app page. */
 export async function AppShell({
   crumbs,
+  current = "forms",
   children,
 }: {
   crumbs: readonly string[];
+  /** The sidebar entry to mark as the current page. */
+  current?: "forms" | "templates";
   children: ReactNode;
 }) {
   const t = await getTranslations("nav");
   const tb = await getTranslations("brand");
   const user = await getUser();
   const nav = [
-    { href: "/forms", icon: FileText, label: t("forms"), on: true },
-    { href: "/forms", icon: LayoutTemplate, label: t("templates"), on: false },
+    { href: "/forms", icon: FileText, label: t("forms"), on: current === "forms" },
+    {
+      href: "/templates",
+      icon: LayoutTemplate,
+      label: t("templates"),
+      on: current === "templates",
+    },
   ];
   return (
     <div className="grid min-h-screen md:grid-cols-[252px_1fr]">
