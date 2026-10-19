@@ -109,7 +109,8 @@
     "validSchema": "ساختار معتبر",
     "synced": "همگام با بوم",
     "jsonSyntax": "هنوز JSON معتبر نیست: {message}",
-    "panel": "پنل کناری"
+    "panel": "پنل کناری",
+    "responses": "پاسخ‌ها"
   },
   "fieldTypes": {
     "shortText": "متن کوتاه",
@@ -181,5 +182,32 @@
     "again": "فرستادن پاسخ دیگر",
     "failed": "پاسخ‌هایتان ذخیره نشد. بررسی کنید و دوباره بفرستید.",
     "slowDown": "از این اتصال پاسخ‌های زیادی فرستاده شده. یک دقیقه صبر کنید و دوباره بفرستید."
+  },
+  "responses": {
+    "title": "پاسخ‌ها",
+    "summary": "{total, plural, one {# پاسخ} other {# پاسخ}} در {versions, plural, one {# نسخه} other {# نسخه}}.",
+    "matching": "{count} مورد با فیلترها جور است.",
+    "notPublished": "فرم را منتشر کنید تا پاسخ جمع شود.",
+    "empty": "هنوز پاسخی با این فیلترها نیست.",
+    "yes": "بله",
+    "no": "خیر",
+    "range": "{from} تا {to} از {total}",
+    "allTime": "همهٔ زمان‌ها",
+    "lastDays": "{days} روز گذشته",
+    "version": "نسخه",
+    "allVersions": "همهٔ نسخه‌ها",
+    "versionN": "نسخهٔ {version}",
+    "selected": "{count} مورد انتخاب شده",
+    "delete": "حذف",
+    "confirmDelete": "{count, plural, one {این پاسخ} other {این # پاسخ}} حذف شود؟ برگشت‌پذیر نیست.",
+    "columns": "ستون‌ها",
+    "selectPage": "انتخاب همهٔ این صفحه",
+    "selectRow": "انتخاب پاسخ {date}",
+    "submitted": "زمان ارسال",
+    "pages": "صفحه‌ها",
+    "pageOf": "صفحهٔ {page} از {pages}",
+    "previous": "قبلی",
+    "next": "بعدی",
+    "dateRange": "بازهٔ زمانی"
   }
 }

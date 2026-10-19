@@ -1,7 +1,7 @@
 "use client";
 
 import { resolveText } from "@formweave/engine/i18n";
-import { Eye, PencilRuler } from "lucide-react";
+import { Eye, Inbox, PencilRuler } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
@@ -93,6 +93,10 @@ function Workspace({ id, live }: { id: string; live: LiveInfo | null }) {
           <Link href={`/forms/${id}/preview`} className={tab}>
             <Eye size={15} aria-hidden />
             {t("preview")}
+          </Link>
+          <Link href={`/forms/${id}/responses`} className={tab}>
+            <Inbox size={15} aria-hidden />
+            {t("responses")}
           </Link>
         </nav>
         <Toolbar />
