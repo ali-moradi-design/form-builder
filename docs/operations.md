@@ -10,6 +10,7 @@ How the web app is run on a server. Deployment itself is still to be set up.
 | `PGLITE_DIR`             | PGlite folder (default `.data/pglite`); `memory://` for tests.              |
 | `BETTER_AUTH_SECRET`     | Secret for sessions (at least 32 characters).                               |
 | `BETTER_AUTH_URL`        | Public URL of the app.                                                      |
+| `PUBLIC_SIGN_UP`         | `on` lets anyone create an account. Off by default: only the demo account.  |
 | `DEMO_RESET_TOKEN`       | Enables `POST /api/demo/reset`. Without it the route answers 404.           |
 | `SUBMIT_RATE_LIMIT`      | Submissions per address and form per minute (default 10).                   |
 | `UPLOAD_RATE_LIMIT`      | Uploads per address and form per minute (default 30).                       |

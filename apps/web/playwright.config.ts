@@ -24,6 +24,8 @@ export default defineConfig({
       // The webhook test runs its receiver on localhost.
       WEBHOOK_ALLOW_PRIVATE: "1",
       DEMO_RESET_TOKEN: "e2e-demo-reset",
+      // The tests create many accounts.
+      PUBLIC_SIGN_UP: "on",
     },
     url: "http://localhost:3200/forms",
     reuseExistingServer: !process.env.CI,
