@@ -1,6 +1,14 @@
 import type { FieldRenderer } from "../renderers.js";
 import { calculatedRenderer } from "./calculated.js";
 import { checkboxesRenderer, radioRenderer, selectRenderer } from "./choice.js";
+import {
+  comboboxRenderer,
+  imageChoiceRenderer,
+  matrixRenderer,
+  multiSelectRenderer,
+  rankingRenderer,
+  tagsRenderer,
+} from "./choice-more.js";
 import { colorRenderer, colorSetRenderer } from "./color.js";
 import { dateRenderer } from "./date.js";
 import { groupRenderer } from "./group.js";
@@ -16,6 +24,14 @@ import { phoneRenderer, urlRenderer } from "./web.js";
 
 export { calculatedRenderer } from "./calculated.js";
 export { checkboxesRenderer, radioRenderer, selectRenderer } from "./choice.js";
+export {
+  comboboxRenderer,
+  imageChoiceRenderer,
+  matrixRenderer,
+  multiSelectRenderer,
+  rankingRenderer,
+  tagsRenderer,
+} from "./choice-more.js";
 export { colorRenderer, colorSetRenderer } from "./color.js";
 export { dateRenderer } from "./date.js";
 export { groupRenderer } from "./group.js";
@@ -52,8 +68,8 @@ export const basicRenderers: readonly FieldRenderer[] = [
 /**
  * Renderers for the field types added in version 0.6: URL, phone, time,
  * date-time, rating, NPS, slider, hidden, heading, paragraph, divider,
- * colour, colour set, currency, range slider, date range, repeater and
- * calculated.
+ * colour, colour set, currency, range slider, date range, repeater,
+ * calculated, combobox, multi-select, tags, ranking, image choice and matrix.
  *
  * @since 0.6.0
  */
@@ -76,6 +92,12 @@ export const richRenderers: readonly FieldRenderer[] = [
   dateRangeRenderer,
   repeaterRenderer,
   calculatedRenderer,
+  comboboxRenderer,
+  multiSelectRenderer,
+  tagsRenderer,
+  rankingRenderer,
+  imageChoiceRenderer,
+  matrixRenderer,
 ];
 
 /**
@@ -113,4 +135,10 @@ export const allRenderers: readonly FieldRenderer[] = [
   dateRangeRenderer,
   repeaterRenderer,
   calculatedRenderer,
+  comboboxRenderer,
+  multiSelectRenderer,
+  tagsRenderer,
+  rankingRenderer,
+  imageChoiceRenderer,
+  matrixRenderer,
 ];

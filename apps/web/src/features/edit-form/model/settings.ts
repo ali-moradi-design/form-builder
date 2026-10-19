@@ -22,7 +22,15 @@ const PLACEHOLDER_TYPES = new Set([
 const NO_REQUIRED = new Set(["group", "heading", "paragraph", "divider", "hidden", "calculated"]);
 const COUNTRY = /^[1-9]\d{0,3}$/;
 const PARAM = /^[\w.-]{1,64}$/;
-const CHOICE_TYPES = new Set(["select", "radio", "checkboxes"]);
+const CHOICE_TYPES = new Set([
+  "select",
+  "radio",
+  "checkboxes",
+  "combobox",
+  "multiSelect",
+  "ranking",
+  "imageChoice",
+]);
 
 /** Locales the document is written in, default first. */
 export function docLocales(doc: FormDocument): Locale[] {
@@ -131,9 +139,19 @@ export function fieldSettingsDocument(
     addNumber("max", t("max"), false);
     fields.push({ type: "switch", key: "integer", label: t("integer") });
     values.integer = s.integer === true;
-  } else if (node.type === "checkboxes") {
+  } else if (node.type === "checkboxes" || node.type === "multiSelect") {
     addNumber("minSelected", t("minSelected"));
     addNumber("maxSelected", t("maxSelected"));
+  } else if (node.type === "imageChoice") {
+    fields.push({ type: "switch", key: "multiple", label: t("multiple") });
+    values.multiple = s.multiple === true;
+    addNumber("minSelected", t("minSelected"));
+    addNumber("maxSelected", t("maxSelected"));
+  } else if (node.type === "tags") {
+    addNumber("maxTags", t("maxTags"));
+  } else if (node.type === "matrix") {
+    fields.push({ type: "switch", key: "everyRow", label: t("everyRow") });
+    values.everyRow = s.everyRow !== false;
   } else if (node.type === "repeater") {
     addNumber("minRows", t("minRows"));
     addNumber("maxRows", t("maxRows"));
@@ -256,9 +274,23 @@ export function fieldPatch(
     set("min", num(values.min));
     set("max", num(values.max));
     set("integer", values.integer === true ? true : undefined);
-  } else if (node.type === "checkboxes") {
-    set("minSelected", num(values.minSelected));
-    set("maxSelected", num(values.maxSelected));
+  } else if (
+    node.type === "checkboxes" ||
+    node.type === "multiSelect" ||
+    node.type === "imageChoice"
+  ) {
+    const whole = (v: unknown) => {
+      const n = num(v);
+      return n !== undefined && Number.isInteger(n) && n >= 0 ? n : undefined;
+    };
+    set("minSelected", whole(values.minSelected));
+    set("maxSelected", whole(values.maxSelected));
+    if (node.type === "imageChoice") set("multiple", values.multiple === true ? true : undefined);
+  } else if (node.type === "tags") {
+    const n = num(values.maxTags);
+    set("maxTags", n !== undefined && Number.isInteger(n) && n >= 1 && n <= 100 ? n : undefined);
+  } else if (node.type === "matrix") {
+    set("everyRow", values.everyRow === false ? false : undefined);
   } else if (
     node.type === "date" ||
     node.type === "dateRange" ||

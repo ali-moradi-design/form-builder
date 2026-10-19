@@ -582,3 +582,34 @@ tr.sel td { background: var(--mark-soft); }
 .lg-sum { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: var(--ink-2); line-height: 1.55; }
 .lg-sum b { color: var(--ink); font-weight: 600; }
 .icon-xs { width: 12px; height: 12px; }
+
+/* Choice fields */
+.ch-wrap { display: grid; place-items: start center; padding: 40px 16px 60px; }
+.ch-card { width: 680px; padding: 32px; display: grid; gap: 30px; }
+.ch-f { display: grid; gap: 8px; }
+.ch-help { font-size: 12.5px; color: var(--ink-3); }
+.ch-err { display: flex; gap: 6px; align-items: center; font-size: 12.5px; color: var(--danger); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-height: 44px; padding: 6px 8px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--surface); }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding-inline: 10px 6px; border-radius: 8px; background: var(--primary-soft); color: var(--primary-fg); font-size: 13px; font-weight: 500; }
+.tag b { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 5px; }
+.tag-in { color: var(--ink-3); font-size: 13.5px; padding-inline: 4px; }
+.combo { position: relative; }
+.combo .input { display: flex; gap: 8px; align-items: center; }
+.combo-list { position: absolute; inset-inline: 0; top: 50px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-lg, 0 20px 40px -20px rgb(0 0 0 / .3)); padding: 6px; display: grid; gap: 2px; z-index: 2; }
+.combo-list > div { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 13.5px; }
+.combo-list > div.on { background: var(--surface-2); }
+.rank { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.rank li { display: flex; align-items: center; gap: 10px; height: 48px; padding-inline: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); font-size: 14px; }
+.rank li.lift { box-shadow: 0 16px 30px -18px rgb(0 0 0 / .45); border-color: var(--primary); transform: translateX(6px); }
+.rank-n { width: 24px; height: 24px; border-radius: 50%; background: var(--primary-soft); color: var(--primary-fg); display: grid; place-items: center; font-size: 12px; font-weight: 600; }
+.ic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.ic { display: grid; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+.ic.on { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.ic-pic { height: 110px; display: block; }
+.ic-t { display: flex; gap: 8px; align-items: center; padding: 10px 12px; font-size: 13.5px; font-weight: 500; }
+.mx { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13.5px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.mx th, .mx td { padding: 11px 10px; text-align: center; }
+.mx thead th { font-weight: 500; color: var(--ink-2); font-size: 12.5px; background: var(--surface-2); }
+.mx tbody th { text-align: start; font-weight: 500; }
+.mx tbody tr + tr > * { border-top: 1px solid var(--line); }
+.mx td .radio { display: inline-block; }

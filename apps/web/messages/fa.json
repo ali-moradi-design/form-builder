@@ -188,7 +188,14 @@
     "op_lte_date": "تا",
     "op_notEmpty_date": "پر شده است",
     "op_empty_date": "خالی است",
-    "op_eq_switch": "برابر است با"
+    "op_eq_switch": "برابر است با",
+    "imageUrl": "نشانی تصویر",
+    "imageUrlHelp": "یک نشانی ‎https://‎ یا مسیری مثل ‎/images/a.jpg‎ بنویسید.",
+    "matrixRows": "ردیف‌ها",
+    "matrixColumns": "ستون‌ها",
+    "multiple": "چند پاسخ مجاز باشد",
+    "maxTags": "بیشترین تعداد برچسب",
+    "everyRow": "همهٔ ردیف‌ها پاسخ لازم دارند"
   },
   "fieldTypes": {
     "shortText": "متن کوتاه",
@@ -218,7 +225,13 @@
     "rangeSlider": "اسلایدر بازه",
     "dateRange": "بازهٔ تاریخ",
     "repeater": "تکرارشونده",
-    "calculated": "محاسبه‌شده"
+    "calculated": "محاسبه‌شده",
+    "combobox": "فهرست جست‌وجوپذیر",
+    "multiSelect": "انتخاب چندتایی",
+    "tags": "برچسب‌ها",
+    "ranking": "رتبه‌بندی",
+    "imageChoice": "انتخاب تصویری",
+    "matrix": "ماتریس"
   },
   "languages": {
     "en": "English",

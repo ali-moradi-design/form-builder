@@ -10,8 +10,10 @@ export interface ResponseColumn {
   readonly label: string;
   /** Field type in the newest version that has the field. */
   readonly type: string;
-  /** Option value → label, for choice fields. */
+  /** Option value → label, for choice fields (columns, for a matrix). */
   readonly options?: ReadonlyMap<string, string> | undefined;
+  /** Row value → label, for a matrix. */
+  readonly rows?: ReadonlyMap<string, string> | undefined;
 }
 
 function* answerFields(fields: readonly FieldNode[]): Generator<FieldNode> {
@@ -41,20 +43,23 @@ export function responseColumns(
       for (const f of answerFields(step.fields)) {
         if (seen.has(f.key)) continue;
         seen.add(f.key);
-        const raw = f.settings?.options;
-        const options = Array.isArray(raw)
-          ? new Map(
-              (raw as { value: string; label?: Parameters<typeof resolveText>[0] }[]).map((o) => [
-                o.value,
-                resolveText(o.label, locale, fallback) || o.value,
-              ]),
-            )
-          : undefined;
+        const labels = (raw: unknown) =>
+          Array.isArray(raw)
+            ? new Map(
+                (raw as { value: string; label?: Parameters<typeof resolveText>[0] }[]).map((o) => [
+                  o.value,
+                  resolveText(o.label, locale, fallback) || o.value,
+                ]),
+              )
+            : undefined;
+        const options = labels(f.settings?.options ?? f.settings?.columns);
+        const rows = labels(f.settings?.rows);
         out.push({
           key: f.key,
           label: resolveText(f.label, locale, fallback) || f.key,
           type: f.type,
           options,
+          ...(rows ? { rows } : {}),
         });
       }
     }
@@ -86,6 +91,12 @@ export function formatAnswer(
         )
         .join("; ");
     return value.map(label).join(", ");
+  }
+  if (typeof value === "object" && column?.rows) {
+    // A matrix: "Talks: Good; Venue: Poor".
+    return Object.entries(value as Record<string, unknown>)
+      .map(([r, c]) => `${column.rows?.get(r) ?? r}: ${label(c)}`)
+      .join("; ");
   }
   if (typeof value === "object" && ("from" in value || "to" in value)) {
     // A range: "start – end", with an empty end left blank.

@@ -69,5 +69,16 @@ describe("response columns", () => {
         { name: "Nima", child: true },
       ]),
     ).toBe("Sara / 34; Nima / Yes");
+    const grid = {
+      key: "feel",
+      label: "Feel",
+      type: "matrix",
+      options: new Map([
+        ["1", "Poor"],
+        ["2", "Good"],
+      ]),
+      rows: new Map([["talks", "Talks"]]),
+    };
+    expect(formatAnswer(grid, { talks: "2", venue: "1" })).toBe("Talks: Good; venue: Poor");
   });
 });

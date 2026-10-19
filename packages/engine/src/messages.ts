@@ -42,6 +42,8 @@ export const en: MessageCatalog = {
   tooManyDecimals: "Use fewer digits after the decimal point.",
   tooFewRows: "Add at least {min} rows.",
   tooManyRows: "Use at most {max} rows.",
+  incompleteRanking: "Put every option in order.",
+  incompleteRows: "Answer every row.",
 };
 
 /**
@@ -76,6 +78,8 @@ export const fa: MessageCatalog = {
   tooManyDecimals: "رقم‌های کمتری بعد از ممیز بنویسید.",
   tooFewRows: "دست‌کم {min} ردیف اضافه کنید.",
   tooManyRows: "حداکثر {max} ردیف می‌توانید داشته باشید.",
+  incompleteRanking: "همهٔ گزینه‌ها را مرتب کنید.",
+  incompleteRows: "به همهٔ ردیف‌ها پاسخ دهید.",
 };
 
 /**

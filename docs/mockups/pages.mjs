@@ -412,6 +412,39 @@ const signIn = `<style>.si .mark{width:32px;height:32px}</style><div class="si" 
   </div>
 </div>`;
 
+
+/* ---------------- 12 Choice fields ---------------- */
+const pic = (bg, emoji) => `<span class="ic-pic" style="background:${bg}">${emoji}</span>`;
+const choices = `
+<div class="pub" style="height:auto;min-height:100vh;background:var(--frame)">
+  <header class="pub-top"><span class="logo">${LOGO}</span><b style="font-weight:600">Design meetup sign-up</b><div class="grow"></div><button class="btn">${i("languages", "icon-sm")}فارسی</button></header>
+  <div class="ch-wrap">
+    <div class="card ch-card">
+      <div class="ch-f"><span class="label">Topics you care about</span>
+        <div class="tags"><span class="tag">Design systems<b>${i("x", "icon-xs")}</b></span><span class="tag">Accessibility<b>${i("x", "icon-xs")}</b></span><span class="tag-in">Type and press Enter…</span></div>
+        <span class="ch-help">Up to 5 topics.</span></div>
+      <div class="ch-f"><span class="label">Your city</span>
+        <div class="combo"><div class="input focus">${i("search", "icon-sm")}<span>Tehr</span><div class="grow"></div>${i("chevron-down", "icon-sm")}</div>
+          <div class="combo-list" role="listbox"><div class="on"><span class="check on">${i("check", "icon-xs")}</span><span><b>Tehr</b>an</span></div><div><span class="check"></span>Tehran Pars</div><div class="faint" style="font-size:12px;padding:6px 10px">2 of 1,243 cities</div></div></div></div>
+      <div class="ch-f" style="margin-top:120px"><span class="label">Order these talks by interest <span class="faint" style="font-weight:400">Drag, or use the arrows.</span></span>
+        <ol class="rank">
+          ${["Colour in dark mode", "Forms that don't hurt", "Motion for calm interfaces"].map((t, k) => `<li class="${k === 1 ? "lift" : ""}"><span class="rank-n">${k + 1}</span>${i("grip-vertical", "icon-sm")}<span class="grow">${t}</span><button class="btn ghost square sm">${i("arrow-up", "icon-sm")}</button><button class="btn ghost square sm">${i("arrow-down", "icon-sm")}</button></li>`).join("")}
+        </ol></div>
+      <div class="ch-f"><span class="label">Which venue do you prefer?</span>
+        <div class="ic-grid">
+          <label class="ic on">${pic("linear-gradient(135deg,#0f4c5c,#2f6f73)", "")}<span class="ic-t"><span class="radio on"></span>Rooftop</span></label>
+          <label class="ic">${pic("linear-gradient(135deg,#e36414,#fb8b24)", "")}<span class="ic-t"><span class="radio"></span>Gallery</span></label>
+          <label class="ic">${pic("linear-gradient(135deg,#5f0f40,#9a031e)", "")}<span class="ic-t"><span class="radio"></span>Old library</span></label>
+        </div></div>
+      <div class="ch-f"><span class="label">How do you feel about…</span>
+        <table class="mx"><thead><tr><th></th><th>Poor</th><th>Fair</th><th>Good</th><th>Great</th></tr></thead><tbody>
+          ${[["Last month's talks", 2], ["The venue", 3], ["Networking time", -1]].map(([r, on]) => `<tr><th scope="row">${r}</th>${[0, 1, 2, 3].map((c) => `<td><span class="radio ${c === on ? "on" : ""}"></span></td>`).join("")}</tr>`).join("")}
+        </tbody></table>
+        <span class="ch-err">${i("circle-alert", "icon-xs")}Answer every row: Networking time.</span></div>
+    </div>
+  </div>
+</div>`;
+
 export const pages = [
   { name: "01-dashboard", title: "Dashboard", body: dashboard, height: 960 },
   { name: "02-builder", title: "Builder", body: builder(settings) },
@@ -423,4 +456,5 @@ export const pages = [
   { name: "09-analytics-dark", title: "Analytics", body: summary, theme: "dark" },
   { name: "10-sign-in", title: "Sign in", body: signIn },
   { name: "11-builder-logic", title: "Logic editor", body: builder(logicPanel) },
+  { name: "12-hosted-form-choices", title: "Choice fields", body: choices, height: 1340 },
 ];

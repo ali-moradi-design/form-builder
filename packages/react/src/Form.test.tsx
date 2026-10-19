@@ -422,4 +422,85 @@ describe("<Form>", () => {
       });
     });
   });
+
+  it("collects combobox, tags, ranking, picture and matrix answers", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    const opts = [
+      { value: "teh", label: "Tehran" },
+      { value: "shz", label: "Shiraz" },
+      { value: "tab", label: "Tabriz" },
+    ];
+    const meetup: FormDocument = {
+      ...doc,
+      steps: [
+        {
+          key: "main",
+          fields: [
+            { type: "combobox", key: "city", label: "City", settings: { options: opts } },
+            { type: "multiSelect", key: "also", label: "Also", settings: { options: opts } },
+            { type: "tags", key: "topics", label: "Topics" },
+            { type: "ranking", key: "order", label: "Order", settings: { options: opts } },
+            {
+              type: "imageChoice",
+              key: "venue",
+              label: "Venue",
+              settings: {
+                options: [
+                  { value: "roof", label: "Rooftop", image: "/roof.jpg" },
+                  { value: "hall", label: "Hall", image: "/hall.jpg" },
+                ],
+              },
+            },
+            {
+              type: "matrix",
+              key: "feel",
+              label: "Feel",
+              settings: {
+                rows: [
+                  { value: "talks", label: "Talks" },
+                  { value: "venue", label: "The venue" },
+                ],
+                columns: [
+                  { value: "1", label: "Poor" },
+                  { value: "2", label: "Good" },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    };
+    render(
+      <Form
+        schema={meetup}
+        registry={registry}
+        renderers={createRenderers(allRenderers)}
+        onSubmit={onSubmit}
+      />,
+    );
+    await user.type(screen.getByRole("combobox", { name: "City" }), "shi");
+    await user.keyboard("{Enter}");
+    expect(screen.getByRole("combobox", { name: "City" })).toHaveProperty("value", "Shiraz");
+    await user.click(screen.getByRole("combobox", { name: "Also" }));
+    await user.keyboard("{ArrowDown}{Enter}");
+    await user.type(screen.getByLabelText("Topics"), "UX,a11y{Enter}");
+    await user.click(screen.getByRole("button", { name: "Move up: Tabriz" }));
+    await user.click(screen.getByLabelText("Hall"));
+    await user.click(screen.getByLabelText("Talks: Good"));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    expect(await screen.findByText("Answer every row.")).toBeTruthy();
+    await user.click(screen.getByLabelText("The venue: Poor"));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        city: "shz",
+        also: ["shz"],
+        topics: ["UX", "a11y"],
+        order: ["teh", "tab", "shz"],
+        venue: "hall",
+        feel: { talks: "2", venue: "1" },
+      });
+    });
+  });
 });

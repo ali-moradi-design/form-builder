@@ -144,7 +144,27 @@ export function Inspector({ locale }: { locale: Locale }) {
         <p ref={keyError} hidden role="alert" className="-mt-2 text-[12.5px] text-[#c0392b]">
           {t("keyTaken")}
         </p>
-        {hasOptions(node.type) && <OptionsEditor node={node} doc={doc} onEdit={edit} />}
+        {hasOptions(node.type) && (
+          <OptionsEditor node={node} doc={doc} onEdit={edit} images={node.type === "imageChoice"} />
+        )}
+        {node.type === "matrix" && (
+          <>
+            <OptionsEditor
+              node={node}
+              doc={doc}
+              onEdit={edit}
+              setting="rows"
+              title={t("matrixRows")}
+            />
+            <OptionsEditor
+              node={node}
+              doc={doc}
+              onEdit={edit}
+              setting="columns"
+              title={t("matrixColumns")}
+            />
+          </>
+        )}
         {node.type === "calculated" && (
           <FormulaEditor key={node.key} node={node} doc={doc} onEdit={edit} />
         )}
@@ -208,6 +228,50 @@ function Empty() {
 interface Option {
   readonly value: string;
   readonly label?: unknown;
+  readonly image?: unknown;
+}
+
+/** Picture shown for a new picture choice until one is set. */
+const PLACEHOLDER_IMAGE = "/option-placeholder.svg";
+
+/** Image URLs a form may use: https, or a path on the same site. */
+const IMAGE_URL = /^(https:\/\/|\/(?!\/))\S+$/;
+
+/** A URL box that only reports values the form accepts, and says when it is wrong. */
+function ImageInput({
+  className,
+  label,
+  value,
+  onValid,
+}: {
+  className: string;
+  label: string;
+  value: string;
+  onValid: (url: string) => void;
+}) {
+  const t = useTranslations("builder");
+  const [text, setText] = useState(value);
+  const ok = IMAGE_URL.test(text);
+  return (
+    <>
+      <input
+        className={className}
+        dir="ltr"
+        aria-label={label}
+        aria-invalid={!ok}
+        value={text}
+        onChange={(e) => {
+          setText(e.target.value);
+          if (IMAGE_URL.test(e.target.value)) onValid(e.target.value);
+        }}
+      />
+      {!ok && (
+        <p role="alert" className="text-[12px] text-[#c0392b]">
+          {t("imageUrlHelp")}
+        </p>
+      )}
+    </>
+  );
 }
 
 /** Edits the options of a choice field (until the engine has a repeater). */
@@ -215,19 +279,28 @@ function OptionsEditor({
   node,
   doc,
   onEdit,
+  setting = "options",
+  title,
+  images = false,
 }: {
   node: FieldNode;
   doc: FormDocument;
   onEdit: (fn: (d: FormDocument) => FormDocument, group: string) => void;
+  /** The settings key holding the list: `options`, or `rows`/`columns` of a matrix. */
+  setting?: string;
+  title?: string;
+  /** Edit an image URL per option (picture choices). */
+  images?: boolean;
 }) {
   const t = useTranslations("builder");
   const tl = useTranslations("languages");
   const locales = docLocales(doc);
-  const options = (Array.isArray(node.settings?.options) ? node.settings.options : []) as Option[];
+  const raw = node.settings?.[setting];
+  const options = (Array.isArray(raw) ? raw : []) as Option[];
   const write = (next: Option[], group: string) => {
     onEdit(
-      (d) => updateField(d, node.key, { settings: { ...node.settings, options: next } }),
-      `options:${node.key}:${group}`,
+      (d) => updateField(d, node.key, { settings: { ...node.settings, [setting]: next } }),
+      `${setting}:${node.key}:${group}`,
     );
   };
   const labelOf = (o: Option, l: Locale, i: number): string => {
@@ -260,7 +333,7 @@ function OptionsEditor({
     "h-8 min-w-0 rounded-lg border border-line-strong bg-surface px-2 text-[13px] outline-none focus:border-primary";
   return (
     <fieldset className="flex flex-col gap-2">
-      <legend className="mb-1 text-[13px] font-medium">{t("options")}</legend>
+      <legend className="mb-1 text-[13px] font-medium">{title ?? t("options")}</legend>
       {options.map((o, i) => (
         <div key={i} className="flex flex-col gap-1.5 rounded-lg border border-line p-2">
           <div className="flex items-center gap-1">
@@ -328,6 +401,19 @@ function OptionsEditor({
               );
             }}
           />
+          {images && (
+            <ImageInput
+              className={`${field} font-mono`}
+              label={`${t("option", { n: i + 1 })} · ${t("imageUrl")}`}
+              value={typeof o.image === "string" ? o.image : ""}
+              onValid={(image) => {
+                write(
+                  options.map((x, j) => (j === i ? { ...x, image } : x)),
+                  `${String(i)}:image`,
+                );
+              }}
+            />
+          )}
         </div>
       ))}
       <Button
@@ -336,7 +422,17 @@ function OptionsEditor({
         onClick={() => {
           let n = options.length + 1;
           while (options.some((o) => o.value === `option${String(n)}`)) n++;
-          write([...options, { value: `option${String(n)}`, label: `Option ${String(n)}` }], "add");
+          write(
+            [
+              ...options,
+              {
+                value: `option${String(n)}`,
+                label: `Option ${String(n)}`,
+                ...(images ? { image: PLACEHOLDER_IMAGE } : {}),
+              },
+            ],
+            "add",
+          );
         }}
       >
         <Plus size={15} aria-hidden />
