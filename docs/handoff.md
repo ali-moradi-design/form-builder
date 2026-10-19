@@ -13,9 +13,9 @@ Where the build stands, for a new working session. Read `CLAUDE.md`,
   a sample JSON record (`@formweave/engine/infer` + "From sample JSON"),
   and the template gallery (`/templates`: five templates with filter,
   search and a live preview; data in `apps/web/src/shared/config/gallery.ts`).
-
 - 1.0 so far: the accessibility audit and page weight budgets (see
-  `docs/decisions.md`).
+  `docs/decisions.md`), and the nightly demo reset (`docs/operations.md`;
+  the server still needs the cron entry).
 
 ## Open
 
@@ -25,8 +25,8 @@ Where the build stands, for a new working session. Read `CLAUDE.md`,
 
 1. 0.7: npm publishing with Changesets. Needs an npm account and token from
    the user (`NPM_TOKEN` secret); ask before publishing.
-2. 1.0: docs site (TypeDoc), nightly demo reset, deploy pipeline (ask the
-   user where it will be hosted).
+2. 1.0: docs site (TypeDoc) and deploy pipeline (ask the user where they
+   will be hosted).
 
 ## How the work is done
 

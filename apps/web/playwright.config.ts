@@ -23,6 +23,7 @@ export default defineConfig({
       AUTH_RATE_LIMIT: "off",
       // The webhook test runs its receiver on localhost.
       WEBHOOK_ALLOW_PRIVATE: "1",
+      DEMO_RESET_TOKEN: "e2e-demo-reset",
     },
     url: "http://localhost:3200/forms",
     reuseExistingServer: !process.env.CI,
