@@ -2,6 +2,14 @@
 
 Short log of what the user agreed. Newest first.
 
+- 2026-10-19: Database: Postgres with Drizzle in production (`DATABASE_URL`).
+  Without `DATABASE_URL` the app uses an embedded PGlite database, so local
+  development and tests need no server. Migrations live in `apps/web/drizzle`
+  and run when the app opens the database.
+- 2026-10-19: New dependencies are pinned to releases at least two weeks old.
+- 2026-10-19: The JSON editor loads Monaco on demand from the jsDelivr CDN, so
+  it adds nothing to the app bundle.
+
 - 2026-10-18: Accessibility fix found by axe: the faint text color of the
   mockups (`#8b9396`) fails 4.5:1 on white. The renderer uses `#666f72` (light)
   and `#93a2a5` (dark), and a darker accent `#c44f0d` for small orange text.
