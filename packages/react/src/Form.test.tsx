@@ -295,4 +295,67 @@ describe("<Form>", () => {
       });
     });
   });
+
+  it("adds, fills, checks and removes repeater rows", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    const trip: FormDocument = {
+      ...doc,
+      steps: [
+        {
+          key: "main",
+          fields: [
+            {
+              type: "repeater",
+              key: "people",
+              label: "Travellers",
+              settings: { minRows: 1, maxRows: 2, rowLabel: "Traveller" },
+              fields: [
+                { type: "shortText", key: "name", label: "Name", required: true },
+                { type: "number", key: "age", label: "Age" },
+                {
+                  type: "shortText",
+                  key: "school",
+                  label: "School",
+                  visibleWhen: { op: "lt", args: [{ var: "age" }, 18] },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    render(
+      <Form
+        schema={trip}
+        registry={registry}
+        renderers={createRenderers(allRenderers)}
+        onSubmit={onSubmit}
+      />,
+    );
+    // One row to start with; it cannot be removed below minRows.
+    expect(screen.getAllByLabelText(/^Name/)).toHaveLength(1);
+    expect(screen.getByRole("button", { name: "Remove: Traveller 1" })).toHaveProperty(
+      "disabled",
+      true,
+    );
+    await user.click(screen.getByRole("button", { name: /Add Traveller/ }));
+    expect(screen.getByRole("button", { name: /Add Traveller/ })).toHaveProperty("disabled", true);
+    const names = screen.getAllByLabelText(/^Name/);
+    await user.type(names[0] as HTMLElement, "Sara");
+    // The condition reads the age of the same row only.
+    await user.type(screen.getAllByLabelText("Age")[1] as HTMLElement, "9");
+    expect(screen.getAllByLabelText("School")).toHaveLength(1);
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    expect(await screen.findByText("This field is required.")).toBeTruthy();
+    expect(onSubmit).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Move up: Traveller 2" }));
+    await user.type(screen.getAllByLabelText(/^Name/)[0] as HTMLElement, "Nima");
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        people: [{ name: "Nima", age: 9 }, { name: "Sara" }],
+      });
+    });
+  });
 });

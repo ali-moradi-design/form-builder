@@ -1,6 +1,6 @@
 "use client";
 
-import { compile, type CompiledForm } from "@formweave/engine";
+import { compile, type CompiledField, type CompiledForm } from "@formweave/engine";
 import { isRtl, resolveText } from "@formweave/engine/i18n";
 import type { FieldNode, FormDocument, Locale } from "@formweave/schema";
 import { ArrowDown, ArrowUp, Copy, GitBranch, GripVertical, Plus, Trash2 } from "lucide-react";
@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { Fragment, useMemo, type ReactNode } from "react";
 import { addStep, uniqueKey } from "@/entities/form";
 import { registry, renderers } from "@/shared/formweave";
+import { CONTAINER_TYPES } from "@/shared/config";
 import { cn } from "@/shared/lib";
 import { Button } from "@/shared/ui";
 import { duplicateSelected, nudgeField, removeSelected } from "../model/actions";
@@ -186,10 +187,12 @@ function FieldCard({
     node.disabledWhen !== undefined;
 
   let body: ReactNode;
-  if (node.type === "group") {
+  if (CONTAINER_TYPES.has(node.type)) {
+    const repeats = node.type === "repeater";
     body = (
       <div className="flex flex-col gap-2">
         {label && <p className="font-medium">{label}</p>}
+        {repeats && <p className="text-[12.5px] text-ink-2">{t("repeaterHint")}</p>}
         <FieldList
           fields={node.fields ?? []}
           form={form}
@@ -198,7 +201,7 @@ function FieldCard({
           parent={node.key}
           empty={
             <p className="rounded-lg border border-dashed border-line-strong p-4 text-center text-[13px] text-ink-3">
-              {t("emptyGroup")}
+              {t(repeats ? "emptyRepeater" : "emptyGroup")}
             </p>
           }
         />
@@ -335,6 +338,17 @@ function IconButton({
 }
 
 /** Draws a field with its real renderer, without a form around it. */
+/** A compiled field by key, looking inside repeater rows too. */
+function compiledField(form: CompiledForm, key: string): CompiledField | undefined {
+  const own = form.fields.get(key);
+  if (own) return own;
+  for (const f of form.fields.values()) {
+    const inner = f.rows && compiledField(f.rows, key);
+    if (inner) return inner;
+  }
+  return undefined;
+}
+
 function FieldPreview({
   node,
   form,
@@ -344,7 +358,7 @@ function FieldPreview({
   form: CompiledForm;
   locale: Locale;
 }) {
-  const field = form.fields.get(node.key);
+  const field = compiledField(form, node.key);
   const Renderer = renderers.get(node.type);
   if (!field || !Renderer) return <p className="text-ink-3">{node.type}</p>;
   const fallback = form.document.locales.default;

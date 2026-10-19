@@ -26,3 +26,5 @@ export { currency, currencyDigits } from "./currency.js";
 export type { CurrencySettings } from "./currency.js";
 export { dateRange, rangeSlider } from "./range.js";
 export type { Range } from "./range.js";
+export { repeater } from "./repeater.js";
+export type { RepeaterSettings } from "./repeater.js";

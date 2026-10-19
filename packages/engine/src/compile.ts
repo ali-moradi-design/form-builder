@@ -43,6 +43,14 @@ export interface CompiledField {
   readonly parent: string | undefined;
   /** Position in document order; parents come before their children. */
   readonly index: number;
+  /**
+   * For row types such as repeaters: the child fields compiled as a form of
+   * their own, used for each row. Conditions inside a row read that row's
+   * values.
+   *
+   * @since 0.6.0
+   */
+  readonly rows?: CompiledForm | undefined;
 }
 
 /**
@@ -141,6 +149,9 @@ export function compile(document: FormDocument, options: CompileOptions): Compil
         if (!parsed.success) {
           throw new SchemaError(`Invalid settings for field "${node.key}".`, [...here, "settings"]);
         }
+        // Row types get their children as a separate form; they are not
+        // fields of this form.
+        const rows = definition.rows ? compileRows(node, options, [...here, "fields"]) : undefined;
         const field: CompiledField = Object.freeze({
           key: node.key,
           node,
@@ -149,18 +160,22 @@ export function compile(document: FormDocument, options: CompileOptions): Compil
           step: step.key,
           parent,
           index: order.length,
+          ...(rows ? { rows } : {}),
         });
         fields.set(node.key, field);
         order.push(node.key);
         stepFields.push(node.key);
-        if (!definition.container) {
+        if (rows) {
+          const min = (parsed.data as { minRows?: number }).minRows ?? 0;
+          defaults[node.key] = Array.from({ length: min }, () => ({ ...rows.defaults }));
+        } else if (!definition.container) {
           const value = definition.defaultValue(parsed.data);
           if (value !== undefined) defaults[node.key] = value;
         }
         link(node.key, node.visibleWhen);
         link(node.key, node.requiredWhen);
         link(node.key, node.disabledWhen);
-        if (node.fields) visit(node.fields, node.key, [...here, "fields"]);
+        if (node.fields && !rows) visit(node.fields, node.key, [...here, "fields"]);
       }
     };
     visit(step.fields, undefined, ["steps", s, "fields"]);
@@ -175,4 +190,28 @@ export function compile(document: FormDocument, options: CompileOptions): Compil
     dependents,
     defaults: Object.freeze(defaults),
   });
+}
+
+// Compiles the children of a row field as a one-step form.
+function compileRows(
+  node: FieldNode,
+  options: CompileOptions,
+  path: readonly (string | number)[],
+): CompiledForm {
+  const document: FormDocument = {
+    schemaVersion: 1,
+    id: node.key,
+    title: "",
+    locales: { default: "en" },
+    steps: [{ key: "row", fields: node.fields ?? [] }],
+  };
+  try {
+    return compile(document, options);
+  } catch (error) {
+    if (error instanceof SchemaError) {
+      // Point at the child inside the outer document.
+      throw new SchemaError(error.message, [...path, ...error.path.slice(3)]);
+    }
+    throw error;
+  }
 }

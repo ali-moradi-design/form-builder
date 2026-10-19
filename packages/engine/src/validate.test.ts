@@ -97,3 +97,80 @@ describe("toStandardSchema", () => {
     expect(good.issues).toBeUndefined();
   });
 });
+
+describe("repeater", () => {
+  const trip = compile(
+    {
+      ...doc,
+      steps: [
+        {
+          key: "a",
+          fields: [
+            {
+              type: "repeater",
+              key: "people",
+              required: true,
+              settings: { minRows: 1, maxRows: 3 },
+              fields: [
+                { type: "shortText", key: "name", required: true },
+                { type: "number", key: "age", settings: { min: 0 } },
+                {
+                  type: "shortText",
+                  key: "school",
+                  visibleWhen: { op: "lt", args: [{ var: "age" }, 18] },
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    { registry: createRegistry(allFields) },
+  );
+
+  it("starts with the fewest rows and keeps children out of the outer form", () => {
+    expect(trip.defaults).toEqual({ people: [{}] });
+    expect(trip.order).toEqual(["people"]);
+    expect(trip.fields.get("people")?.rows?.order).toEqual(["name", "age", "school"]);
+  });
+
+  it("checks every row with conditions read inside the row", () => {
+    const r = validate(trip, {
+      people: [
+        { name: "Sara", age: 34, school: "ignored" },
+        { name: "", age: 9 },
+      ],
+    });
+    expect(r.success ? [] : r.issues).toEqual([
+      { key: "people.1.name", code: "required" },
+      { key: "people.1.school", code: "required" },
+    ]);
+    const ok = validate(trip, {
+      people: [
+        { name: "Sara", age: 34, school: "ignored" },
+        { name: "Nima", age: 9, school: "Saadi" },
+      ],
+    });
+    expect(ok).toEqual({
+      success: true,
+      data: {
+        people: [
+          { name: "Sara", age: 34 },
+          { name: "Nima", age: 9, school: "Saadi" },
+        ],
+      },
+    });
+  });
+
+  it("checks the number of rows", () => {
+    const r = validate(trip, {
+      people: [{ name: "a" }, { name: "b" }, { name: "c" }, { name: "d" }],
+    });
+    expect(r.success ? [] : r.issues).toEqual([
+      { key: "people", code: "tooManyRows", params: { max: 3 } },
+    ]);
+    const none = validate(trip, { people: [] });
+    expect(none.success ? [] : none.issues).toEqual([{ key: "people", code: "required" }]);
+  });
+});

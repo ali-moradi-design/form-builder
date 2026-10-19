@@ -11,6 +11,7 @@ import {
   EyeOff,
   Gauge,
   Group,
+  ListPlus,
   Hash,
   Heading,
   Link,
@@ -161,6 +162,19 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
     create: (key, label) => ({ type: "group", key, label, fields: [] }),
   },
   {
+    type: "repeater",
+    group: "structure",
+    icon: ListPlus,
+    keyBase: "items",
+    create: (key, label) => ({
+      type: "repeater",
+      key,
+      label,
+      settings: { minRows: 1, maxRows: 5 },
+      fields: [],
+    }),
+  },
+  {
     type: "heading",
     group: "structure",
     icon: Heading,
@@ -188,6 +202,9 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
 export function fieldType(type: string): FieldTypeInfo | undefined {
   return FIELD_TYPES.find((t) => t.type === type);
 }
+
+/** Field types that hold other fields (the builder shows a drop area inside). */
+export const CONTAINER_TYPES: ReadonlySet<string> = new Set(["group", "repeater"]);
 
 /** Field types that show something but hold no answer (no response column). */
 export const DISPLAY_TYPES: ReadonlySet<string> = new Set([

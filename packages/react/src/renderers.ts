@@ -48,6 +48,46 @@ export interface FieldRendererProps {
   readonly inputRef: Ref<HTMLElement>;
   /** Rendered child fields, for container types such as groups. */
   readonly children?: ReactNode;
+  /** Row controls, for row types such as repeaters. */
+  readonly rows?: RowsApi | undefined;
+}
+
+/**
+ * What a row type's renderer (such as a repeater) gets to draw its rows.
+ *
+ * @since 0.6.0
+ */
+export interface RowsApi {
+  /** A stable React key for each row, in order. */
+  readonly keys: readonly string[];
+  /** Whether another row may be added (below `maxRows`). */
+  readonly canAdd: boolean;
+  /** Whether a row may be removed (above `minRows`). */
+  readonly canRemove: boolean;
+  /** Most rows allowed. */
+  readonly max: number;
+  /** Adds an empty row at the end. */
+  readonly add: () => void;
+  /**
+   * Removes a row.
+   *
+   * @param index - The row's position.
+   */
+  readonly remove: (index: number) => void;
+  /**
+   * Moves a row.
+   *
+   * @param from - Its position now.
+   * @param to - Its new position.
+   */
+  readonly move: (from: number, to: number) => void;
+  /**
+   * Renders the fields of one row.
+   *
+   * @param index - The row's position.
+   * @returns The row's fields.
+   */
+  readonly render: (index: number) => ReactNode;
 }
 
 /**

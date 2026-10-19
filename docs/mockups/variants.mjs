@@ -21,6 +21,29 @@ export function makeVariants({ i, fa, P, LOGO, CREDIT_FA }) {
       <div class="strip ${mobile ? "strip-m" : ""}" style="margin-top:${mobile ? 18 : 28}px">${sel.map((c, k) => `<div style="background:${c}"><span class="mono" dir="ltr">${mobile ? fa(k + 1) : c}</span><b>${i("x", "icon-sm")}</b></div>`).join("")}<div class="slot">${i("plus", "icon-sm")}${mobile ? "" : "<span>رنگ چهارم</span>"}</div></div>
       <div class="mini-sw" style="margin-top:14px">${palette.map((c) => `<span class="${sel.includes(c) ? "used" : ""}" style="background:${c}"></span>`).join("")}<span class="pip">${i("pipette", "icon-sm")}</span></div>`;
 
+  // Repeater: one card per row, numbered; remove on each card, add below.
+  const people = [
+    ["سارا احمدی", fa(34), "بزرگسال"],
+    ["نیما احمدی", fa(9), "کودک"],
+  ];
+  const card = ([name, age, kind], k) => `
+      <div class="rep-card">
+        <div class="rep-head"><span class="rep-n">${fa(k + 1)}</span><b>همسفر ${["اول", "دوم"][k]}</b><div class="grow"></div>
+          <button class="btn ghost square" aria-label="بالا">${i("arrow-up", "icon-sm")}</button><button class="btn ghost square" aria-label="پایین">${i("arrow-down", "icon-sm")}</button><button class="btn ghost square" aria-label="حذف">${i("trash-2", "icon-sm")}</button></div>
+        <div class="rep-grid">
+          <div><span class="label">نام</span><div class="input">${name}</div></div>
+          <div><span class="label">سن</span><div class="input">${age}</div></div>
+          <div><span class="label">گروه</span><div class="row" style="gap:6px"><span class="pchip ${kind === "بزرگسال" ? "on" : ""}">بزرگسال</span><span class="pchip ${kind === "کودک" ? "on" : ""}">کودک</span></div></div>
+        </div>
+      </div>`;
+  const repeaterQ = `
+      <span class="v2-k">پرسش ${fa(2)} از ${fa(5)}</span>
+      <h1>چه کسانی با شما سفر می‌کنند؟</h1>
+      <p class="muted" style="font-size:16px">برای هر همسفر یک ردیف بسازید؛ حداکثر ${fa(4)} نفر.</p>
+      <div class="rep">${people.map(card).join("")}
+        <button class="rep-add">${i("plus", "icon-sm")} افزودن همسفر <span class="faint">(${fa(2)} از ${fa(4)})</span></button>
+      </div>`;
+
   const focus = (q, cur, answers) => `
 <div class="pub v2">
   <div class="v2-progress"><span style="width:${cur * 20 + 10}%"></span></div>
@@ -39,6 +62,7 @@ export function makeVariants({ i, fa, P, LOGO, CREDIT_FA }) {
 
   const pa = (label, value) => `<span class="pa">${label} <b>${value}</b></span>`;
   const npsPage = focus(npsQ, 2, pa("رضایت", `${i("smile", "icon-sm")} خوب`));
+  const repeaterPage = focus(repeaterQ, 1, pa("مقصد", "شیراز"));
   const colorPage = focus(colorQ(), 3, pa("رضایت", `${i("smile", "icon-sm")} خوب`) + pa("پیشنهاد", fa(9)));
 
   const mobile = `
@@ -54,6 +78,7 @@ export function makeVariants({ i, fa, P, LOGO, CREDIT_FA }) {
   return [
     { name: "06-hosted-form", title: "Hosted form", body: npsPage, lang: "fa", height: 900 },
     { name: "06b-hosted-form-colors", title: "Hosted form colors", body: colorPage, lang: "fa", height: 900 },
+    { name: "06c-hosted-form-repeater", title: "Hosted form repeater", body: repeaterPage, lang: "fa", height: 900 },
     { name: "07-hosted-form-mobile-dark", title: "Hosted form mobile", body: mobile, lang: "fa", theme: "dark", width: 390, height: 844 },
   ];
 }

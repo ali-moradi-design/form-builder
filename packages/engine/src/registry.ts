@@ -57,6 +57,16 @@ export interface FieldDefinition<S = unknown, V = unknown> {
    * @defaultValue `false`
    */
   readonly container?: boolean | undefined;
+  /**
+   * `true` for types whose value is a list of rows, each row holding the
+   * values of the field's child `fields` (for example a repeater). The engine
+   * checks every row against the children; the type's own validator only
+   * checks the list (for example the number of rows).
+   *
+   * @defaultValue `false`
+   * @since 0.6.0
+   */
+  readonly rows?: boolean | undefined;
 }
 
 /**

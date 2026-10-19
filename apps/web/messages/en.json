@@ -126,7 +126,12 @@
     "minColors": "Fewest colours",
     "maxColors": "Most colours",
     "currency": "Currency code",
-    "currencyHelp": "Three letters, such as USD, EUR or IRR."
+    "currencyHelp": "Three letters, such as USD, EUR or IRR.",
+    "minRows": "Fewest rows",
+    "maxRows": "Most rows",
+    "rowLabel": "Name of one row",
+    "repeaterHint": "Each answer has rows of these questions.",
+    "emptyRepeater": "Drop the questions of one row here"
   },
   "fieldTypes": {
     "shortText": "Short text",
@@ -154,7 +159,8 @@
     "colorSet": "Colour set",
     "currency": "Currency",
     "rangeSlider": "Range slider",
-    "dateRange": "Date range"
+    "dateRange": "Date range",
+    "repeater": "Repeater"
   },
   "languages": {
     "en": "English",

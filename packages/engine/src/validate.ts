@@ -8,7 +8,10 @@ import { evaluate, type FormState } from "./evaluate.js";
  * @since 0.1.0
  */
 export interface ValidationIssue {
-  /** Key of the field. */
+  /**
+   * Key of the field. For a field inside a repeater row it is a path such as
+   * `"people.0.name"` (repeater key, row index, field key).
+   */
   readonly key: string;
   /**
    * What is wrong, as a code such as `"required"`, `"tooLong"` or
@@ -131,8 +134,27 @@ export function validate(
       continue;
     }
     const result = validatorOf(field).safeParse(value);
-    if (result.success) data[key] = result.data;
-    else issues.push(toIssue(key, result.error.issues[0]));
+    if (!result.success) {
+      issues.push(toIssue(key, result.error.issues[0]));
+      continue;
+    }
+    if (!field.rows) {
+      data[key] = result.data;
+      continue;
+    }
+    // Each row is a small form of its own; its issues get paths such as
+    // "people.0.name".
+    const rows: unknown[] = [];
+    for (const [i, row] of (value as readonly unknown[]).entries()) {
+      const rowValues =
+        row !== null && typeof row === "object" ? (row as Readonly<Record<string, unknown>>) : {};
+      const r = validate(field.rows, rowValues);
+      if (r.success) rows.push(r.data);
+      else
+        for (const issue of r.issues)
+          issues.push({ ...issue, key: `${key}.${String(i)}.${issue.key}` });
+    }
+    data[key] = rows;
   }
   return issues.length ? { success: false, issues } : { success: true, data };
 }

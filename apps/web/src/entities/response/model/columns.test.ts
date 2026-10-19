@@ -63,5 +63,11 @@ describe("response columns", () => {
       "2026-03-01 – 2026-03-04",
     );
     expect(formatAnswer(undefined, { from: 20 })).toBe("20 – ");
+    expect(
+      formatAnswer(undefined, [
+        { name: "Sara", age: 34 },
+        { name: "Nima", child: true },
+      ]),
+    ).toBe("Sara / 34; Nima / Yes");
   });
 });

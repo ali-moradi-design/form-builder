@@ -20,6 +20,7 @@ import {
   radio,
   rangeSlider,
   rating,
+  repeater,
   select,
   shortText,
   slider,
@@ -62,4 +63,5 @@ export const allFields: readonly FieldDefinition<never>[] = [
   currency,
   rangeSlider,
   dateRange,
+  repeater,
 ] as unknown as readonly FieldDefinition<never>[];

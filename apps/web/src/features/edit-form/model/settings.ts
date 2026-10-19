@@ -134,6 +134,11 @@ export function fieldSettingsDocument(
   } else if (node.type === "checkboxes") {
     addNumber("minSelected", t("minSelected"));
     addNumber("maxSelected", t("maxSelected"));
+  } else if (node.type === "repeater") {
+    addNumber("minRows", t("minRows"));
+    addNumber("maxRows", t("maxRows"));
+    fields.push(...textFields("rowLabel", t("rowLabel"), locales, languageName));
+    Object.assign(values, textValues("rowLabel", s.rowLabel as LocalizedText | undefined, locales));
   } else if (node.type === "colorSet") {
     addNumber("minColors", t("minColors"));
     addNumber("maxColors", t("maxColors"));
@@ -240,6 +245,14 @@ export function fieldPatch(
   ) {
     set("min", str(values.min));
     set("max", str(values.max));
+  } else if (node.type === "repeater") {
+    const rows = (v: unknown) => {
+      const n = num(v);
+      return n !== undefined && Number.isInteger(n) && n >= 0 && n <= 100 ? n : undefined;
+    };
+    set("minRows", rows(values.minRows));
+    set("maxRows", rows(values.maxRows));
+    set("rowLabel", readText(values, "rowLabel", locales));
   } else if (node.type === "colorSet") {
     const count = (v: unknown) => {
       const n = num(v);
