@@ -2,6 +2,13 @@
 
 Short log of what the user agreed. Newest first.
 
+- 2026-10-19: Page weight budgets (`apps/web/e2e/budgets.spec.ts`, compressed
+  bytes from `next start`): the hosted form may load 240 KB of JavaScript,
+  16 KB of CSS and 16 KB of HTML; `embed.js` stays under 2 KB. Measured
+  today: 221 KB JS, 11 KB CSS, 11 KB HTML. About 60% of the JavaScript is
+  React and Next.js; the rest is every field renderer (106 KB unpacked), Zod
+  (75 KB) and the message formatter (39 KB). Next step if the budget gets
+  tight: load only the renderers a form uses.
 - 2026-10-19: Accessibility audit for 1.0: `e2e/a11y.spec.ts` scans every
   app page (sign-in, forms, templates, builder, publish dialog, preview,
   responses, analytics, integrations, hosted form and its embed mode, 404)
