@@ -2,7 +2,9 @@ import { BookOpen, FileText, Heart, LayoutTemplate } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { SignOutButton } from "@/features/session";
 import { LocaleSwitch } from "@/features/switch-locale";
+import { getUser } from "@/shared/auth";
 import { Logo } from "@/shared/ui";
 
 /** Sidebar, top bar and credit line around every app page. */
@@ -15,6 +17,7 @@ export async function AppShell({
 }) {
   const t = await getTranslations("nav");
   const tb = await getTranslations("brand");
+  const user = await getUser();
   const nav = [
     { href: "/forms", icon: FileText, label: t("forms"), on: true },
     { href: "/forms", icon: LayoutTemplate, label: t("templates"), on: false },
@@ -79,6 +82,12 @@ export async function AppShell({
           </nav>
           <div className="grow" />
           <LocaleSwitch />
+          {user && (
+            <span className="flex items-center gap-1 rounded-[9px] border border-line bg-surface ps-3 text-[13px] text-ink-2 shadow-xs">
+              <span className="max-w-[180px] truncate">{user.email}</span>
+              <SignOutButton />
+            </span>
+          )}
         </header>
         <main className="flex min-w-0 flex-col gap-4">{children}</main>
       </div>

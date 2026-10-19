@@ -15,6 +15,13 @@ export default defineConfig({
   },
   webServer: {
     command: "pnpm start --port 3200",
+    // A throwaway database and secret for the test run.
+    env: {
+      PGLITE_DIR: "memory://",
+      BETTER_AUTH_SECRET: "e2e-secret-e2e-secret-e2e-secret-e2e-secret-0123",
+      BETTER_AUTH_URL: "http://localhost:3200",
+      AUTH_RATE_LIMIT: "off",
+    },
     url: "http://localhost:3200/forms",
     reuseExistingServer: !process.env.CI,
   },

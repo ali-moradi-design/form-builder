@@ -5,25 +5,23 @@ import { PencilRuler } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
-import { useDraft } from "@/entities/form";
+import type { FormDocument } from "@formweave/schema";
 import { registry, renderers } from "@/shared/formweave";
 import { Button } from "@/shared/ui";
 
 /** Fills in a draft with the real renderer and shows the submitted data. */
-export function FormPreview({ id }: { id: string }) {
-  const draft = useDraft(id);
+export function FormPreview({ id, document }: { id: string; document: FormDocument }) {
   const locale = useLocale();
   const t = useTranslations("preview");
   const [data, setData] = useState<Values | null>(null);
-  if (!draft) return <p className="text-ink-2">{t("notFound")}</p>;
   return (
     <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
       <section className="rounded-[14px] border border-line bg-surface p-6 shadow-xs">
         <Form
-          schema={draft.document}
+          schema={document}
           registry={registry}
           renderers={renderers}
-          locale={draft.document.locales.supported?.includes(locale) ? locale : undefined}
+          locale={document.locales.supported?.includes(locale) ? locale : undefined}
           layout="focus"
           onSubmit={(values) => {
             setData(values);
