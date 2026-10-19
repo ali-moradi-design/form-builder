@@ -3,6 +3,31 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./src/shared/i18n/request.ts");
 
+// The JSON editor (Monaco) loads from jsDelivr. Forms may show https images
+// (picture choice) and load option lists from https URLs.
+const CDN = "https://cdn.jsdelivr.net";
+const csp = (frames: string) =>
+  [
+    "default-src 'self'",
+    `script-src 'self' 'unsafe-inline' ${CDN}${process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"}`,
+    `style-src 'self' 'unsafe-inline' ${CDN}`,
+    `font-src 'self' data: ${CDN}`,
+    "img-src 'self' data: blob: https:",
+    "connect-src 'self' https:",
+    "worker-src 'self' blob:",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    `frame-ancestors ${frames}`,
+  ].join("; ");
+
+const common = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
+];
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
@@ -17,13 +42,14 @@ const nextConfig: NextConfig = {
       ...["/", "/:path((?!f/|embed\\.js$).*)"].map((source) => ({
         source,
         headers: [
-          { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+          ...common,
+          { key: "Content-Security-Policy", value: csp("'self'") },
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
         ],
       })),
       {
         source: "/f/:slug*",
-        headers: [{ key: "Content-Security-Policy", value: "frame-ancestors *" }],
+        headers: [...common, { key: "Content-Security-Policy", value: csp("*") }],
       },
     ]);
   },

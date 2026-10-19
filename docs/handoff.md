@@ -17,6 +17,9 @@ Where the build stands, for a new working session. Read `CLAUDE.md`,
   `docs/decisions.md`), and the nightly demo reset (`docs/operations.md`;
   the server still needs the cron entry).
 
+- Security review (`docs/security.md`): engine limits, request limits and
+  quotas, closed sign-up, demo warnings, headers, webhook pinning.
+
 ## Open
 
 - Nothing open.

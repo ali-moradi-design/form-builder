@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { postJson, publicOnlyLookup } from "./post";
 import { deliver } from "./deliver";
 import { checkWebhookUrl, isPrivateAddress } from "./guard";
 import { newSecret, sign, verify } from "./sign";
@@ -69,7 +70,6 @@ describe("webhook delivery", () => {
     const init = fetch.mock.calls[0]?.[1];
     const headers = init?.headers as Record<string, string>;
     expect(headers["X-Formweave-Signature"]).toBe(sign("s", 5, '{"a":1}'));
-    expect(init?.redirect).toBe("manual");
   });
 
   it("retries server errors but not client errors", async () => {
@@ -116,5 +116,22 @@ describe("webhook delivery", () => {
     );
     expect(result).toMatchObject({ ok: false, error: "blocked: private" });
     expect(fetch).not.toHaveBeenCalled();
+  });
+});
+
+describe("connecting to webhooks", () => {
+  it("refuses a name that resolves to a private address at connect time", async () => {
+    vi.stubEnv("WEBHOOK_ALLOW_PRIVATE", "");
+    // "localhost" passes no URL check here: this is the lookup the socket itself uses.
+    const found = await new Promise<string>((resolve) => {
+      publicOnlyLookup("localhost", {}, (error) => {
+        resolve(error?.message ?? "connected");
+      });
+    });
+    expect(found).toMatch(/blocked/);
+    await expect(postJson("http://localhost:9/", { headers: {}, body: "{}" })).rejects.toThrow(
+      /blocked/,
+    );
+    vi.unstubAllEnvs();
   });
 });

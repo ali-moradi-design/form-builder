@@ -1,4 +1,5 @@
 import { checkWebhookUrl } from "./guard";
+import { postJson, type PostResult } from "./post";
 import { sign } from "./sign";
 
 /** Result of one HTTP attempt. */
@@ -23,7 +24,11 @@ export interface DeliverOptions {
   readonly timeoutMs?: number;
   /** Called after every attempt (to log it). */
   readonly onAttempt?: (attempt: Attempt) => void | Promise<void>;
-  readonly fetch?: typeof fetch;
+  /** Sends the request; by default {@link postJson} (public addresses only). */
+  readonly fetch?: (
+    url: string,
+    init: { headers: Record<string, string>; body: string; signal?: AbortSignal },
+  ) => Promise<PostResult>;
   readonly sleep?: (ms: number) => Promise<void>;
   readonly now?: () => number;
 }
@@ -45,7 +50,7 @@ export async function deliver(
   options: DeliverOptions = {},
 ): Promise<Attempt> {
   const { backoff = [1000, 5000, 25_000], timeoutMs = 5000, onAttempt } = options;
-  const doFetch = options.fetch ?? fetch;
+  const doFetch = options.fetch ?? postJson;
   const sleep = options.sleep ?? wait;
   const now = options.now ?? Date.now;
   const body = JSON.stringify(payload);
@@ -61,8 +66,6 @@ export async function deliver(
     const timestamp = Math.floor(now() / 1000);
     try {
       const response = await doFetch(target.url, {
-        method: "POST",
-        redirect: "manual",
         signal: AbortSignal.timeout(timeoutMs),
         headers: {
           "Content-Type": "application/json",
