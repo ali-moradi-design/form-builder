@@ -1,5 +1,6 @@
 import { clientIp, MAX_UPLOAD, receiveUpload } from "@/entities/response";
 import { getDb } from "@/shared/db";
+import { readBody } from "@/shared/lib";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -23,17 +24,22 @@ export function OPTIONS(): Response {
  * one `file` part.
  *
  * 201 `{ id, name, size, type }` · 404 unknown form or field · 413 too big ·
- * 415 not multipart or a type the field refuses · 429 too many uploads.
+ * 415 not multipart or a type the field refuses · 429 too many uploads ·
+ * 507 the storage quota is used up.
  */
 export async function POST(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   if (!request.headers.get("content-type")?.includes("multipart/form-data"))
     return reply(415, { error: "unsupportedMediaType" });
-  const length = Number(request.headers.get("content-length") ?? 0);
-  if (length > MAX_UPLOAD + 64 * 1024) return reply(413, { error: "tooLarge" });
+  // Read at most the largest allowed file plus room for the multipart framing.
+  const bytes = await readBody(request, MAX_UPLOAD + 64 * 1024);
+  if (!bytes) return reply(413, { error: "tooLarge" });
   const field = new URL(request.url).searchParams.get("field") ?? "";
   let part: FormDataEntryValue | null;
   try {
-    part = (await request.formData()).get("file");
+    const body = new Response(bytes, {
+      headers: { "content-type": request.headers.get("content-type") ?? "" },
+    });
+    part = (await body.formData()).get("file");
   } catch {
     return reply(400, { error: "invalidBody" });
   }
@@ -55,6 +61,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
       return reply(413, { error: "tooLarge" });
     case "type":
       return reply(415, { error: "fileType" });
+    case "quota":
+      return reply(507, { error: "quota" });
     case "rateLimited":
       return reply(
         429,

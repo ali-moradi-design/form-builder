@@ -2,6 +2,7 @@ export { getDb, openDb } from "./client";
 export type { Db } from "./client";
 export {
   addResponse,
+  countResponses,
   createForm,
   deleteForm,
   getForm,
@@ -25,6 +26,6 @@ export {
   setWebhookEnabled,
 } from "./webhooks";
 export type { WebhookInfo } from "./webhooks";
-export { addUpload, attachUploads, getUpload, pendingUploads } from "./uploads";
+export { addUpload, attachUploads, getUpload, pendingUploads, uploadBytes } from "./uploads";
 export type { StoredFile } from "./uploads";
 export * as tables from "./schema";

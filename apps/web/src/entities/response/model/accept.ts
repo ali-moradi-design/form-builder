@@ -6,9 +6,19 @@ import {
   type ValidationIssue,
 } from "@formweave/engine";
 import { allFields } from "@formweave/engine/fields/all";
-import { addResponse, attachUploads, getLiveForm, pendingUploads, type Db } from "@/shared/db";
+import {
+  addResponse,
+  attachUploads,
+  countResponses,
+  getLiveForm,
+  pendingUploads,
+  type Db,
+} from "@/shared/db";
 
 const registry = createRegistry(allFields);
+
+/** Responses one form may hold (`MAX_RESPONSES_PER_FORM`, default 10,000). */
+const MAX_RESPONSES = Number(process.env.MAX_RESPONSES_PER_FORM ?? 10_000);
 
 /** Outcome of {@link acceptResponse}. */
 export type AcceptResult =
@@ -22,6 +32,7 @@ export type AcceptResult =
       readonly data: Readonly<Record<string, unknown>>;
     }
   | { readonly ok: false; readonly reason: "notFound" }
+  | { readonly ok: false; readonly reason: "full" }
   | { readonly ok: false; readonly reason: "invalid"; readonly issues: readonly ValidationIssue[] };
 
 const isRecord = (v: unknown): v is Record<string, unknown> =>
@@ -69,6 +80,9 @@ export async function acceptResponse(
 ): Promise<AcceptResult> {
   const live = await getLiveForm(db, slug);
   if (!live) return { ok: false, reason: "notFound" };
+  // Public forms take answers from anyone; a cap keeps one form from filling the database.
+  if ((await countResponses(db, live.formId)) >= MAX_RESPONSES)
+    return { ok: false, reason: "full" };
   const form = compile(live.document, { registry });
   const result = validate(form, isRecord(values) ? values : {});
   if (!result.success) return { ok: false, reason: "invalid", issues: result.issues };

@@ -160,3 +160,9 @@ export async function addResponse(
   await db.insert(response).values({ id, ...values, locale: values.locale ?? null });
   return id;
 }
+
+/** Number of responses a form holds. */
+export async function countResponses(db: Db, formId: string): Promise<number> {
+  const [row] = await db.select({ n: count() }).from(response).where(eq(response.formId, formId));
+  return row?.n ?? 0;
+}
