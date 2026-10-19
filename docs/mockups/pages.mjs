@@ -496,6 +496,64 @@ const addressPage = `
   </div>
 </div>`;
 
+
+/* ---------------- 15 Template gallery ---------------- */
+const thumb = (kind) => {
+  const steps = (n, on) => `<div class="steps">${Array.from({ length: n }, (_, k) => `<i class="${k < on ? "on" : ""}"></i>`).join("")}</div>`;
+  const parts = {
+    chart: `<div class="bar-t"></div><div class="chips"><i class="on"></i><i></i><i></i><i></i></div><div class="ln" style="width:40%"></div><div class="box"></div><div class="chips"><i style="background:var(--teal)"></i><i style="background:var(--orange)"></i><i style="background:var(--amber)"></i></div>`,
+    job: `${steps(3, 1)}<div class="bar-t"></div><div class="ln" style="width:35%"></div><div class="box"></div><div class="box" style="border-style:dashed;height:30px"></div>`,
+    onboarding: `${steps(4, 2)}<div class="bar-t"></div><div class="ln" style="width:45%"></div><div class="box"></div><div class="box" style="background:var(--surface-2)"></div>`,
+    event: `<div class="bar-t"></div><div class="ln" style="width:30%"></div><div class="box"></div><div class="chips"><i class="on"></i><i></i></div><div class="ln" style="width:60%"></div>`,
+    feedback: `${steps(2, 1)}<div class="bar-t"></div><div class="chips">${"<i class='on'></i>".repeat(4)}<i></i></div><div class="chips">${"<i></i>".repeat(8)}<i class="on"></i><i></i></div>`,
+  };
+  return `<div class="tg-thumb"><div class="tg-sheet">${parts[kind]}</div></div>`;
+};
+const tpl = (kind, cat, ic, tile, title, text, tags, meta) => `
+<div class="card tg-card">
+  ${thumb(kind)}
+  <div class="tg-body"><div class="row" style="gap:10px"><span class="tile ${tile}">${i(ic, "icon-sm")}</span><h3>${title}</h3><div class="grow"></div><span class="faint" style="font-size:12px">${cat}</span></div><p>${text}</p>
+    <div class="tg-tags">${tags.map((t) => `<span class="pill">${t}</span>`).join("")}</div></div>
+  <div class="tg-foot"><span class="faint" style="font-size:12.5px">${meta}</span><div class="grow"></div><button class="btn sm ghost">${i("eye", "icon-sm")}Preview</button><button class="btn sm primary">Use template</button></div>
+</div>`;
+const gallery = (overlay = "") => shell("Templates", ["Forms", "Templates"], `
+<div class="ph-head"><div><h1>Templates</h1><p>Start from a ready form. Everything can be changed in the builder.</p></div><div class="grow"></div><span class="input sm ph" style="width:260px">${i("search", "icon-sm")}Search templates</span></div>
+<div class="tg-filters"><div class="seg"><span class="on">All <span class="faint">5</span></span><span>Feedback</span><span>Hiring</span><span>Business</span><span>Events</span><span>Developers</span></div></div>
+<div class="tg-grid">
+  ${tpl("feedback", "Feedback", "message-square-heart", "o", "Product feedback", "Rating, NPS and favourite colours, with a question that only shows for team plans.", ["2 steps", "Rating", "NPS", "Logic"], "9 fields")}
+  ${tpl("job", "Hiring", "briefcase", "p", "Job application", "Contact details, experience, a CV upload and a short cover letter, one step at a time.", ["3 steps", "File upload", "Repeater"], "11 fields")}
+  ${tpl("onboarding", "Business", "building-2", "t", "Customer onboarding", "Company details, address, shareholders and fields that appear for companies only.", ["4 steps", "Address", "Repeater", "Logic"], "14 fields")}
+  ${tpl("event", "Events", "calendar-check", "r", "Event registration", "Attendee details, ticket type, sessions to join and dietary needs.", ["1 step", "Choices", "Calculated"], "10 fields")}
+  ${tpl("chart", "Developers", "chart-column", "t", "Chart widget settings", "The settings panel of a dashboard widget: chart type, data source, colours and axes.", ["Groups", "Colour set", "Logic"], "12 fields")}
+  <div class="card tg-blank"><span class="tile">${i("file-plus-2")}</span><b>Start blank</b><span class="muted" style="font-size:13px">An empty form with one step.</span><button class="btn sm">Create blank form</button></div>
+</div>${overlay}`);
+
+const previewDialog = `
+<div class="scrim"><div class="dialog" style="width:980px">
+  <div class="row" style="padding:18px 22px;gap:12px;border-block-end:1px solid var(--line)"><span class="tile p" style="width:40px;height:40px">${i("briefcase")}</span><div><h2 style="font-size:18px;font-weight:600;letter-spacing:-0.01em">Job application</h2><p class="muted">Preview. Try the fields; nothing is sent.</p></div><div class="grow"></div><div class="seg sm"><span class="on">English</span><span>فارسی</span></div><button class="btn ghost square">${i("x")}</button></div>
+  <div class="tg-prev">
+    <div class="tg-prev-form">
+      <div class="row" style="gap:6px">${["About you", "Experience", "Documents"].map((s, k) => `<span class="pill ${k === 0 ? "live" : ""}">${k + 1}. ${s}</span>`).join("")}</div>
+      <div class="card card-pad" style="display:grid;gap:14px">
+        <div class="grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><span class="label">Full name <span class="req">*</span></span><span class="input">Sara Ahmadi</span></div>
+          <div><span class="label">Email <span class="req">*</span></span><span class="input ph">you@example.com</span></div>
+        </div>
+        <div><span class="label">Phone</span><span class="input ph">+98 912 000 0000</span></div>
+        <div><span class="label">Position <span class="req">*</span></span><span class="input">Senior frontend engineer<div class="grow"></div>${i("chevron-down", "icon-sm")}</span></div>
+        <div><span class="label">Where did you hear about us?</span><div class="row" style="gap:6px;flex-wrap:wrap"><span class="pill live">LinkedIn</span><span class="pill">Friend</span><span class="pill">Job board</span><span class="pill">Other</span></div></div>
+        <div class="row"><div class="grow"></div><button class="btn primary">Next</button></div>
+      </div>
+    </div>
+    <div class="tg-prev-side">
+      <div><span class="label">What's inside</span>
+        <ul class="tg-list"><li>${i("list-ordered", "icon-sm")}3 steps, 11 fields</li><li>${i("upload-cloud", "icon-sm")}CV upload, PDF up to 10 MB</li><li>${i("repeat", "icon-sm")}Repeater for past jobs</li><li>${i("languages", "icon-sm")}English and Persian</li></ul></div>
+      <div class="nest row" style="gap:10px;background:var(--brand-soft);border-color:transparent"><span class="tile p" style="background:var(--surface)">${i("pencil", "icon-sm")}</span><span style="font-size:13px">A copy is created as a draft. Change anything before you publish.</span></div>
+      <button class="btn primary lg">Use this template</button>
+    </div>
+  </div>
+</div></div>`;
+
 export const pages = [
   { name: "01-dashboard", title: "Dashboard", body: dashboard, height: 960 },
   { name: "02-builder", title: "Builder", body: builder(settings) },
@@ -509,5 +567,7 @@ export const pages = [
   { name: "11-builder-logic", title: "Logic editor", body: builder(logicPanel) },
   { name: "12-hosted-form-choices", title: "Choice fields", body: choices, height: 1340 },
   { name: "14-hosted-form-address", title: "Address and dynamic options", body: addressPage, lang: "fa", height: 900 },
+  { name: "15-template-gallery", title: "Templates", body: gallery(), height: 1000 },
+  { name: "16-template-preview", title: "Template preview", body: gallery(previewDialog), height: 1000 },
   { name: "13-hosted-form-uploads", title: "Uploads and signature", body: uploads, height: 1120 },
 ];
