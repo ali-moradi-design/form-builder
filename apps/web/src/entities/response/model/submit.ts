@@ -39,8 +39,19 @@ export async function submit(db: Db, input: SubmissionInput): Promise<SubmitResu
   return acceptResponse(db, input.slug, input.values, input.locale);
 }
 
-/** The client address from proxy headers (first hop), or "unknown". */
+/**
+ * The visitor's address for rate limits. Only headers our own proxy sets are
+ * trusted: Nginx sets `X-Real-IP` to the connecting address, overwriting
+ * anything the client sent. Without it, the last `X-Forwarded-For` entry (the
+ * one the nearest proxy added) is used; the first entries are the client's
+ * own claims and could be anything.
+ */
 export function clientIp(headers: Headers): string {
-  const forwarded = headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return forwarded || headers.get("x-real-ip") || "unknown";
+  const real = headers.get("x-real-ip")?.trim();
+  if (real) return real;
+  const hops = (headers.get("x-forwarded-for") ?? "")
+    .split(",")
+    .map((h) => h.trim())
+    .filter(Boolean);
+  return hops.at(-1) ?? "unknown";
 }

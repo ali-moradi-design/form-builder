@@ -1,4 +1,4 @@
-import { and, eq, inArray, isNull, lt } from "drizzle-orm";
+import { and, eq, inArray, isNull, lt, sum } from "drizzle-orm";
 import type { Db } from "./client";
 import { form, upload } from "./schema";
 
@@ -88,4 +88,13 @@ export async function getUpload(
     .where(and(eq(upload.id, fileId), eq(upload.formId, formId), eq(form.ownerId, ownerId)));
   if (!row?.responseId) return undefined;
   return { id: row.id, name: row.name, type: row.type, size: row.size, data: row.data };
+}
+
+/** Bytes stored in uploads: all of them, or the pending ones of one form. */
+export async function uploadBytes(db: Db, pendingFor?: string): Promise<number> {
+  const [row] = await db
+    .select({ total: sum(upload.size) })
+    .from(upload)
+    .where(pendingFor ? and(eq(upload.formId, pendingFor), isNull(upload.responseId)) : undefined);
+  return Number(row?.total ?? 0);
 }

@@ -1,7 +1,7 @@
 import { compile, createRegistry, type CompiledField, type CompiledForm } from "@formweave/engine";
 import { acceptsFile, type FileSettings } from "@formweave/engine/fields";
 import { allFields } from "@formweave/engine/fields/all";
-import { addUpload, getLiveForm, type Db, type StoredFile } from "@/shared/db";
+import { addUpload, getLiveForm, uploadBytes, type Db, type StoredFile } from "@/shared/db";
 import { createRateLimiter } from "@/shared/lib";
 import { FILE_TYPES } from "./accept";
 
@@ -13,6 +13,11 @@ const limiter = createRateLimiter(Number(process.env.UPLOAD_RATE_LIMIT ?? 30), 6
 
 /** The largest upload any field allows; bigger requests are refused early. */
 export const MAX_UPLOAD = 50 * MB;
+
+/** All stored files together may use this much (`UPLOAD_QUOTA_MB`, default 2 GB). */
+const QUOTA = Number(process.env.UPLOAD_QUOTA_MB ?? 2048) * MB;
+/** Files not yet part of a response, per form (`UPLOAD_PENDING_MB`, default 200 MB). */
+const PENDING_QUOTA = Number(process.env.UPLOAD_PENDING_MB ?? 200) * MB;
 
 /** Finds a field by key, inside repeater rows too. */
 function findField(form: CompiledForm, key: string): CompiledField | undefined {
@@ -71,7 +76,7 @@ export type UploadResult =
   | { readonly ok: true; readonly file: StoredFile }
   | {
       readonly ok: false;
-      readonly reason: "notFound" | "tooLarge" | "type" | "rateLimited";
+      readonly reason: "notFound" | "tooLarge" | "type" | "rateLimited" | "quota";
       readonly retryAfter?: number;
     };
 
@@ -110,6 +115,13 @@ export async function receiveUpload(
   // A recognised file must also be named like one, so ".pdf" rules can't pass a PNG.
   const ext = name.toLowerCase().split(".").pop() ?? "";
   if (real && !(EXTENSIONS[real] ?? []).includes(ext)) return { ok: false, reason: "type" };
+  // Anyone can upload to a public form, so storage is capped before it fills the disk.
+  const size = input.data.byteLength;
+  if (
+    (await uploadBytes(db, live.formId)) + size > PENDING_QUOTA ||
+    (await uploadBytes(db)) + size > QUOTA
+  )
+    return { ok: false, reason: "quota" };
   const file = await addUpload(db, {
     formId: live.formId,
     fieldKey: input.field,

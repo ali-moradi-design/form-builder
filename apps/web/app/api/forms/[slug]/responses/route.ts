@@ -1,6 +1,7 @@
 import { after } from "next/server";
 import { clientIp, HONEYPOT, notifyWebhooks, submit } from "@/entities/response";
 import { getDb } from "@/shared/db";
+import { readBody } from "@/shared/lib";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -24,17 +25,18 @@ export function OPTIONS(): Response {
  * POST /api/forms/<slug>/responses with JSON `{ "values": {…}, "locale": "en" }`.
  *
  * 201 `{ id, version }` · 404 unknown form · 413 body over 64 KB ·
- * 415 not JSON · 422 `{ issues }` · 429 too many submissions (`Retry-After`).
+ * 415 not JSON · 422 `{ issues }` · 429 too many submissions (`Retry-After`) ·
+ * 507 the form holds as many responses as it may.
  */
 export async function POST(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   if (!request.headers.get("content-type")?.includes("application/json")) {
     return error(415, { error: "unsupportedMediaType" });
   }
-  const text = await request.text();
-  if (new TextEncoder().encode(text).length > MAX_BYTES) return error(413, { error: "tooLarge" });
+  const bytes = await readBody(request, MAX_BYTES);
+  if (!bytes) return error(413, { error: "tooLarge" });
   let body: unknown;
   try {
-    body = JSON.parse(text);
+    body = JSON.parse(new TextDecoder().decode(bytes));
   } catch {
     return error(400, { error: "invalidJson" });
   }
@@ -60,5 +62,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
       return error(422, { error: "invalid", issues: result.issues });
     case "rateLimited":
       return error(429, { error: "rateLimited" }, { "Retry-After": String(result.retryAfter) });
+    case "full":
+      return error(507, { error: "full" });
   }
 }
