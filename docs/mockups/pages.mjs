@@ -445,6 +445,33 @@ const choices = `
   </div>
 </div>`;
 
+
+/* ---------------- 13 Uploads and signature ---------------- */
+const fileRow = (name, size, state) => `<li class="up-row"><span class="tile t" style="width:34px;height:34px">${i(name.endsWith(".pdf") ? "file-text" : "image", "icon-sm")}</span><div class="grow"><b>${name}</b><span class="faint">${size}</span>${state === "busy" ? `<span class="up-bar"><i style="width:62%"></i></span>` : ""}</div>${state === "busy" ? `<span class="faint" style="font-size:12.5px">62%</span>` : `<span class="up-ok">${i("check", "icon-xs")}</span>`}<button class="btn ghost square sm">${i("x", "icon-sm")}</button></li>`;
+const uploads = `
+<div class="pub" style="height:auto;min-height:100vh;background:var(--frame)">
+  <header class="pub-top"><span class="logo">${LOGO}</span><b style="font-weight:600">Speaker application</b><div class="grow"></div><button class="btn">${i("languages", "icon-sm")}فارسی</button></header>
+  <div class="ch-wrap">
+    <div class="card ch-card">
+      <div class="ch-f"><span class="label">Slides and handouts <span class="req">*</span></span>
+        <div class="drop">${i("upload-cloud")}<b>Drop files here or <u>choose files</u></b><span class="faint">PDF or images, up to 3 files, 10 MB each</span></div>
+        <ul class="up-list">${fileRow("talk-outline.pdf", "1.2 MB", "done")}${fileRow("stage-photo.jpg", "4.8 MB", "busy")}</ul></div>
+      <div class="ch-f"><span class="label">Profile photo</span>
+        <div class="row" style="gap:18px;align-items:flex-start">
+          <div class="crop"><div class="crop-img"></div><div class="crop-box"><span></span><span></span><span></span><span></span></div></div>
+          <div style="display:grid;gap:10px;flex:1">
+            <span class="faint" style="font-size:13px">Drag to move, use the slider to zoom. The photo is saved as a square, 512 × 512.</span>
+            <div class="row" style="gap:10px">${i("zoom-out", "icon-sm")}<span class="zoom"><i></i></span>${i("zoom-in", "icon-sm")}</div>
+            <div class="row" style="gap:8px"><button class="btn">${i("rotate-cw", "icon-sm")}Rotate</button><button class="btn">${i("refresh-ccw", "icon-sm")}Choose another</button></div>
+          </div>
+        </div></div>
+      <div class="ch-f"><span class="label">Signature <span class="req">*</span></span>
+        <div class="sig"><svg viewBox="0 0 600 140" aria-hidden="true"><path d="M40 98c18-40 40-62 52-50s-14 52 4 50 26-56 44-52-4 44 10 46 22-30 34-30 6 26 18 26 30-40 52-40 10 30 26 30 40-22 60-26" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sig-line"></span><span class="sig-hint">Sign with your mouse, finger or pen</span></div>
+        <div class="row" style="gap:8px;justify-content:space-between"><span class="faint" style="font-size:12.5px">By signing you agree to the speaker terms.</span><button class="btn ghost">${i("eraser", "icon-sm")}Clear</button></div></div>
+    </div>
+  </div>
+</div>`;
+
 export const pages = [
   { name: "01-dashboard", title: "Dashboard", body: dashboard, height: 960 },
   { name: "02-builder", title: "Builder", body: builder(settings) },
@@ -457,4 +484,5 @@ export const pages = [
   { name: "10-sign-in", title: "Sign in", body: signIn },
   { name: "11-builder-logic", title: "Logic editor", body: builder(logicPanel) },
   { name: "12-hosted-form-choices", title: "Choice fields", body: choices, height: 1340 },
+  { name: "13-hosted-form-uploads", title: "Uploads and signature", body: uploads, height: 1120 },
 ];

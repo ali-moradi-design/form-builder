@@ -1,5 +1,8 @@
 import type { FieldNode } from "@formweave/schema";
 import {
+  ImageUp,
+  Paperclip,
+  Signature,
   Grid3x3,
   Images,
   ListChecks,
@@ -44,6 +47,7 @@ export const FIELD_GROUPS = [
   "choice",
   "color",
   "dateTime",
+  "files",
   "structure",
 ] as const;
 
@@ -225,6 +229,27 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
     icon: CalendarClock,
     keyBase: "when",
     create: simple("dateTime"),
+  },
+  {
+    type: "file",
+    group: "files",
+    icon: Paperclip,
+    keyBase: "files",
+    create: (key, label) => ({ type: "file", key, label, settings: { maxFiles: 3 } }),
+  },
+  {
+    type: "imageUpload",
+    group: "files",
+    icon: ImageUp,
+    keyBase: "photo",
+    create: simple("imageUpload"),
+  },
+  {
+    type: "signature",
+    group: "files",
+    icon: Signature,
+    keyBase: "signature",
+    create: simple("signature"),
   },
   {
     type: "group",

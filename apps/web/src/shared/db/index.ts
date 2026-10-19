@@ -25,4 +25,6 @@ export {
   setWebhookEnabled,
 } from "./webhooks";
 export type { WebhookInfo } from "./webhooks";
+export { addUpload, attachUploads, getUpload, pendingUploads } from "./uploads";
+export type { StoredFile } from "./uploads";
 export * as tables from "./schema";

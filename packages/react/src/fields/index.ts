@@ -11,6 +11,7 @@ import {
 } from "./choice-more.js";
 import { colorRenderer, colorSetRenderer } from "./color.js";
 import { dateRenderer } from "./date.js";
+import { fileRenderer, imageUploadRenderer, signatureRenderer } from "./files.js";
 import { groupRenderer } from "./group.js";
 import { currencyRenderer, numberRenderer } from "./number.js";
 import { dateRangeRenderer, rangeSliderRenderer } from "./range.js";
@@ -34,6 +35,7 @@ export {
 } from "./choice-more.js";
 export { colorRenderer, colorSetRenderer } from "./color.js";
 export { dateRenderer } from "./date.js";
+export { fileRenderer, imageUploadRenderer, signatureRenderer } from "./files.js";
 export { groupRenderer } from "./group.js";
 export { currencyRenderer, numberRenderer } from "./number.js";
 export { dateRangeRenderer, rangeSliderRenderer } from "./range.js";
@@ -69,7 +71,8 @@ export const basicRenderers: readonly FieldRenderer[] = [
  * Renderers for the field types added in version 0.6: URL, phone, time,
  * date-time, rating, NPS, slider, hidden, heading, paragraph, divider,
  * colour, colour set, currency, range slider, date range, repeater,
- * calculated, combobox, multi-select, tags, ranking, image choice and matrix.
+ * calculated, combobox, multi-select, tags, ranking, image choice, matrix,
+ * file, image upload and signature.
  *
  * @since 0.6.0
  */
@@ -98,6 +101,9 @@ export const richRenderers: readonly FieldRenderer[] = [
   rankingRenderer,
   imageChoiceRenderer,
   matrixRenderer,
+  fileRenderer,
+  imageUploadRenderer,
+  signatureRenderer,
 ];
 
 /**
@@ -141,4 +147,7 @@ export const allRenderers: readonly FieldRenderer[] = [
   rankingRenderer,
   imageChoiceRenderer,
   matrixRenderer,
+  fileRenderer,
+  imageUploadRenderer,
+  signatureRenderer,
 ];

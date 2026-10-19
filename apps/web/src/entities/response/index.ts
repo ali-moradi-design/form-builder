@@ -1,7 +1,9 @@
 export { deleteMyResponses, submitResponse } from "./api/actions";
-export { formatAnswer, responseColumns } from "./model/columns";
+export { filesOf, formatAnswer, isFileRef, responseColumns } from "./model/columns";
 export type { ResponseColumn } from "./model/columns";
-export { acceptResponse } from "./model/accept";
+export { acceptResponse, FILE_TYPES } from "./model/accept";
+export { MAX_UPLOAD, receiveUpload } from "./model/upload";
+export type { UploadResult } from "./model/upload";
 export type { AcceptResult } from "./model/accept";
 export { clientIp, HONEYPOT, submit } from "./model/submit";
 export type { SubmissionInput, SubmitResult } from "./model/submit";

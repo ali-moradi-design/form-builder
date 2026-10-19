@@ -32,7 +32,7 @@ import {
   type FieldErrors,
   type Resolver,
 } from "react-hook-form";
-import type { RendererMap, RowsApi } from "./renderers.js";
+import type { RendererMap, RowsApi, UploadFile } from "./renderers.js";
 import { createStateStore, type StateStore } from "./store.js";
 
 /**
@@ -146,6 +146,13 @@ export interface FormProps {
   readonly layout?: "classic" | "focus" | undefined;
   /** Class name of the `<form>` element. */
   readonly className?: string | undefined;
+  /**
+   * Stores files for file, image and signature fields. Without it those
+   * fields say that uploads are not available.
+   *
+   * @since 0.6.0
+   */
+  readonly upload?: UploadFile | undefined;
 }
 
 interface FormweaveContextValue {
@@ -157,6 +164,7 @@ interface FormweaveContextValue {
   readonly idPrefix: string;
   /** Prefix of value names: `""` at the top, `"people.0."` inside a row. */
   readonly prefix: string;
+  readonly upload: UploadFile | undefined;
 }
 
 /**
@@ -346,8 +354,17 @@ export function Form(props: FormProps): ReactNode {
   };
 
   const ctx = useMemo<FormweaveContextValue>(
-    () => ({ form, store, renderers, locale, fallback, idPrefix, prefix: "" }),
-    [form, store, renderers, locale, fallback, idPrefix],
+    () => ({
+      form,
+      store,
+      renderers,
+      locale,
+      fallback,
+      idPrefix,
+      prefix: "",
+      upload: props.upload,
+    }),
+    [form, store, renderers, locale, fallback, idPrefix, props.upload],
   );
 
   const showStepHeading = layout === "classic" || firstOfStep;
@@ -618,7 +635,7 @@ function ControlledField(p: {
   state: FieldState;
   Renderer: NonNullable<ReturnType<RendererMap["get"]>>;
 }): ReactNode {
-  const { form, locale, fallback } = useFormweave();
+  const { form, locale, fallback, upload } = useFormweave();
   const { control } = useFormContext();
   const { field: rhf, fieldState } = useController({ name: p.name, control });
   const field = form.fields.get(p.fieldKey);
@@ -639,6 +656,7 @@ function ControlledField(p: {
       onChange={rhf.onChange}
       onBlur={rhf.onBlur}
       inputRef={rhf.ref}
+      upload={upload}
     />
   );
 }

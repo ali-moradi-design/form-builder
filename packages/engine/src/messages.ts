@@ -44,6 +44,9 @@ export const en: MessageCatalog = {
   tooManyRows: "Use at most {max} rows.",
   incompleteRanking: "Put every option in order.",
   incompleteRows: "Answer every row.",
+  fileTooBig: "This file is too big.",
+  fileType: "This type of file is not allowed here.",
+  fileMissing: "This file was not received. Upload it again.",
 };
 
 /**
@@ -80,6 +83,9 @@ export const fa: MessageCatalog = {
   tooManyRows: "حداکثر {max} ردیف می‌توانید داشته باشید.",
   incompleteRanking: "همهٔ گزینه‌ها را مرتب کنید.",
   incompleteRows: "به همهٔ ردیف‌ها پاسخ دهید.",
+  fileTooBig: "حجم این فایل بیش از حد مجاز است.",
+  fileType: "این نوع فایل اینجا پذیرفته نمی‌شود.",
+  fileMissing: "این فایل به دست ما نرسید. دوباره بارگذاری کنید.",
 };
 
 /**
