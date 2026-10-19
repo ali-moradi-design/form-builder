@@ -261,3 +261,28 @@ export function updateForm(
     out = withProp(out, k as keyof FormDocument, v as never);
   return out;
 }
+
+/**
+ * Copies a field (with its children) right after itself, giving every copy a
+ * new key. Returns the new document and the key of the copy.
+ */
+export function duplicateField(
+  doc: FormDocument,
+  key: string,
+): { readonly doc: FormDocument; readonly key: string } {
+  const found = findField(doc, key);
+  if (!found) return { doc, key };
+  let current = doc;
+  const copy = (f: FieldNode): FieldNode => {
+    const newKey = uniqueKey(current, f.key);
+    // Reserve the key so nested copies don't pick the same one.
+    current = { ...current, steps: [...current.steps, { key: newKey, fields: [] }] };
+    return { ...f, key: newKey, ...(f.fields ? { fields: f.fields.map(copy) } : {}) };
+  };
+  const clone = copy(found.field);
+  const { step, parent, index } = found.place;
+  return {
+    doc: editList(doc, step, parent, (list) => insertAt(list, index + 1, clone)),
+    key: clone.key,
+  };
+}

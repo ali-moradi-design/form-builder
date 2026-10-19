@@ -3,6 +3,7 @@ import { parseFormDocument } from "@formweave/schema/meta";
 import { describe, expect, it } from "vitest";
 import {
   addStep,
+  duplicateField,
   allFields,
   findField,
   insertField,
@@ -144,5 +145,20 @@ describe("form commands", () => {
     expect(keys(removed)).toEqual(["address", "city"]);
     expect(valid(removed)).toBe(true);
     expect(removeStep(removed, "two")).toBe(removed);
+  });
+
+  it("duplicates a field with new keys after itself", () => {
+    const out = duplicateField(doc, "address");
+    expect(out.key).toBe("address2");
+    expect(keys(out.doc)).toEqual([
+      "name",
+      "plan",
+      "seats",
+      "address",
+      "city",
+      "address2",
+      "city2",
+    ]);
+    expect(valid(out.doc)).toBe(true);
   });
 });

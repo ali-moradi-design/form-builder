@@ -1,6 +1,6 @@
-import { FormPreviewPage } from "@/views/form-preview";
+import { FormBuilder } from "@/views/form-builder";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  return <FormPreviewPage id={id} />;
+  return <FormBuilder id={id} />;
 }

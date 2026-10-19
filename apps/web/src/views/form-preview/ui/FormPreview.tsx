@@ -1,15 +1,13 @@
 "use client";
 
-import { createRegistry } from "@formweave/engine";
-import { allFields } from "@formweave/engine/fields/all";
-import { createRenderers, Form, type Values } from "@formweave/react";
-import { basicRenderers } from "@formweave/react/fields";
+import { Form, type Values } from "@formweave/react";
+import { PencilRuler } from "lucide-react";
+import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { useDraft } from "@/entities/form";
-
-const registry = createRegistry(allFields);
-const renderers = createRenderers(basicRenderers);
+import { registry, renderers } from "@/shared/formweave";
+import { Button } from "@/shared/ui";
 
 /** Fills in a draft with the real renderer and shows the submitted data. */
 export function FormPreview({ id }: { id: string }) {
@@ -32,7 +30,13 @@ export function FormPreview({ id }: { id: string }) {
           }}
         />
       </section>
-      <section className="rounded-[14px] border border-line bg-surface p-6 shadow-xs">
+      <section className="flex flex-col gap-3 rounded-[14px] border border-line bg-surface p-6 shadow-xs">
+        <Button asChild className="self-start">
+          <Link href={`/forms/${id}`}>
+            <PencilRuler size={15} aria-hidden />
+            {t("edit")}
+          </Link>
+        </Button>
         <h2 className="mb-2 text-[15px] font-semibold">{t("submitted")}</h2>
         <pre className="text-[13px] whitespace-pre-wrap" dir="ltr">
           {data ? JSON.stringify(data, null, 2) : "—"}

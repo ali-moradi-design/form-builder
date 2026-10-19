@@ -37,12 +37,15 @@ export interface BuilderHistory {
   readonly subscribe: (listener: () => void) => () => void;
 }
 
-/** A builder store with its history and a way to stop autosave. */
+/** A builder store with its history and autosave. */
 export interface Builder {
   readonly store: StoreApi<BuilderState>;
   readonly history: BuilderHistory;
-  /** Saves any pending change now and stops autosave. */
-  readonly dispose: () => void;
+  /**
+   * Starts autosave. Returns a function that saves any pending change and
+   * stops it; calling `start` again restarts it (React effects in strict mode).
+   */
+  readonly start: () => () => void;
 }
 
 /** Options of {@link createBuilder}. */
@@ -108,12 +111,27 @@ export function createBuilder(initial: FormDocument, options: BuilderOptions): B
       store.setState({ saveState: "invalid" });
     }
   };
-  const unsubscribe = store.subscribe((state, prev) => {
-    if (state.doc === prev.doc) return;
-    if (state.saveState !== "pending") store.setState({ saveState: "pending" });
-    clearTimeout(timer);
-    timer = setTimeout(flush, delay);
-  });
+  const start = (): (() => void) => {
+    const unsubscribe = store.subscribe((state, prev) => {
+      if (state.doc === prev.doc) return;
+      if (state.saveState !== "pending") store.setState({ saveState: "pending" });
+      clearTimeout(timer);
+      timer = setTimeout(flush, delay);
+    });
+    const flushNow = (): void => {
+      if (timer === undefined) return;
+      clearTimeout(timer);
+      flush();
+    };
+    // Leaving or reloading the page must not lose the last edit.
+    const hasWindow = typeof window !== "undefined";
+    if (hasWindow) window.addEventListener("pagehide", flushNow);
+    return () => {
+      unsubscribe();
+      if (hasWindow) window.removeEventListener("pagehide", flushNow);
+      flushNow();
+    };
+  };
   const temporalApi = store.temporal;
   // An undo or redo ends the current typing group.
   const history: BuilderHistory = {
@@ -130,15 +148,5 @@ export function createBuilder(initial: FormDocument, options: BuilderOptions): B
     subscribe: (listener) => temporalApi.subscribe(listener),
   };
 
-  return {
-    store,
-    history,
-    dispose: () => {
-      unsubscribe();
-      if (timer !== undefined) {
-        clearTimeout(timer);
-        flush();
-      }
-    },
-  };
+  return { store, history, start };
 }
