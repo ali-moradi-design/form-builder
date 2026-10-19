@@ -11,10 +11,11 @@ Short log of what the user agreed. Newest first.
   repeater's row cards and buttons need about 150 bytes, and the remaining
   0.6 fields (uploads, matrix, ranking) will need more.
 
-- 2026-10-19: The `allRenderers` budget is 9 KB brotli (was 4 KB, then
-  6 KB). It grows with every field type in 0.6 (the choice fields alone
-  added about 1.5 KB); apps that care about size import single renderers,
-  whose budgets stay as they are.
+- 2026-10-19: The `allRenderers` budget is 12 KB brotli (was 4, 6, then
+  9 KB). It is the cost of every field type at once and grows with each one
+  in 0.6 (choice fields about 1.5 KB, uploads about 2 KB); apps that care
+  about size import single renderers, whose budgets stay as they are. To be
+  looked at again for 1.0.
 
 - 2026-10-19: The default stylesheet budget is 2.5 KB gzip (was 2 KB): the
   0.6 fields (stars, NPS scale, slider, headings) need about 330 bytes more.

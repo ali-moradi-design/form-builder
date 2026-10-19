@@ -6,7 +6,7 @@ import type { FormDocument, Locale } from "@formweave/schema";
 import { CircleCheck, Heart, Languages } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
-import { registry, renderers } from "@/shared/formweave";
+import { registry, renderers, uploadTo } from "@/shared/formweave";
 import { Button, LogoMark } from "@/shared/ui";
 
 /** Result of submitting, as returned by the server. */
@@ -36,6 +36,7 @@ export function HostedForm({
   const [failed, setFailed] = useState<string | false>(false);
   const [round, setRound] = useState(0);
   const trap = useRef<HTMLInputElement>(null);
+  const [upload] = useState(() => uploadTo(slug));
   const next = supported[(supported.indexOf(locale) + 1) % supported.length] ?? locale;
   const dir = isRtl(locale) ? "rtl" : "ltr";
 
@@ -87,6 +88,7 @@ export function HostedForm({
               layout="focus"
               defaultValues={defaultValues}
               className="fw-form fw-hosted"
+              upload={upload}
               onSubmit={async (values) => {
                 setFailed(false);
                 const result = await submit(slug, values, locale, trap.current?.value ?? "");

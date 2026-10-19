@@ -1,6 +1,7 @@
 import type { FormDocument } from "@formweave/schema";
 import {
   boolean,
+  customType,
   index,
   integer,
   jsonb,
@@ -166,4 +167,34 @@ export const webhookDelivery = pgTable(
     createdAt: created(),
   },
   (t) => [index("webhook_delivery_idx").on(t.webhookId, t.createdAt)],
+);
+
+/** Raw bytes (Postgres `bytea`). */
+const bytes = customType<{ data: Uint8Array; driverData: Uint8Array }>({
+  dataType: () => "bytea",
+});
+
+/**
+ * A file sent with a form. It is pending (no response) until a submission
+ * names it; pending files older than a day are removed.
+ */
+export const upload = pgTable(
+  "upload",
+  {
+    id: text("id").primaryKey(),
+    formId: text("form_id")
+      .notNull()
+      .references(() => form.id, { onDelete: "cascade" }),
+    fieldKey: text("field_key").notNull(),
+    responseId: text("response_id").references(() => response.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    type: text("type").notNull(),
+    size: integer("size").notNull(),
+    data: bytes("data").notNull(),
+    createdAt: created(),
+  },
+  (t) => [
+    index("upload_form_idx").on(t.formId, t.createdAt),
+    index("upload_response_idx").on(t.responseId),
+  ],
 );

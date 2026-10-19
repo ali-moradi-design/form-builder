@@ -14,10 +14,13 @@ interface Row {
   readonly locale: string | null;
   readonly createdAt: string;
   readonly cells: Readonly<Record<string, string>>;
+  /** Files of file, image and signature answers, by column. */
+  readonly files?: Readonly<Record<string, readonly { id: string; name: string }[]>>;
 }
 
 /** A page of responses with column choice, selection and delete. */
 export function ResponsesTable({
+  formId,
   onDelete,
   columns,
   rows,
@@ -26,6 +29,7 @@ export function ResponsesTable({
   total,
   first,
 }: {
+  formId: string;
   onDelete: (ids: string[]) => Promise<number>;
   columns: readonly { key: string; label: string }[];
   rows: readonly Row[];
@@ -265,7 +269,24 @@ export function ResponsesTable({
                     <div key={c.key} className="grid gap-0.5">
                       <dt className="text-[12.5px] text-ink-2">{c.label}</dt>
                       <dd className="text-[14px] whitespace-pre-wrap" dir="auto">
-                        {open.cells[c.key] || <span className="text-ink-3">—</span>}
+                        {open.files?.[c.key]?.length ? (
+                          <ul className="flex flex-col gap-1">
+                            {open.files[c.key]?.map((f) => (
+                              <li key={f.id}>
+                                <a
+                                  href={`/forms/${formId}/responses/files/${f.id}`}
+                                  className="text-primary-fg underline underline-offset-2"
+                                  target="_blank"
+                                  rel="noopener"
+                                >
+                                  {f.name}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          open.cells[c.key] || <span className="text-ink-3">—</span>
+                        )}
                       </dd>
                     </div>
                   ))}

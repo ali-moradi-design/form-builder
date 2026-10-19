@@ -55,7 +55,8 @@
       "choice": "Choice",
       "dateTime": "Date and time",
       "structure": "Structure",
-      "color": "Colour"
+      "color": "Colour",
+      "files": "Files"
     },
     "add": "Add {type}",
     "newField": "New question",
@@ -195,7 +196,15 @@
     "matrixColumns": "Columns",
     "multiple": "Allow several answers",
     "maxTags": "Most tags",
-    "everyRow": "Every row needs an answer"
+    "everyRow": "Every row needs an answer",
+    "accept": "Allowed files",
+    "acceptHelp": "Extensions or types, for example .pdf, image/*. Empty allows any file.",
+    "maxFiles": "Most files",
+    "maxSizeMb": "Largest file (MB)",
+    "crop": "Crop",
+    "crop_square": "Square",
+    "crop_none": "Keep the whole picture",
+    "imageSize": "Saved size (pixels)"
   },
   "fieldTypes": {
     "shortText": "Short text",
@@ -231,7 +240,10 @@
     "tags": "Tags",
     "ranking": "Ranking",
     "imageChoice": "Picture choice",
-    "matrix": "Matrix"
+    "matrix": "Matrix",
+    "file": "File upload",
+    "imageUpload": "Photo",
+    "signature": "Signature"
   },
   "languages": {
     "en": "English",

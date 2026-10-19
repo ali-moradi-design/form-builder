@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { FieldDefinition } from "../registry.js";
 import {
+  acceptsFile,
   color,
   colorSet,
   combobox,
@@ -8,8 +9,10 @@ import {
   currencyDigits,
   dateRange,
   dateTime,
+  file,
   hidden,
   imageChoice,
+  imageUpload,
   matrix,
   multiSelect,
   normalizeHex,
@@ -19,6 +22,7 @@ import {
   rangeSlider,
   ranking,
   rating,
+  signature,
   slider,
   tags,
   time,
@@ -173,5 +177,29 @@ describe("more choice fields", () => {
     expect(issues(matrix, { ...grid, everyRow: false }, { talks: "1" })).toEqual([]);
     expect(issues(matrix, grid, { talks: "9", venue: "1" })).toEqual(["invalidOption"]);
     expect(matrix.isEmpty?.({})).toBe(true);
+  });
+});
+
+describe("file fields", () => {
+  const pdf = { id: "u1", name: "talk.PDF", size: 1000, type: "application/pdf" };
+  const jpg = { id: "u2", name: "me.jpg", size: 2000, type: "image/jpeg" };
+  it("matches accept lists", () => {
+    expect(acceptsFile([".pdf"], pdf)).toBe(true);
+    expect(acceptsFile(["image/*"], jpg)).toBe(true);
+    expect(acceptsFile(["image/png"], jpg)).toBe(false);
+    expect(acceptsFile(undefined, jpg)).toBe(true);
+  });
+  it("checks count, size and type", () => {
+    expect(issues(file, { accept: [".pdf", "image/*"], maxFiles: 2 }, [pdf, jpg])).toEqual([]);
+    expect(issues(file, {}, [pdf, jpg])).toEqual(["tooMany"]);
+    expect(issues(file, { maxSize: 500 }, [pdf])).toEqual(["fileTooBig"]);
+    expect(issues(file, { accept: ["image/*"] }, [pdf])).toEqual(["fileType"]);
+    expect(issues(file, {}, [{ id: "", name: "x", size: 1, type: "" }])).toEqual(["invalidType"]);
+  });
+  it("image and signature want images", () => {
+    expect(issues(imageUpload, {}, jpg)).toEqual([]);
+    expect(issues(imageUpload, {}, pdf)).toEqual(["fileType"]);
+    expect(issues(signature, {}, { ...jpg, type: "image/png", name: "s.png" })).toEqual([]);
+    expect(issues(signature, {}, jpg)).toEqual(["fileType"]);
   });
 });

@@ -1,4 +1,5 @@
 import type { CompiledField, FieldState } from "@formweave/engine";
+import type { FileRef } from "@formweave/engine/fields";
 import type { Locale } from "@formweave/schema";
 import type { ComponentType, ReactNode, Ref } from "react";
 
@@ -50,7 +51,23 @@ export interface FieldRendererProps {
   readonly children?: ReactNode;
   /** Row controls, for row types such as repeaters. */
   readonly rows?: RowsApi | undefined;
+  /** Stores a file and returns its reference, from the form's `upload` prop. */
+  readonly upload?: UploadFile | undefined;
 }
+
+/**
+ * Stores one file (on your server, a storage bucket, …) and returns its
+ * reference. Called by file, image and signature fields.
+ *
+ * @param file - The file or image to store.
+ * @param info - The field key and a callback for progress from 0 to 1.
+ * @returns The stored file's reference; `url` may be added for previews.
+ * @since 0.6.0
+ */
+export type UploadFile = (
+  file: Blob & { readonly name?: string },
+  info: { readonly field: string; readonly onProgress?: (done: number) => void },
+) => Promise<FileRef & { readonly url?: string }>;
 
 /**
  * What a row type's renderer (such as a repeater) gets to draw its rows.

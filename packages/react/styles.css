@@ -675,4 +675,93 @@
   .fw-picture input {
     accent-color: var(--fw-primary);
   }
+  .fw-drop {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    padding: 24px 16px;
+    border: 1.5px dashed var(--fw-line);
+    border-radius: var(--fw-radius);
+    background: var(--fw-surface-2);
+    text-align: center;
+    cursor: pointer;
+  }
+  .fw-drop u {
+    color: var(--fw-primary);
+  }
+  .fw-drop[data-over],
+  .fw-drop:focus-within {
+    border-color: var(--fw-primary);
+  }
+  .fw-drop[data-disabled] {
+    opacity: 0.5;
+    cursor: default;
+  }
+  .fw-files {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .fw-files li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid var(--fw-line);
+    border-radius: var(--fw-radius);
+  }
+  .fw-file-name {
+    display: grid;
+    flex: 1;
+    gap: 2px;
+    overflow-wrap: anywhere;
+  }
+  .fw-files progress {
+    inline-size: 100%;
+    accent-color: var(--fw-primary);
+  }
+  .fw-crop {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .fw-crop canvas {
+    border-radius: var(--fw-radius);
+    touch-action: none;
+    cursor: grab;
+  }
+  .fw-crop canvas[data-round],
+  .fw-photo[data-round] {
+    border-radius: 50%;
+  }
+  .fw-crop-tools {
+    display: grid;
+    flex: 1;
+    align-content: start;
+    gap: 10px;
+    min-inline-size: 200px;
+  }
+  .fw-photo {
+    inline-size: 64px;
+    block-size: 64px;
+    object-fit: cover;
+    border-radius: var(--fw-radius);
+  }
+  .fw-signature {
+    inline-size: 100%;
+    block-size: auto;
+    border: 1px solid var(--fw-line);
+    border-radius: var(--fw-radius);
+    background: var(--fw-surface);
+    touch-action: none;
+  }
+  .fw-tags .fw-help {
+    flex: 1;
+  }
+  label.fw-button {
+    display: inline-flex;
+    align-items: center;
+  }
 }

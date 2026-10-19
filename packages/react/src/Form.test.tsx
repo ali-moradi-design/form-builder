@@ -503,4 +503,71 @@ describe("<Form>", () => {
       });
     });
   });
+
+  it("uploads files through the upload prop and checks them first", async () => {
+    const user = userEvent.setup({ applyAccept: false });
+    const onSubmit = vi.fn();
+    let n = 0;
+    const upload = vi.fn((file: Blob & { name?: string }) => {
+      n++;
+      return Promise.resolve({
+        id: `f${String(n)}`,
+        name: file.name ?? "file",
+        size: file.size,
+        type: file.type,
+      });
+    });
+    const docs: FormDocument = {
+      ...doc,
+      steps: [
+        {
+          key: "main",
+          fields: [
+            {
+              type: "file",
+              key: "slides",
+              label: "Slides",
+              required: true,
+              settings: { accept: [".pdf"], maxFiles: 2, maxSize: 100 },
+            },
+            { type: "signature", key: "sign", label: "Sign" },
+          ],
+        },
+      ],
+    };
+    const { rerender } = render(
+      <Form
+        schema={docs}
+        registry={registry}
+        renderers={createRenderers(allRenderers)}
+        onSubmit={onSubmit}
+      />,
+    );
+    expect(screen.getAllByText("Uploads are not available in this form.")).toHaveLength(2);
+    rerender(
+      <Form
+        schema={docs}
+        registry={registry}
+        renderers={createRenderers(allRenderers)}
+        onSubmit={onSubmit}
+        upload={upload}
+      />,
+    );
+    const input = screen.getByLabelText(/^Slides/);
+    await user.upload(input, [
+      new File(["x".repeat(500)], "big.pdf", { type: "application/pdf" }),
+      new File(["%PDF"], "talk.pdf", { type: "application/pdf" }),
+    ]);
+    expect(await screen.findByText("big.pdf is too big.")).toBeTruthy();
+    await screen.findByText(/Saved/);
+    expect(upload).toHaveBeenCalledTimes(1);
+    await user.upload(input, new File(["hi"], "notes.txt", { type: "text/plain" }));
+    expect(await screen.findByText("notes.txt is not an allowed type.")).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        slides: [{ id: "f1", name: "talk.pdf", size: 4, type: "application/pdf" }],
+      });
+    });
+  });
 });

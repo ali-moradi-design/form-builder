@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import type { FormDocument } from "@formweave/schema";
-import { registry, renderers } from "@/shared/formweave";
+import { previewUpload, registry, renderers } from "@/shared/formweave";
 import { Button } from "@/shared/ui";
 
 /** Fills in a draft with the real renderer and shows the submitted data. */
@@ -23,6 +23,7 @@ export function FormPreview({ id, document }: { id: string; document: FormDocume
           renderers={renderers}
           locale={document.locales.supported?.includes(locale) ? locale : undefined}
           layout="focus"
+          upload={previewUpload}
           onSubmit={(values) => {
             setData(values);
           }}

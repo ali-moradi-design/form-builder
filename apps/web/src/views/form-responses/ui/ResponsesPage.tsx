@@ -1,7 +1,14 @@
 import { resolveText } from "@formweave/engine/i18n";
 import { getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { deleteMyResponses, formatAnswer, parseFilter, responseColumns } from "@/entities/response";
+import {
+  deleteMyResponses,
+  FILE_TYPES,
+  filesOf,
+  formatAnswer,
+  parseFilter,
+  responseColumns,
+} from "@/entities/response";
 import { getUser } from "@/shared/auth";
 import { getDb, getForm, listResponses, listVersions } from "@/shared/db";
 import { AppShell } from "@/widgets/app-shell";
@@ -71,6 +78,7 @@ export async function ResponsesPage({ id, query }: { id: string; query: Response
         </p>
       ) : (
         <ResponsesTable
+          formId={id}
           onDelete={async (ids) => {
             "use server";
             return deleteMyResponses(id, ids);
@@ -83,6 +91,11 @@ export async function ResponsesPage({ id, query }: { id: string; query: Response
             createdAt: r.createdAt.toISOString(),
             cells: Object.fromEntries(
               columns.map((c) => [c.key, formatAnswer(c, r.data[c.key], yesNo)]),
+            ),
+            files: Object.fromEntries(
+              columns
+                .filter((c) => FILE_TYPES.has(c.type))
+                .map((c) => [c.key, filesOf(r.data[c.key])]),
             ),
           }))}
           page={page}

@@ -55,7 +55,8 @@
       "choice": "گزینه‌ای",
       "dateTime": "تاریخ و زمان",
       "structure": "ساختار",
-      "color": "رنگ"
+      "color": "رنگ",
+      "files": "فایل‌ها"
     },
     "add": "افزودن {type}",
     "newField": "پرسش تازه",
@@ -195,7 +196,15 @@
     "matrixColumns": "ستون‌ها",
     "multiple": "چند پاسخ مجاز باشد",
     "maxTags": "بیشترین تعداد برچسب",
-    "everyRow": "همهٔ ردیف‌ها پاسخ لازم دارند"
+    "everyRow": "همهٔ ردیف‌ها پاسخ لازم دارند",
+    "accept": "فایل‌های مجاز",
+    "acceptHelp": "پسوند یا نوع فایل؛ مثلاً ‎.pdf‎ یا ‎image/*‎. خالی یعنی هر فایلی.",
+    "maxFiles": "بیشترین تعداد فایل",
+    "maxSizeMb": "بزرگ‌ترین فایل (مگابایت)",
+    "crop": "برش",
+    "crop_square": "مربعی",
+    "crop_none": "کل تصویر بماند",
+    "imageSize": "اندازهٔ ذخیره (پیکسل)"
   },
   "fieldTypes": {
     "shortText": "متن کوتاه",
@@ -231,7 +240,10 @@
     "tags": "برچسب‌ها",
     "ranking": "رتبه‌بندی",
     "imageChoice": "انتخاب تصویری",
-    "matrix": "ماتریس"
+    "matrix": "ماتریس",
+    "file": "بارگذاری فایل",
+    "imageUpload": "عکس",
+    "signature": "امضا"
   },
   "languages": {
     "en": "English",

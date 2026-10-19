@@ -67,6 +67,18 @@ export function responseColumns(
   return out;
 }
 
+/** Whether a value is a stored file's reference (`{ id, name, size, type }`). */
+export const isFileRef = (v: unknown): v is { id: string; name: string } =>
+  v !== null &&
+  typeof v === "object" &&
+  typeof (v as { id?: unknown }).id === "string" &&
+  typeof (v as { name?: unknown }).name === "string" &&
+  typeof (v as { size?: unknown }).size === "number";
+
+/** The files of an answer, for download links. */
+export const filesOf = (v: unknown): { id: string; name: string }[] =>
+  (Array.isArray(v) ? v : [v]).filter(isFileRef).map((f) => ({ id: f.id, name: f.name }));
+
 /** An answer as plain text for tables and CSV: option labels, lists joined, yes/no. */
 export function formatAnswer(
   column: ResponseColumn | undefined,
@@ -80,6 +92,9 @@ export function formatAnswer(
     return JSON.stringify(v);
   };
   if (typeof value === "boolean") return value ? yesNo[0] : yesNo[1];
+  if (isFileRef(value)) return value.name;
+  if (Array.isArray(value) && value.length > 0 && value.every(isFileRef))
+    return value.map((f) => f.name).join(", ");
   if (Array.isArray(value)) {
     // Repeater rows: "Sara / 34; Nima / 9".
     if (value.some((v) => v !== null && typeof v === "object" && !Array.isArray(v)))

@@ -80,5 +80,10 @@ describe("response columns", () => {
       rows: new Map([["talks", "Talks"]]),
     };
     expect(formatAnswer(grid, { talks: "2", venue: "1" })).toBe("Talks: Good; venue: Poor");
+    const pdf = { id: "f1", name: "talk.pdf", size: 10, type: "application/pdf" };
+    expect(formatAnswer(undefined, [pdf, { ...pdf, id: "f2", name: "b.pdf" }])).toBe(
+      "talk.pdf, b.pdf",
+    );
+    expect(formatAnswer(undefined, pdf)).toBe("talk.pdf");
   });
 });

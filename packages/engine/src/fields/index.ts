@@ -37,3 +37,5 @@ export type {
   MatrixSettings,
   TagsSettings,
 } from "./choice-more.js";
+export { acceptsFile, file, imageUpload, signature } from "./files.js";
+export type { FileRef, FileSettings, ImageUploadSettings } from "./files.js";

@@ -48,6 +48,32 @@ Issue codes are the engine's codes (`required`, `tooShort`, `invalidOption`,
   `{ "id": null, "version": null }` and nothing is stored. The hosted page
   has a hidden field for this that people never see.
 
+## Upload files
+
+File, photo and signature fields hold references to stored files. Upload
+each file first, then send its reference in the answers.
+
+`POST /api/forms/<slug>/uploads?field=<key>` with `multipart/form-data` and
+one `file` part. `key` is the field's key (also inside repeater rows).
+
+| Status | Body                                         | When                                            |
+| ------ | -------------------------------------------- | ----------------------------------------------- |
+| 201    | `{ "id", "name", "size", "type" }`           | Stored, waiting for answers that name it        |
+| 400    | `{ "error": "noFile" }`                      | No `file` part                                  |
+| 404    | `{ "error": "notFound" }`                    | No published form, or no file field `key`       |
+| 413    | `{ "error": "tooLarge" }`                    | Bigger than the field allows                    |
+| 415    | `{ "error": "fileType" }`                    | A type the field refuses, or the bytes disagree |
+| 429    | `{ "error": "rateLimited" }` + `Retry-After` | Over 30 uploads per minute per address and form |
+
+The server checks size and type against the field. Images and PDFs are
+recognised from their bytes, so a PNG named `talk.pdf` is refused. Put the
+returned object in the answers, for example `"slides": [{ "id": "…", … }]`.
+When the answers arrive, each reference must be a file uploaded for that
+form and field and not used by another response; otherwise the issue code is
+`fileMissing`. Name, size and type are taken from storage. Files never named
+by a response are removed after a day. Owners download files from the
+response's detail view; anything but plain images is sent as a download.
+
 ## Webhooks
 
 Owners add up to five webhook URLs per form on the form's **Integrations**

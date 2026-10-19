@@ -22,6 +22,8 @@ const PLACEHOLDER_TYPES = new Set([
 const NO_REQUIRED = new Set(["group", "heading", "paragraph", "divider", "hidden", "calculated"]);
 const COUNTRY = /^[1-9]\d{0,3}$/;
 const PARAM = /^[\w.-]{1,64}$/;
+const MB = 1024 * 1024;
+
 const CHOICE_TYPES = new Set([
   "select",
   "radio",
@@ -149,6 +151,26 @@ export function fieldSettingsDocument(
     addNumber("maxSelected", t("maxSelected"));
   } else if (node.type === "tags") {
     addNumber("maxTags", t("maxTags"));
+  } else if (node.type === "file") {
+    fields.push({ type: "shortText", key: "accept", label: t("accept"), help: t("acceptHelp") });
+    values.accept = Array.isArray(s.accept) ? (s.accept as string[]).join(", ") : undefined;
+    addNumber("maxFiles", t("maxFiles"));
+    fields.push(settingNumber("maxSizeMb", t("maxSizeMb"), false));
+    values.maxSizeMb = typeof s.maxSize === "number" ? s.maxSize / MB : undefined;
+  } else if (node.type === "imageUpload") {
+    fields.push({
+      type: "radio",
+      key: "crop",
+      label: t("crop"),
+      settings: {
+        options: (["square", "none"] as const).map((value) => ({
+          value,
+          label: t(`crop_${value}`),
+        })),
+      },
+    });
+    values.crop = s.crop === "none" ? "none" : "square";
+    addNumber("size", t("imageSize"));
   } else if (node.type === "matrix") {
     fields.push({ type: "switch", key: "everyRow", label: t("everyRow") });
     values.everyRow = s.everyRow !== false;
@@ -286,6 +308,28 @@ export function fieldPatch(
     set("minSelected", whole(values.minSelected));
     set("maxSelected", whole(values.maxSelected));
     if (node.type === "imageChoice") set("multiple", values.multiple === true ? true : undefined);
+  } else if (node.type === "file") {
+    const accept = str(values.accept)
+      ?.split(/[,،\s]+/)
+      .map((a) => a.trim())
+      .filter(Boolean);
+    set("accept", accept?.length ? accept : undefined);
+    const files = num(values.maxFiles);
+    set(
+      "maxFiles",
+      files !== undefined && Number.isInteger(files) && files >= 1 && files <= 20
+        ? files
+        : undefined,
+    );
+    const mb = num(values.maxSizeMb);
+    set("maxSize", mb !== undefined && mb > 0 && mb <= 50 ? Math.round(mb * MB) : undefined);
+  } else if (node.type === "imageUpload") {
+    set("crop", values.crop === "none" ? "none" : undefined);
+    const size = num(values.size);
+    set(
+      "size",
+      size !== undefined && Number.isInteger(size) && size >= 64 && size <= 4096 ? size : undefined,
+    );
   } else if (node.type === "tags") {
     const n = num(values.maxTags);
     set("maxTags", n !== undefined && Number.isInteger(n) && n >= 1 && n <= 100 ? n : undefined);
