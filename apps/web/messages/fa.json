@@ -126,7 +126,12 @@
     "minColors": "کمترین تعداد رنگ",
     "maxColors": "بیشترین تعداد رنگ",
     "currency": "کد واحد پول",
-    "currencyHelp": "سه حرف لاتین؛ مثلاً USD، EUR یا IRR."
+    "currencyHelp": "سه حرف لاتین؛ مثلاً USD، EUR یا IRR.",
+    "minRows": "کمترین تعداد ردیف",
+    "maxRows": "بیشترین تعداد ردیف",
+    "rowLabel": "نام هر ردیف",
+    "repeaterHint": "هر پاسخ چند ردیف از این پرسش‌ها دارد.",
+    "emptyRepeater": "پرسش‌های هر ردیف را اینجا رها کنید"
   },
   "fieldTypes": {
     "shortText": "متن کوتاه",
@@ -154,7 +159,8 @@
     "colorSet": "مجموعهٔ رنگ",
     "currency": "مبلغ",
     "rangeSlider": "اسلایدر بازه",
-    "dateRange": "بازهٔ تاریخ"
+    "dateRange": "بازهٔ تاریخ",
+    "repeater": "تکرارشونده"
   },
   "languages": {
     "en": "English",

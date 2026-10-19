@@ -8,7 +8,7 @@ import {
   uniqueKey,
   type FieldPlace,
 } from "@/entities/form";
-import type { FieldTypeInfo } from "@/shared/config";
+import { CONTAINER_TYPES, type FieldTypeInfo } from "@/shared/config";
 import type { StoreApi } from "zustand/vanilla";
 import type { BuilderState, Selection } from "./store";
 
@@ -18,7 +18,7 @@ type Store = StoreApi<BuilderState>;
 export function placeForNew(doc: FormDocument, selection: Selection): FieldPlace {
   if (selection.kind === "field") {
     const found = findField(doc, selection.key);
-    if (found?.field.type === "group") {
+    if (found && CONTAINER_TYPES.has(found.field.type)) {
       return {
         step: found.place.step,
         parent: found.field.key,

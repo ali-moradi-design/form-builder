@@ -16,7 +16,8 @@ export interface ResponseColumn {
 
 function* answerFields(fields: readonly FieldNode[]): Generator<FieldNode> {
   for (const f of fields) {
-    if (f.fields) yield* answerFields(f.fields);
+    // A repeater is one answer (its rows); a group only holds other answers.
+    if (f.fields && f.type !== "repeater") yield* answerFields(f.fields);
     else if (!DISPLAY_TYPES.has(f.type)) yield f;
   }
 }
@@ -74,7 +75,18 @@ export function formatAnswer(
     return JSON.stringify(v);
   };
   if (typeof value === "boolean") return value ? yesNo[0] : yesNo[1];
-  if (Array.isArray(value)) return value.map(label).join(", ");
+  if (Array.isArray(value)) {
+    // Repeater rows: "Sara / 34; Nima / 9".
+    if (value.some((v) => v !== null && typeof v === "object" && !Array.isArray(v)))
+      return value
+        .map((row) =>
+          Object.values(row as Record<string, unknown>)
+            .map((v) => formatAnswer(undefined, v, yesNo))
+            .join(" / "),
+        )
+        .join("; ");
+    return value.map(label).join(", ");
+  }
   if (typeof value === "object" && ("from" in value || "to" in value)) {
     // A range: "start – end", with an empty end left blank.
     const r = value as { from?: unknown; to?: unknown };

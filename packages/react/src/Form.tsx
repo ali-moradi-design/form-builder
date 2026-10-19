@@ -23,12 +23,15 @@ import {
 import {
   FormProvider,
   useController,
+  useFieldArray,
   useForm,
   useFormContext,
+  useFormState,
+  useWatch,
   type FieldErrors,
   type Resolver,
 } from "react-hook-form";
-import type { RendererMap } from "./renderers.js";
+import type { RendererMap, RowsApi } from "./renderers.js";
 import { createStateStore, type StateStore } from "./store.js";
 
 /**
@@ -151,7 +154,31 @@ interface FormweaveContextValue {
   readonly locale: Locale;
   readonly fallback: Locale;
   readonly idPrefix: string;
+  /** Prefix of value names: `""` at the top, `"people.0."` inside a row. */
+  readonly prefix: string;
 }
+
+/** Reads a value at a dot path such as `people.0.name`. */
+const getPath = (obj: unknown, path: string): unknown =>
+  path
+    .split(".")
+    .reduce<unknown>(
+      (o, k) =>
+        o !== null && typeof o === "object" ? (o as Record<string, unknown>)[k] : undefined,
+      obj,
+    );
+
+/** Writes a value at a dot path, creating objects on the way. */
+const setPath = (obj: Record<string, unknown>, path: string, value: unknown): void => {
+  const parts = path.split(".");
+  const last = parts.pop() ?? path;
+  let o = obj;
+  for (const k of parts) {
+    const next = o[k];
+    o = (next !== null && typeof next === "object" ? next : (o[k] = {})) as Record<string, unknown>;
+  }
+  o[last] = value;
+};
 
 /** Field types that have nothing to answer in the focus layout. */
 const NO_PAGE = new Set(["hidden", "divider"]);
@@ -224,14 +251,15 @@ export function Form(props: FormProps): ReactNode {
     (values, _context, options) => {
       const result = validate(form, values, { state: store.get() });
       if (result.success) return { values: { ...result.data }, errors: {} };
-      const names = options.names ? new Set<string>(options.names) : undefined;
+      const names = options.names;
       const errors: FieldErrors<Values> = {};
       for (const issue of result.issues) {
-        if (names && !names.has(issue.key)) continue;
-        errors[issue.key] = {
+        // A name also covers the rows inside it ("people" covers "people.0.name").
+        if (names && !names.some((n) => issue.key === n || issue.key.startsWith(`${n}.`))) continue;
+        setPath(errors, issue.key, {
           type: issue.code,
           message: formatIssue(issue, messages, locale, digits),
-        };
+        });
       }
       if (names && Object.keys(errors).length === 0) return { values, errors: {} };
       return { values: {}, errors };
@@ -248,7 +276,8 @@ export function Form(props: FormProps): ReactNode {
 
   useEffect(() => {
     const sub = methods.watch((values, { name }) => {
-      store.update(values, name ? [name] : undefined);
+      // A change inside a row ("people.0.name") changes the row field "people".
+      store.update(values, name ? [name.split(".")[0] ?? name] : undefined);
       onChangeRef.current?.(values, name);
     });
     return () => {
@@ -297,7 +326,7 @@ export function Form(props: FormProps): ReactNode {
   };
 
   const ctx = useMemo<FormweaveContextValue>(
-    () => ({ form, store, renderers, locale, fallback, idPrefix }),
+    () => ({ form, store, renderers, locale, fallback, idPrefix, prefix: "" }),
     [form, store, renderers, locale, fallback, idPrefix],
   );
 
@@ -423,18 +452,23 @@ export interface FieldProps {
  * @since 0.2.0
  */
 export function Field({ fieldKey }: FieldProps): ReactNode {
-  const { form, renderers, locale, fallback, idPrefix } = useFormweave();
+  const { form, renderers, locale, fallback, idPrefix, prefix } = useFormweave();
   const state = useFieldState(fieldKey);
   const field = form.fields.get(fieldKey);
   if (!field || !state?.visible) return null;
   const Renderer = renderers.get(field.node.type);
   if (!Renderer) throw new Error(`No renderer for field type "${field.node.type}".`);
-  const id = `${idPrefix}-${fieldKey}`;
+  const name = prefix + fieldKey;
+  // Dots in row names ("people.0.name") would break `#id` selectors.
+  const id = `${idPrefix}-${name.replaceAll(".", "-")}`;
   const text = {
     label: resolveText(field.node.label, locale, fallback),
     help: resolveText(field.node.help, locale, fallback),
     placeholder: resolveText(field.node.placeholder, locale, fallback),
   };
+  if (field.rows) {
+    return <RowsField name={name} id={id} text={text} state={state} Renderer={Renderer} />;
+  }
   if (field.definition.container) {
     const children = form.order
       .filter((k) => form.fields.get(k)?.parent === fieldKey)
@@ -460,12 +494,103 @@ export function Field({ fieldKey }: FieldProps): ReactNode {
     );
   }
   return (
-    <ControlledField fieldKey={fieldKey} id={id} text={text} state={state} Renderer={Renderer} />
+    <ControlledField
+      fieldKey={fieldKey}
+      name={name}
+      id={id}
+      text={text}
+      state={state}
+      Renderer={Renderer}
+    />
+  );
+}
+
+type Renderer = NonNullable<ReturnType<RendererMap["get"]>>;
+
+/** A row type such as a repeater: its rows live in a React Hook Form field array. */
+function RowsField(p: {
+  name: string;
+  id: string;
+  text: { label: string; help: string; placeholder: string };
+  state: FieldState;
+  Renderer: Renderer;
+}): ReactNode {
+  const ctx = useFormweave();
+  const { control } = useFormContext();
+  const { fields, append, remove, move } = useFieldArray({ control, name: p.name });
+  const { errors } = useFormState({ control, name: p.name });
+  const field = ctx.form.fields.get(p.name.slice(ctx.prefix.length));
+  const sub = field?.rows;
+  if (!field || !sub) return null;
+  const settings = field.settings as { minRows?: number; maxRows?: number };
+  const max = settings.maxRows ?? 10;
+  const own = getPath(errors, p.name) as { message?: unknown } | undefined;
+  const rows: RowsApi = {
+    keys: fields.map((f) => f.id),
+    max,
+    canAdd: !p.state.disabled && fields.length < max,
+    canRemove: !p.state.disabled && fields.length > (settings.minRows ?? 0),
+    add: () => {
+      append({ ...sub.defaults });
+    },
+    remove,
+    move,
+    render: (index) => <RowScope ctx={ctx} form={sub} prefix={`${p.name}.${String(index)}.`} />,
+  };
+  const { Renderer } = p;
+  return (
+    <Renderer
+      field={field}
+      state={p.state}
+      locale={ctx.locale}
+      fallbackLocale={ctx.fallback}
+      id={p.id}
+      name={p.name}
+      {...p.text}
+      error={typeof own?.message === "string" ? own.message : undefined}
+      describedBy={`${p.id}-desc`}
+      value={undefined}
+      onChange={() => undefined}
+      onBlur={() => undefined}
+      inputRef={null}
+      rows={rows}
+    />
+  );
+}
+
+/** The fields of one row, with their own state from that row's values. */
+function RowScope(p: {
+  ctx: FormweaveContextValue;
+  form: CompiledForm;
+  prefix: string;
+}): ReactNode {
+  const { control } = useFormContext();
+  const path = p.prefix.slice(0, -1);
+  const values = useWatch({ control, name: path }) as Readonly<Record<string, unknown>> | undefined;
+  const [store] = useState(() => createStateStore(p.form, values ?? {}));
+  useEffect(() => {
+    store.update(values ?? {});
+  }, [store, values]);
+  const value = useMemo<FormweaveContextValue>(
+    () => ({ ...p.ctx, form: p.form, store, prefix: p.prefix }),
+    [p.ctx, p.form, store, p.prefix],
+  );
+  return (
+    <Ctx.Provider value={value}>
+      <div className="fw-fields">
+        {p.form.order
+          .filter((k) => p.form.fields.get(k)?.parent === undefined)
+          .map((k) => (
+            <Field key={k} fieldKey={k} />
+          ))}
+      </div>
+    </Ctx.Provider>
   );
 }
 
 function ControlledField(p: {
   fieldKey: string;
+  name: string;
   id: string;
   text: { label: string; help: string; placeholder: string };
   state: FieldState;
@@ -473,7 +598,7 @@ function ControlledField(p: {
 }): ReactNode {
   const { form, locale, fallback } = useFormweave();
   const { control } = useFormContext();
-  const { field: rhf, fieldState } = useController({ name: p.fieldKey, control });
+  const { field: rhf, fieldState } = useController({ name: p.name, control });
   const field = form.fields.get(p.fieldKey);
   if (!field) return null;
   const { Renderer } = p;
@@ -484,7 +609,7 @@ function ControlledField(p: {
       locale={locale}
       fallbackLocale={fallback}
       id={p.id}
-      name={p.fieldKey}
+      name={p.name}
       {...p.text}
       error={fieldState.error?.message}
       describedBy={`${p.id}-desc`}

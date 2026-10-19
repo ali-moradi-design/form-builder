@@ -2,6 +2,10 @@
 
 Short log of what the user agreed. Newest first.
 
+- 2026-10-19: The default stylesheet budget is 3 KB gzip (was 2.5 KB): the
+  repeater's row cards and buttons need about 150 bytes, and the remaining
+  0.6 fields (uploads, matrix, ranking) will need more.
+
 - 2026-10-19: The `allRenderers` budget is 6 KB brotli (was 4 KB). It grows
   with every field type in 0.6; apps that care about size import single
   renderers, whose budgets stay as they are.

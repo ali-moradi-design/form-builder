@@ -40,6 +40,8 @@ export const en: MessageCatalog = {
   incompleteRange: "Fill in both ends of the range.",
   invalidRange: "The end must not come before the start.",
   tooManyDecimals: "Use fewer digits after the decimal point.",
+  tooFewRows: "Add at least {min} rows.",
+  tooManyRows: "Use at most {max} rows.",
 };
 
 /**
@@ -72,6 +74,8 @@ export const fa: MessageCatalog = {
   incompleteRange: "هر دو سر بازه را پر کنید.",
   invalidRange: "پایان بازه نباید پیش از آغاز آن باشد.",
   tooManyDecimals: "رقم‌های کمتری بعد از ممیز بنویسید.",
+  tooFewRows: "دست‌کم {min} ردیف اضافه کنید.",
+  tooManyRows: "حداکثر {max} ردیف می‌توانید داشته باشید.",
 };
 
 /**

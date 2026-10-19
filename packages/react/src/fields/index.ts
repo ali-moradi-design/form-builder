@@ -5,6 +5,7 @@ import { dateRenderer } from "./date.js";
 import { groupRenderer } from "./group.js";
 import { currencyRenderer, numberRenderer } from "./number.js";
 import { dateRangeRenderer, rangeSliderRenderer } from "./range.js";
+import { repeaterRenderer } from "./repeater.js";
 import { npsRenderer, ratingRenderer, sliderRenderer } from "./scale.js";
 import { dividerRenderer, headingRenderer, hiddenRenderer, paragraphRenderer } from "./static.js";
 import { switchRenderer } from "./switch.js";
@@ -18,6 +19,7 @@ export { dateRenderer } from "./date.js";
 export { groupRenderer } from "./group.js";
 export { currencyRenderer, numberRenderer } from "./number.js";
 export { dateRangeRenderer, rangeSliderRenderer } from "./range.js";
+export { repeaterRenderer } from "./repeater.js";
 export { npsRenderer, ratingRenderer, sliderRenderer } from "./scale.js";
 export { controlProps, FieldShell } from "./shell.js";
 export type { FieldShellProps } from "./shell.js";
@@ -48,7 +50,7 @@ export const basicRenderers: readonly FieldRenderer[] = [
 /**
  * Renderers for the field types added in version 0.6: URL, phone, time,
  * date-time, rating, NPS, slider, hidden, heading, paragraph, divider,
- * colour, colour set, currency, range slider and date range.
+ * colour, colour set, currency, range slider, date range and repeater.
  *
  * @since 0.6.0
  */
@@ -69,6 +71,7 @@ export const richRenderers: readonly FieldRenderer[] = [
   currencyRenderer,
   rangeSliderRenderer,
   dateRangeRenderer,
+  repeaterRenderer,
 ];
 
 /**
@@ -104,4 +107,5 @@ export const allRenderers: readonly FieldRenderer[] = [
   currencyRenderer,
   rangeSliderRenderer,
   dateRangeRenderer,
+  repeaterRenderer,
 ];
