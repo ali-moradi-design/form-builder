@@ -204,7 +204,16 @@
     "crop": "برش",
     "crop_square": "مربعی",
     "crop_none": "کل تصویر بماند",
-    "imageSize": "اندازهٔ ذخیره (پیکسل)"
+    "imageSize": "اندازهٔ ذخیره (پیکسل)",
+    "addressParts": "بخش‌هایی که پرسیده شود",
+    "addressRequired": "بخش‌هایی که پاسخ لازم دارند",
+    "part_line2": "واحد، طبقه",
+    "part_city": "شهر",
+    "part_region": "استان",
+    "part_postalCode": "کد پستی",
+    "part_country": "کشور",
+    "optionsUrl": "بارگذاری گزینه‌ها از",
+    "optionsUrlHelp": "یک نشانی ‎https://‎ که فهرستی ‎JSON‎ برمی‌گرداند. فهرست‌های وابسته (مثلاً شهر بر اساس کشور) در پنل ‎JSON‎ با ‎optionsBy‎ تنظیم می‌شوند."
   },
   "fieldTypes": {
     "shortText": "متن کوتاه",
@@ -243,7 +252,8 @@
     "matrix": "ماتریس",
     "file": "بارگذاری فایل",
     "imageUpload": "عکس",
-    "signature": "امضا"
+    "signature": "امضا",
+    "address": "نشانی"
   },
   "languages": {
     "en": "English",

@@ -254,3 +254,74 @@ describe("calculated fields", () => {
     ).toThrow(/calculated from itself/);
   });
 });
+
+describe("dependent options and address", () => {
+  const order = compile(
+    {
+      ...doc,
+      steps: [
+        {
+          key: "a",
+          fields: [
+            {
+              type: "select",
+              key: "country",
+              settings: { options: [{ value: "ir" }, { value: "de" }] },
+            },
+            {
+              type: "select",
+              key: "city",
+              settings: {
+                options: [],
+                optionsBy: {
+                  field: "country",
+                  options: {
+                    ir: [{ value: "shiraz" }, { value: "tabriz" }],
+                    de: [{ value: "berlin" }],
+                  },
+                },
+              },
+            },
+            {
+              type: "combobox",
+              key: "slot",
+              settings: { options: [], optionsUrl: "https://e.com/slots" },
+            },
+            { type: "address", key: "ship", settings: { requiredParts: ["city"] } },
+          ],
+        },
+      ],
+    },
+    { registry: createRegistry(allFields) },
+  );
+
+  it("offers the list for the other answer and updates it", () => {
+    const first = evaluate(order, { country: "ir" });
+    expect(first.fields.city?.options?.map((o) => o.value)).toEqual(["shiraz", "tabriz"]);
+    const next = evaluate(order, { country: "de" }, { previous: first, changed: ["country"] });
+    expect(next.fields.city?.options?.map((o) => o.value)).toEqual(["berlin"]);
+    expect(evaluate(order, {}).fields.city?.options).toEqual([]);
+  });
+
+  it("checks the answer against the current list on the server too", () => {
+    const bad = validate(order, { country: "de", city: "shiraz" });
+    expect(bad.success ? [] : bad.issues).toEqual([{ key: "city", code: "invalidOption" }]);
+    expect(validate(order, { country: "ir", city: "shiraz", slot: "9-10" }).success).toBe(true);
+    expect(() =>
+      compile(
+        {
+          ...doc,
+          steps: [{ key: "a", fields: [{ type: "select", key: "x", settings: { options: [] } }] }],
+        },
+        { registry: createRegistry(allFields) },
+      ),
+    ).toThrow();
+  });
+
+  it("wants the first line and the required parts", () => {
+    const r = validate(order, { ship: { line1: "Zand St 4" } });
+    expect(r.success ? [] : r.issues).toMatchObject([{ key: "ship", code: "incompleteAddress" }]);
+    expect(validate(order, { ship: { line1: "Zand St 4", city: "Shiraz" } }).success).toBe(true);
+    expect(validate(order, { ship: { line1: " ", city: "" } }).success).toBe(true);
+  });
+});

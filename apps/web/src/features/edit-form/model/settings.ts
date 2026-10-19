@@ -23,6 +23,8 @@ const NO_REQUIRED = new Set(["group", "heading", "paragraph", "divider", "hidden
 const COUNTRY = /^[1-9]\d{0,3}$/;
 const PARAM = /^[\w.-]{1,64}$/;
 const MB = 1024 * 1024;
+const ADDRESS_PARTS = ["line2", "city", "region", "postalCode", "country"] as const;
+const OPTION_URL_TYPES = new Set(["select", "radio", "checkboxes", "combobox", "multiSelect"]);
 
 const CHOICE_TYPES = new Set([
   "select",
@@ -151,6 +153,22 @@ export function fieldSettingsDocument(
     addNumber("maxSelected", t("maxSelected"));
   } else if (node.type === "tags") {
     addNumber("maxTags", t("maxTags"));
+  } else if (node.type === "address") {
+    const partOptions = ADDRESS_PARTS.map((value) => ({ value, label: t(`part_${value}`) }));
+    fields.push({
+      type: "checkboxes",
+      key: "parts",
+      label: t("addressParts"),
+      settings: { options: partOptions },
+    });
+    values.parts = Array.isArray(s.parts) ? s.parts : [...ADDRESS_PARTS];
+    fields.push({
+      type: "checkboxes",
+      key: "requiredParts",
+      label: t("addressRequired"),
+      settings: { options: partOptions },
+    });
+    values.requiredParts = Array.isArray(s.requiredParts) ? s.requiredParts : [];
   } else if (node.type === "file") {
     fields.push({ type: "shortText", key: "accept", label: t("accept"), help: t("acceptHelp") });
     values.accept = Array.isArray(s.accept) ? (s.accept as string[]).join(", ") : undefined;
@@ -266,6 +284,15 @@ export function fieldSettingsDocument(
       values[key] = str(s[key]);
     }
   }
+  if (OPTION_URL_TYPES.has(node.type)) {
+    fields.push({
+      type: "url",
+      key: "optionsUrl",
+      label: t("optionsUrl"),
+      help: t("optionsUrlHelp"),
+    });
+    values.optionsUrl = str(s.optionsUrl);
+  }
   return {
     document: {
       schemaVersion: 1,
@@ -330,6 +357,13 @@ export function fieldPatch(
       "size",
       size !== undefined && Number.isInteger(size) && size >= 64 && size <= 4096 ? size : undefined,
     );
+  } else if (node.type === "address") {
+    const pick = (v: unknown) =>
+      Array.isArray(v) ? ADDRESS_PARTS.filter((p) => (v as unknown[]).includes(p)) : [];
+    const parts = pick(values.parts);
+    set("parts", parts.length === ADDRESS_PARTS.length ? undefined : parts);
+    const required = pick(values.requiredParts).filter((p) => parts.includes(p));
+    set("requiredParts", required.length ? required : undefined);
   } else if (node.type === "tags") {
     const n = num(values.maxTags);
     set("maxTags", n !== undefined && Number.isInteger(n) && n >= 1 && n <= 100 ? n : undefined);
@@ -396,6 +430,10 @@ export function fieldPatch(
   } else if (node.type === "hidden") {
     const name = str(values.fromUrl);
     set("fromUrl", name && PARAM.test(name) ? name : undefined);
+  }
+  if (OPTION_URL_TYPES.has(node.type)) {
+    const url = str(values.optionsUrl);
+    set("optionsUrl", url && /^https:\/\/\S+$/.test(url) ? url : undefined);
   }
   return {
     label: readText(values, "label", locales),

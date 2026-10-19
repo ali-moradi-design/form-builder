@@ -472,6 +472,30 @@ const uploads = `
   </div>
 </div>`;
 
+
+/* ---------------- 14 Address and dynamic options ---------------- */
+const addressPage = `
+<div class="pub" style="height:auto;min-height:100vh;background:var(--frame)">
+  <header class="pub-top"><span class="logo">${LOGO}</span><b style="font-weight:600">ثبت سفارش</b><div class="grow"></div><button class="btn">${i("languages", "icon-sm")}English</button></header>
+  <div class="ch-wrap">
+    <div class="card ch-card">
+      <div class="ch-f"><span class="label">کشور و شهر</span>
+        <div class="ad-grid"><div><span class="ad-l">کشور</span><div class="input">ایران<div class="grow"></div>${i("chevron-down", "icon-sm")}</div></div>
+          <div><span class="ad-l">شهر</span><div class="input focus">شیراز<div class="grow"></div>${i("chevron-down", "icon-sm")}</div></div></div>
+        <span class="ch-help">فهرست شهرها با انتخاب کشور عوض می‌شود.</span></div>
+      <div class="ch-f"><span class="label">نشانی تحویل <span class="req">*</span></span>
+        <div class="ad-box">
+          <div class="ad-full"><span class="ad-l">نشانی</span><div class="input">خیابان زند، کوچهٔ ۱۲، پلاک ۴</div></div>
+          <div class="ad-full"><span class="ad-l">واحد، طبقه (اختیاری)</span><div class="input ph">مثلاً طبقهٔ دوم</div></div>
+          <div class="ad-grid"><div><span class="ad-l">استان</span><div class="input">فارس</div></div><div><span class="ad-l">کد پستی</span><div class="input mono" dir="ltr" style="justify-content:flex-end">۷۱۳۴۸-۴۵۶۷۸</div></div></div>
+        </div></div>
+      <div class="ch-f"><span class="label">ساعت تحویل</span>
+        <div class="input">${i("loader", "icon-sm")}<span class="faint">در حال دریافت بازه‌های آزاد…</span></div>
+        <span class="ch-help">گزینه‌ها از سامانهٔ ارسال خوانده می‌شوند.</span></div>
+    </div>
+  </div>
+</div>`;
+
 export const pages = [
   { name: "01-dashboard", title: "Dashboard", body: dashboard, height: 960 },
   { name: "02-builder", title: "Builder", body: builder(settings) },
@@ -484,5 +508,6 @@ export const pages = [
   { name: "10-sign-in", title: "Sign in", body: signIn },
   { name: "11-builder-logic", title: "Logic editor", body: builder(logicPanel) },
   { name: "12-hosted-form-choices", title: "Choice fields", body: choices, height: 1340 },
+  { name: "14-hosted-form-address", title: "Address and dynamic options", body: addressPage, lang: "fa", height: 900 },
   { name: "13-hosted-form-uploads", title: "Uploads and signature", body: uploads, height: 1120 },
 ];

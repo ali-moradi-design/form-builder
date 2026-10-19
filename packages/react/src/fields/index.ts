@@ -1,4 +1,5 @@
 import type { FieldRenderer } from "../renderers.js";
+import { addressRenderer } from "./address.js";
 import { calculatedRenderer } from "./calculated.js";
 import { checkboxesRenderer, radioRenderer, selectRenderer } from "./choice.js";
 import {
@@ -24,6 +25,7 @@ import { dateTimeRenderer, timeRenderer } from "./time.js";
 import { phoneRenderer, urlRenderer } from "./web.js";
 
 export { calculatedRenderer } from "./calculated.js";
+export { addressRenderer } from "./address.js";
 export { checkboxesRenderer, radioRenderer, selectRenderer } from "./choice.js";
 export {
   comboboxRenderer,
@@ -72,7 +74,7 @@ export const basicRenderers: readonly FieldRenderer[] = [
  * date-time, rating, NPS, slider, hidden, heading, paragraph, divider,
  * colour, colour set, currency, range slider, date range, repeater,
  * calculated, combobox, multi-select, tags, ranking, image choice, matrix,
- * file, image upload and signature.
+ * file, image upload, signature and address.
  *
  * @since 0.6.0
  */
@@ -104,6 +106,7 @@ export const richRenderers: readonly FieldRenderer[] = [
   fileRenderer,
   imageUploadRenderer,
   signatureRenderer,
+  addressRenderer,
 ];
 
 /**
@@ -150,4 +153,5 @@ export const allRenderers: readonly FieldRenderer[] = [
   fileRenderer,
   imageUploadRenderer,
   signatureRenderer,
+  addressRenderer,
 ];

@@ -1,4 +1,5 @@
 import type * as z from "zod/mini";
+import type { ChoiceOption } from "./fields/shared.js";
 
 /**
  * What a field definition receives when it builds the validator for a value.
@@ -67,6 +68,29 @@ export interface FieldDefinition<S = unknown, V = unknown> {
    * @since 0.6.0
    */
   readonly rows?: boolean | undefined;
+  /**
+   * Keys of other fields that this field's settings read, for example the
+   * field that picks a dependent list. Used for the dependency graph.
+   *
+   * @param settings - The field's settings.
+   * @returns The keys.
+   * @since 0.6.0
+   */
+  readonly reads?: ((settings: S) => readonly string[]) | undefined;
+  /**
+   * The choices offered for the current answers, for types whose options
+   * can change (dependent lists). `undefined` means "not known here" (for
+   * example loaded from a URL). `evaluate` puts them in the field state and
+   * `validate` checks answers against them.
+   *
+   * @param settings - The field's settings.
+   * @param read - Reads another field's value.
+   * @returns The choices, or `undefined`.
+   * @since 0.6.0
+   */
+  readonly options?:
+    | ((settings: S, read: (key: string) => unknown) => readonly ChoiceOption[] | undefined)
+    | undefined;
 }
 
 /**

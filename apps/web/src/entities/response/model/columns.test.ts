@@ -85,5 +85,11 @@ describe("response columns", () => {
       "talk.pdf, b.pdf",
     );
     expect(formatAnswer(undefined, pdf)).toBe("talk.pdf");
+    expect(
+      formatAnswer(
+        { key: "a", label: "A", type: "address" },
+        { line1: "Zand St 4", city: "Shiraz", country: "IR" },
+      ),
+    ).toBe("Zand St 4, Shiraz, IR");
   });
 });

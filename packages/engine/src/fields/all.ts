@@ -1,5 +1,6 @@
 import type { FieldDefinition } from "../registry.js";
 import {
+  address,
   calculated,
   checkboxes,
   color,
@@ -84,4 +85,5 @@ export const allFields: readonly FieldDefinition<never>[] = [
   file,
   imageUpload,
   signature,
+  address,
 ] as unknown as readonly FieldDefinition<never>[];

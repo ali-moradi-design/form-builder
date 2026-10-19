@@ -1,6 +1,15 @@
 import * as z from "zod/mini";
 import { defineField, type FieldDefinition } from "../registry.js";
-import { choiceSettings, count, oneOf, options, type ChoiceSettings } from "./shared.js";
+import {
+  choiceSettings,
+  count,
+  dynamicOptions,
+  oneOf,
+  someOptions,
+  type ChoiceSettings,
+  currentOptions,
+  optionSources,
+} from "./shared.js";
 
 /**
  * A drop-down list with one answer. Value: `string`. Issue code: `invalidOption`.
@@ -9,6 +18,8 @@ import { choiceSettings, count, oneOf, options, type ChoiceSettings } from "./sh
  */
 export const select: FieldDefinition<ChoiceSettings, string> = /*#__PURE__*/ defineField({
   type: "select",
+  reads: optionSources,
+  options: currentOptions,
   settings: choiceSettings,
   defaultValue: () => undefined,
   validator: ({ settings }) => oneOf(settings),
@@ -21,6 +32,8 @@ export const select: FieldDefinition<ChoiceSettings, string> = /*#__PURE__*/ def
  */
 export const radio: FieldDefinition<ChoiceSettings, string> = /*#__PURE__*/ defineField({
   type: "radio",
+  reads: optionSources,
+  options: currentOptions,
   settings: choiceSettings,
   defaultValue: () => undefined,
   validator: ({ settings }) => oneOf(settings),
@@ -38,11 +51,9 @@ export interface CheckboxesSettings extends ChoiceSettings {
   readonly maxSelected?: number | undefined;
 }
 
-const checkboxesSettings: z.ZodMiniType<CheckboxesSettings> = /*#__PURE__*/ z.object({
-  options,
-  minSelected: count,
-  maxSelected: count,
-});
+const checkboxesSettings: z.ZodMiniType<CheckboxesSettings> = /*#__PURE__*/ z
+  .object({ ...dynamicOptions, minSelected: count, maxSelected: count })
+  .check(z.refine(someOptions, "A choice field needs options."));
 
 /**
  * Visible choices with several answers. Value: `string[]` without duplicates.
@@ -52,12 +63,14 @@ const checkboxesSettings: z.ZodMiniType<CheckboxesSettings> = /*#__PURE__*/ z.ob
  */
 export const checkboxes: FieldDefinition<CheckboxesSettings, string[]> = /*#__PURE__*/ defineField({
   type: "checkboxes",
+  reads: optionSources,
+  options: currentOptions,
   settings: checkboxesSettings,
   defaultValue: () => undefined,
   validator: ({ settings }) =>
     z.array(oneOf(settings), "invalidType").check(
       z.minLength(settings.minSelected ?? 0, "tooFew"),
-      z.maxLength(settings.maxSelected ?? settings.options.length, "tooMany"),
+      z.maxLength(settings.maxSelected ?? Number.MAX_SAFE_INTEGER, "tooMany"),
       z.refine((v) => new Set(v).size === v.length, "duplicate"),
     ),
 });

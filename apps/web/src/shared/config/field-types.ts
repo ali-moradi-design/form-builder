@@ -1,5 +1,6 @@
 import type { FieldNode } from "@formweave/schema";
 import {
+  MapPin,
   ImageUp,
   Paperclip,
   Signature,
@@ -229,6 +230,13 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
     icon: CalendarClock,
     keyBase: "when",
     create: simple("dateTime"),
+  },
+  {
+    type: "address",
+    group: "text",
+    icon: MapPin,
+    keyBase: "address",
+    create: simple("address"),
   },
   {
     type: "file",
