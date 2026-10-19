@@ -31,6 +31,10 @@
       "types": "./dist/i18n.d.ts",
       "default": "./dist/i18n.js"
     },
+    "./infer": {
+      "types": "./dist/infer.d.ts",
+      "default": "./dist/infer.js"
+    },
     "./messages": {
       "types": "./dist/messages.d.ts",
       "default": "./dist/messages.js"

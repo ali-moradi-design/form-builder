@@ -7,6 +7,7 @@ export default defineConfig({
     "src/fields/index.ts",
     "src/fields/all.ts",
     "src/i18n.ts",
+    "src/infer.ts",
     "src/messages.ts",
   ],
   format: "esm",

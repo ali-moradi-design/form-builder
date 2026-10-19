@@ -36,6 +36,24 @@ test("builds a form, previews it and submits", async ({ page }) => {
   await expect(page.getByText('"text": "Teal"')).toBeVisible();
 });
 
+test("creates a form from a sample JSON record", async ({ page }) => {
+  await signUp(page);
+  await page.getByRole("button", { name: /From sample JSON/ }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog.getByRole("button", { name: "Use an example" }).click();
+  await dialog.getByRole("button", { name: "Read fields" }).click();
+  await expect(dialog.getByText("Review detected fields")).toBeVisible();
+  await expect(dialog.getByLabel("Type of joined")).toHaveValue("date");
+  await expect(dialog.getByLabel("Type of brandColor")).toHaveValue("color");
+  await dialog.getByLabel("Type of seats").selectOption("slider");
+  await dialog.getByRole("button", { name: /Create form with/ }).click();
+  await page.waitForURL(/\/forms\/[^/]+$/);
+  await expect(page.locator('[data-field-key="shareholders"]')).toBeVisible();
+  await expect(page.locator('[data-field-key="seats"]')).toBeVisible();
+  await page.locator('[data-field-key="seats"]').click();
+  await expect(page.getByRole("heading", { name: "Slider" })).toBeVisible();
+});
+
 test("moves, undoes and keeps edits after a reload", async ({ page }) => {
   await newForm(page, /From a template/);
   const keys = page.locator("[data-field-key]");
