@@ -109,7 +109,8 @@
     "validSchema": "Valid schema",
     "synced": "Synced with canvas",
     "jsonSyntax": "Not valid JSON yet: {message}",
-    "panel": "Side panel"
+    "panel": "Side panel",
+    "responses": "Responses"
   },
   "fieldTypes": {
     "shortText": "Short text",
@@ -181,5 +182,32 @@
     "again": "Send another response",
     "failed": "We couldn't save your answers. Check them and try again.",
     "slowDown": "Too many submissions from your connection. Wait a minute and try again."
+  },
+  "responses": {
+    "title": "Responses",
+    "summary": "{total, plural, one {# response} other {# responses}} across {versions, plural, one {# version} other {# versions}}.",
+    "matching": "{count} match your filters.",
+    "notPublished": "Publish the form to start collecting responses.",
+    "empty": "No responses match these filters yet.",
+    "yes": "Yes",
+    "no": "No",
+    "range": "{from}–{to} of {total}",
+    "allTime": "All time",
+    "lastDays": "Last {days} days",
+    "version": "Version",
+    "allVersions": "All versions",
+    "versionN": "Version {version}",
+    "selected": "{count} selected",
+    "delete": "Delete",
+    "confirmDelete": "Delete {count, plural, one {this response} other {these # responses}}? This can't be undone.",
+    "columns": "Columns",
+    "selectPage": "Select all on this page",
+    "selectRow": "Select the response from {date}",
+    "submitted": "Submitted",
+    "pages": "Pages",
+    "pageOf": "Page {page} of {pages}",
+    "previous": "Previous",
+    "next": "Next",
+    "dateRange": "Date range"
   }
 }

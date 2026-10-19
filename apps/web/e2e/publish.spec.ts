@@ -63,7 +63,29 @@ test("publishes a form and collects a response on the hosted page", async ({ pag
   expect((await api.get("/api/forms/nope")).status()).toBe(404);
 
   await page.goto("/forms");
-  await expect(page.getByText("2 responses")).toBeVisible();
+  await page.getByRole("link", { name: "2 responses" }).click();
+  await expect(page.getByRole("heading", { name: "Responses" })).toBeVisible();
+  const table = page.getByRole("table");
+  await expect(table.getByRole("columnheader", { name: "Your city" })).toBeVisible();
+  await expect(table.getByRole("cell", { name: "Tabriz" })).toBeVisible();
+  await expect(table.getByRole("cell", { name: "Shiraz" })).toBeVisible();
+  const a11y = await new AxeBuilder({ page }).analyze();
+  expect(a11y.violations.map((v) => v.id)).toEqual([]);
+
+  // Delete the API response.
+  await table
+    .getByRole("row", { name: /Tabriz/ })
+    .getByRole("checkbox")
+    .check();
+  page.once("dialog", (d) => void d.accept());
+  await page.getByRole("button", { name: "Delete" }).click();
+  await expect(table.getByRole("cell", { name: "Tabriz" })).toBeHidden();
+  await expect(table.getByRole("cell", { name: "Shiraz" })).toBeVisible();
+
+  // Filters live in the URL.
+  await page.getByLabel("Date range").selectOption("7");
+  await expect(page).toHaveURL(/days=7/);
+  await expect(table.getByRole("cell", { name: "Shiraz" })).toBeVisible();
 });
 
 test("shows 404 for an unknown form", async ({ page }) => {

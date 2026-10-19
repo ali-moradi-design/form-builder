@@ -51,9 +51,12 @@ export function FormsList({ forms }: { forms: readonly FormRow[] }) {
                 {t("live", { version: f.liveVersion })}
               </span>
             )}
-            <span className="hidden text-xs text-ink-3 sm:inline">
+            <Link
+              href={`/forms/${f.id}/responses`}
+              className="hidden text-xs text-ink-2 underline-offset-2 hover:underline sm:inline"
+            >
               {t("responses", { count: f.responses })}
-            </span>
+            </Link>
             <DeleteFormButton id={f.id} title={title} />
           </li>
         );

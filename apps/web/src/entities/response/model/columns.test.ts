@@ -1,0 +1,63 @@
+import type { FormDocument } from "@formweave/schema";
+import { describe, expect, it } from "vitest";
+import { formatAnswer, responseColumns } from "./columns";
+
+const v1: FormDocument = {
+  schemaVersion: 1,
+  id: "f",
+  title: "F",
+  locales: { default: "en", supported: ["en", "fa"] },
+  steps: [
+    {
+      key: "a",
+      fields: [
+        { type: "shortText", key: "old", label: "Old" },
+        { type: "shortText", key: "name" },
+      ],
+    },
+  ],
+};
+const v2: FormDocument = {
+  ...v1,
+  steps: [
+    {
+      key: "a",
+      fields: [
+        { type: "shortText", key: "name", label: { en: "Name", fa: "نام" } },
+        {
+          type: "group",
+          key: "g",
+          fields: [
+            {
+              type: "checkboxes",
+              key: "colors",
+              label: "Colors",
+              settings: {
+                options: [{ value: "r", label: { en: "Red", fa: "قرمز" } }, { value: "b" }],
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+describe("response columns", () => {
+  it("lists newest fields first, flattens groups and keeps old fields", () => {
+    expect(responseColumns([v2, v1], "fa").map((c) => [c.key, c.label])).toEqual([
+      ["name", "نام"],
+      ["colors", "Colors"],
+      ["old", "Old"],
+    ]);
+  });
+
+  it("formats answers as text", () => {
+    const [, colors] = responseColumns([v2], "en");
+    expect(formatAnswer(colors, ["r", "b"])).toBe("Red, b");
+    expect(formatAnswer(undefined, true)).toBe("Yes");
+    expect(formatAnswer(undefined, 0)).toBe("0");
+    expect(formatAnswer(undefined, null)).toBe("");
+    expect(formatAnswer(undefined, { a: 1 })).toBe('{"a":1}');
+  });
+});
