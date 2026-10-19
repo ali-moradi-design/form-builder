@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { SignInForm } from "@/features/session";
 import { LocaleSwitch } from "@/features/switch-locale";
-import { getUser } from "@/shared/auth";
+import { getUser, signUpOpen } from "@/shared/auth";
 import { Logo } from "@/shared/ui";
 
 /** Sign in, create an account, or open the demo. */
@@ -19,7 +19,7 @@ export async function SignInPage() {
           <LocaleSwitch />
         </header>
         <main className="my-auto py-10">
-          <SignInForm />
+          <SignInForm signUp={signUpOpen()} />
         </main>
         <footer className="flex items-center justify-center gap-1.5 text-xs text-ink-3">
           {tb.rich("credit", {

@@ -3,7 +3,7 @@
 import { isRtl, resolveText } from "@formweave/engine/i18n";
 import { Form, type Values } from "@formweave/react";
 import type { FormDocument, Locale } from "@formweave/schema";
-import { CircleCheck, Heart, Languages } from "lucide-react";
+import { CircleCheck, Heart, Languages, TriangleAlert } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { registry, renderers, uploadTo } from "@/shared/formweave";
@@ -23,6 +23,7 @@ export function HostedForm({
   defaultValues,
   submit,
   embed = false,
+  demo = false,
 }: {
   slug: string;
   document: FormDocument;
@@ -31,6 +32,8 @@ export function HostedForm({
   submit: (slug: string, values: Values, locale: string, honeypot: string) => Promise<SubmitResult>;
   /** Shown in a frame on another site: no page chrome, and the height is sent to the parent. */
   embed?: boolean;
+  /** A form of the shared demo account: shows a warning not to enter real data. */
+  demo?: boolean;
 }) {
   const t = useTranslations("hosted");
   const tb = useTranslations("brand");
@@ -79,6 +82,15 @@ export function HostedForm({
           : "relative flex min-h-dvh flex-col overflow-hidden bg-[radial-gradient(40%_35%_at_85%_20%,color-mix(in_oklab,var(--amber)_16%,transparent),transparent),radial-gradient(35%_40%_at_10%_90%,color-mix(in_oklab,var(--plum)_12%,transparent),transparent)]"
       }
     >
+      {demo && (
+        <p
+          role="note"
+          className="flex items-center justify-center gap-2 bg-carmine px-4 py-2 text-center text-[13px] font-medium text-white"
+        >
+          <TriangleAlert size={15} aria-hidden className="shrink-0" />
+          {t("demoWarning")}
+        </p>
+      )}
       <header
         className={
           embed ? "flex items-center gap-3 px-4 pt-4" : "flex items-center gap-3 px-6 py-5 sm:px-10"

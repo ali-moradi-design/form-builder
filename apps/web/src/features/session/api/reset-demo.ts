@@ -75,3 +75,13 @@ export async function resetDemo(db: Db): Promise<{ readonly reset: boolean }> {
   await seedDemo(db, demo.id);
   return { reset: true };
 }
+
+/** Whether a form belongs to the shared demo account. */
+export async function isDemoForm(db: Db, formId: string): Promise<boolean> {
+  const [row] = await db
+    .select({ email: tables.user.email })
+    .from(tables.form)
+    .innerJoin(tables.user, eq(tables.user.id, tables.form.ownerId))
+    .where(eq(tables.form.id, formId));
+  return row?.email === DEMO_EMAIL;
+}

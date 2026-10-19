@@ -56,3 +56,41 @@ test("the nightly reset needs its token and restores the demo forms", async ({ p
   await expect(page.getByRole("link", { name: /Job application/ })).toBeVisible();
   await expect(page.getByText("24 responses")).toBeVisible();
 });
+
+test("published demo forms warn visitors and stay out of search engines", async ({
+  page,
+  browser,
+}) => {
+  await page.goto("/sign-in");
+  await page.getByRole("button", { name: "Try the demo account" }).click();
+  await page.waitForURL(/\/forms$/);
+  await page
+    .getByRole("link", { name: /Event registration/ })
+    .first()
+    .click();
+  await page.waitForURL(/\/forms\/[^/]+$/);
+  await page.getByRole("button", { name: "Publish" }).click();
+  const url = await page.getByRole("dialog").locator("span[dir=ltr]").first().innerText();
+
+  const visitor = await (await browser.newContext()).newPage();
+  await visitor.goto(url);
+  await expect(visitor.getByRole("note")).toContainText("never enter passwords");
+  await expect(visitor.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+
+  // Other accounts' forms have neither.
+  const other = await (await browser.newContext()).newPage();
+  await other.goto("/sign-in");
+  await other.getByRole("tab", { name: "Create account" }).click();
+  await other.getByLabel("Email").fill(`own-${crypto.randomUUID()}@example.com`);
+  await other.getByLabel("Password").fill("correct horse battery");
+  await other.locator("form").getByRole("button", { name: "Create account" }).click();
+  await other.waitForURL(/\/forms$/);
+  await other.getByRole("button", { name: /Blank form/ }).click();
+  await other.waitForURL(/\/forms\/[^/]+$/);
+  await other.getByRole("button", { name: "Add Short text" }).click();
+  await other.getByRole("button", { name: "Publish" }).click();
+  const own = await other.getByRole("dialog").locator("span[dir=ltr]").first().innerText();
+  await visitor.goto(own);
+  await expect(visitor.getByRole("note")).toHaveCount(0);
+  await expect(visitor.locator('meta[name="robots"]')).toHaveCount(0);
+});

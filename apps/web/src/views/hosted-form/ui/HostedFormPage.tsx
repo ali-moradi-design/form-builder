@@ -4,6 +4,7 @@ import { getLocale } from "next-intl/server";
 import type { FieldNode } from "@formweave/schema";
 import { notFound } from "next/navigation";
 import { submitResponse } from "@/entities/response";
+import { isDemoForm } from "@/features/session";
 import { getDb, getLiveForm } from "@/shared/db";
 import { HostedForm } from "./HostedForm";
 
@@ -15,8 +16,11 @@ async function load(slug: string) {
 export async function hostedFormMetadata(slug: string): Promise<Metadata> {
   const live = await load(slug);
   if (!live) return {};
+  const demo = await isDemoForm(await getDb(), live.formId);
   return {
     title: resolveText(live.document.title, await getLocale(), live.document.locales.default),
+    // Demo forms can be edited by anyone, so search engines must not list them.
+    ...(demo ? { robots: { index: false, follow: false } } : {}),
   };
 }
 
@@ -43,6 +47,7 @@ export async function HostedFormPage({ slug, query = {} }: { slug: string; query
   const live = await load(slug);
   if (!live) notFound();
   const { document } = live;
+  const demo = await isDemoForm(await getDb(), live.formId);
   const appLocale = await getLocale();
   const supported = document.locales.supported ?? [document.locales.default];
   return (
@@ -51,6 +56,7 @@ export async function HostedFormPage({ slug, query = {} }: { slug: string; query
       document={document}
       initialLocale={supported.includes(appLocale) ? appLocale : document.locales.default}
       embed={query.embed === "1"}
+      demo={demo}
       defaultValues={hiddenValues(
         document.steps.flatMap((step) => step.fields),
         query,

@@ -30,8 +30,10 @@ function Input({
   );
 }
 
-/** Email and password sign-in or sign-up, plus the demo account. */
-export function SignInForm() {
+/**
+ * Email and password sign-in, sign-up when it is open, plus the demo account.
+ */
+export function SignInForm({ signUp = false }: { signUp?: boolean }) {
   const t = useTranslations("auth");
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("signIn");
@@ -69,26 +71,28 @@ export function SignInForm() {
         </h1>
         <p className="text-ink-2">{t("subtitle")}</p>
       </div>
-      <div
-        role="tablist"
-        className="grid grid-cols-2 rounded-[11px] border border-line bg-surface-2 p-1"
-      >
-        {(["signIn", "signUp"] as const).map((m) => (
-          <button
-            key={m}
-            type="button"
-            role="tab"
-            aria-selected={mode === m}
-            onClick={() => {
-              setMode(m);
-              setError(null);
-            }}
-            className="rounded-lg py-1.5 text-[13px] text-ink-2 aria-selected:bg-surface aria-selected:font-medium aria-selected:text-ink aria-selected:shadow-xs"
-          >
-            {t(m)}
-          </button>
-        ))}
-      </div>
+      {signUp && (
+        <div
+          role="tablist"
+          className="grid grid-cols-2 rounded-[11px] border border-line bg-surface-2 p-1"
+        >
+          {(["signIn", "signUp"] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              role="tab"
+              aria-selected={mode === m}
+              onClick={() => {
+                setMode(m);
+                setError(null);
+              }}
+              className="rounded-lg py-1.5 text-[13px] text-ink-2 aria-selected:bg-surface aria-selected:font-medium aria-selected:text-ink aria-selected:shadow-xs"
+            >
+              {t(m)}
+            </button>
+          ))}
+        </div>
+      )}
       <form action={submit} className="grid gap-3.5">
         {mode === "signUp" && (
           <Input
