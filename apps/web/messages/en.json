@@ -179,6 +179,7 @@
     "thanks": "Thank you!",
     "sent": "Your answers were sent.",
     "again": "Send another response",
-    "failed": "We couldn't save your answers. Check them and try again."
+    "failed": "We couldn't save your answers. Check them and try again.",
+    "slowDown": "Too many submissions from your connection. Wait a minute and try again."
   }
 }

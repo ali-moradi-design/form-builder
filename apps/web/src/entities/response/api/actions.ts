@@ -1,13 +1,15 @@
 "use server";
 
+import { headers } from "next/headers";
 import { getDb } from "@/shared/db";
-import { acceptResponse, type AcceptResult } from "../model/accept";
+import { clientIp, submit, type SubmitResult } from "../model/submit";
 
 /** Submits answers to a published form (used by the hosted page). */
 export async function submitResponse(
   slug: string,
   values: unknown,
-  locale?: string,
-): Promise<AcceptResult> {
-  return acceptResponse(await getDb(), slug, values, locale);
+  locale: string | undefined,
+  honeypot: string,
+): Promise<SubmitResult> {
+  return submit(await getDb(), { slug, values, locale, honeypot, ip: clientIp(await headers()) });
 }
