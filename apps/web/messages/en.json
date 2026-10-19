@@ -97,7 +97,14 @@
     "invalidSchema": "The document has errors and can't be shown.",
     "shortcuts": "Shortcuts: Ctrl+Z undo, Ctrl+Shift+Z redo, Delete removes, Ctrl+D duplicates, Alt+↑/↓ moves.",
     "dropHere": "Drop here",
-    "dragHandle": "Drag to move"
+    "dragHandle": "Drag to move",
+    "jsonTitle": "Schema JSON",
+    "twoWay": "Two-way sync",
+    "copy": "Copy JSON",
+    "validSchema": "Valid schema",
+    "synced": "Synced with canvas",
+    "jsonSyntax": "Not valid JSON yet: {message}",
+    "panel": "Side panel"
   },
   "fieldTypes": {
     "shortText": "Short text",

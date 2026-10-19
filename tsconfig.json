@@ -11,6 +11,7 @@
     "*.js",
     "*.ts",
     "packages/*/*.ts",
+    "packages/*/scripts/*.mjs",
     "apps/*/*.ts",
     "apps/*/*.js",
     "apps/*/*.mjs",

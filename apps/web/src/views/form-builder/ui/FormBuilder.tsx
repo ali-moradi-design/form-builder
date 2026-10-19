@@ -4,12 +4,14 @@ import { resolveText } from "@formweave/engine/i18n";
 import { Eye, PencilRuler } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
+import { useState } from "react";
 import { saveDraft, useDraft } from "@/entities/form";
 import {
   BuilderDnd,
   BuilderProvider,
   Canvas,
   Inspector,
+  JsonPanel,
   Palette,
   Toolbar,
   useBuilder,
@@ -46,6 +48,7 @@ function Workspace({ id }: { id: string }) {
   const tf = useTranslations("forms");
   const appLocale = useLocale();
   const doc = useBuilder((s) => s.doc);
+  const [panel, setPanel] = useState<"settings" | "json">("settings");
   const supported = doc.locales.supported ?? [doc.locales.default];
   const contentLocale = supported.includes(appLocale) ? appLocale : doc.locales.default;
   const title = resolveText(doc.title, contentLocale, doc.locales.default);
@@ -86,15 +89,37 @@ function Workspace({ id }: { id: string }) {
         <Toolbar />
         <LocaleSwitch />
       </header>
-      <div className="grid min-h-0 grow gap-3 px-3 pb-3 lg:grid-cols-[272px_minmax(0,1fr)_340px]">
+      <div className="grid min-h-0 grow gap-3 px-3 pb-3 lg:grid-cols-[272px_minmax(0,1fr)_380px]">
         <aside className="min-h-0 overflow-y-auto rounded-[14px] border border-line bg-surface">
           <Palette />
         </aside>
         <main className="min-h-0 overflow-y-auto rounded-[14px] border border-line bg-[radial-gradient(var(--line-strong)_1px,transparent_1px)] [background-size:18px_18px] px-3">
           <Canvas locale={contentLocale} />
         </main>
-        <aside className="min-h-0 overflow-y-auto rounded-[14px] border border-line bg-surface">
-          <Inspector locale={appLocale} />
+        <aside className="flex min-h-0 flex-col rounded-[14px] border border-line bg-surface">
+          <div
+            role="tablist"
+            aria-label={t("panel")}
+            className="flex gap-1 border-b border-line px-3 pt-2"
+          >
+            {(["settings", "json"] as const).map((p) => (
+              <button
+                key={p}
+                type="button"
+                role="tab"
+                aria-selected={panel === p}
+                onClick={() => {
+                  setPanel(p);
+                }}
+                className="-mb-px border-b-2 border-transparent px-2.5 pb-2 text-[13px] font-medium text-ink-2 aria-selected:border-orange aria-selected:text-ink"
+              >
+                {t(p)}
+              </button>
+            ))}
+          </div>
+          <div role="tabpanel" className="min-h-0 grow overflow-y-auto">
+            {panel === "settings" ? <Inspector locale={appLocale} /> : <JsonPanel />}
+          </div>
         </aside>
       </div>
     </div>

@@ -12,5 +12,6 @@ export type {
 export { Canvas } from "./ui/Canvas";
 export { BuilderDnd } from "./ui/dnd";
 export { Inspector } from "./ui/Inspector";
+export { JsonPanel } from "./ui/JsonPanel";
 export { Palette } from "./ui/Palette";
 export { Toolbar } from "./ui/Toolbar";
