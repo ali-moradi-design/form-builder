@@ -1,5 +1,11 @@
 import type { FieldNode } from "@formweave/schema";
 import {
+  Grid3x3,
+  Images,
+  ListChecks,
+  ListOrdered,
+  Tags,
+  TextSearch,
   AlignLeft,
   Banknote,
   Calculator,
@@ -138,6 +144,64 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
     create: choice("checkboxes"),
   },
   { type: "switch", group: "choice", icon: ToggleLeft, keyBase: "yes", create: simple("switch") },
+  {
+    type: "combobox",
+    group: "choice",
+    icon: TextSearch,
+    keyBase: "pick",
+    create: choice("combobox"),
+  },
+  {
+    type: "multiSelect",
+    group: "choice",
+    icon: ListChecks,
+    keyBase: "picks",
+    create: choice("multiSelect"),
+  },
+  { type: "tags", group: "choice", icon: Tags, keyBase: "tags", create: simple("tags") },
+  {
+    type: "ranking",
+    group: "choice",
+    icon: ListOrdered,
+    keyBase: "ranking",
+    create: choice("ranking"),
+  },
+  {
+    type: "imageChoice",
+    group: "choice",
+    icon: Images,
+    keyBase: "picture",
+    create: (key, label) => ({
+      type: "imageChoice",
+      key,
+      label,
+      settings: {
+        options: [1, 2].map((n) => ({
+          value: `option${String(n)}`,
+          label: `Option ${String(n)}`,
+          image: "/option-placeholder.svg",
+        })),
+      },
+    }),
+  },
+  {
+    type: "matrix",
+    group: "choice",
+    icon: Grid3x3,
+    keyBase: "grid",
+    create: (key, label) => ({
+      type: "matrix",
+      key,
+      label,
+      settings: {
+        rows: [1, 2].map((n) => ({ value: `row${String(n)}`, label: `Row ${String(n)}` })),
+        columns: [1, 2, 3].map((n) => ({
+          value: String(n),
+          label: `Column ${String(n)}`,
+        })),
+      },
+    }),
+  },
   { type: "color", group: "color", icon: Palette, keyBase: "color", create: simple("color") },
   {
     type: "colorSet",

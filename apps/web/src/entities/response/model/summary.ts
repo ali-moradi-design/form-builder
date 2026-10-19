@@ -40,7 +40,18 @@ export type FieldSummary =
       readonly latest: readonly string[];
     };
 
-const CHOICE = new Set(["select", "radio", "checkboxes"]);
+const CHOICE = new Set([
+  "select",
+  "radio",
+  "checkboxes",
+  "combobox",
+  "multiSelect",
+  "imageChoice",
+  "tags",
+]);
+
+/** Choice types where one person can pick several. */
+const MANY = new Set(["checkboxes", "multiSelect", "tags"]);
 
 const answered = (v: unknown): boolean =>
   v !== undefined && v !== null && v !== "" && !(Array.isArray(v) && v.length === 0);
@@ -133,7 +144,7 @@ export function summarize(
         key: c.key,
         label: c.label,
         answered: values.length,
-        multiple: c.type === "checkboxes",
+        multiple: MANY.has(c.type) || values.some(Array.isArray),
         buckets: [...counts].map(([k, count]) => ({ label: c.options?.get(k) ?? k, count })),
       };
     }

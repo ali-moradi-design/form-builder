@@ -30,3 +30,10 @@ export { repeater } from "./repeater.js";
 export type { RepeaterSettings } from "./repeater.js";
 export { calculated } from "./calculated.js";
 export type { CalculatedSettings } from "./calculated.js";
+export { combobox, imageChoice, matrix, multiSelect, ranking, tags } from "./choice-more.js";
+export type {
+  ImageChoiceSettings,
+  ImageOption,
+  MatrixSettings,
+  TagsSettings,
+} from "./choice-more.js";

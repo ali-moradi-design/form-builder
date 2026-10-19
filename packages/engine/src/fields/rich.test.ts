@@ -3,18 +3,24 @@ import type { FieldDefinition } from "../registry.js";
 import {
   color,
   colorSet,
+  combobox,
   currency,
   currencyDigits,
   dateRange,
   dateTime,
   hidden,
+  imageChoice,
+  matrix,
+  multiSelect,
   normalizeHex,
   normalizePhone,
   nps,
   phone,
   rangeSlider,
+  ranking,
   rating,
   slider,
+  tags,
   time,
   url,
 } from "./index.js";
@@ -115,5 +121,57 @@ describe("rich fields", () => {
     expect(issues(currency, { currency: "JPY" }, 12.5)).toEqual(["tooManyDecimals"]);
     expect(issues(currency, { min: 1 }, 0.5)).toEqual(["tooSmall"]);
     expect(() => currency.settings.parse({ currency: "usd" })).toThrow();
+  });
+});
+
+describe("more choice fields", () => {
+  const opts = { options: [{ value: "a" }, { value: "b" }, { value: "c" }] };
+  it("multiSelect and combobox follow the options", () => {
+    expect(issues(combobox, opts, "b")).toEqual([]);
+    expect(issues(combobox, opts, "z")).toEqual(["invalidOption"]);
+    expect(issues(multiSelect, { ...opts, maxSelected: 1 }, ["a", "b"])).toEqual(["tooMany"]);
+  });
+
+  it("tags are trimmed, short and distinct", () => {
+    expect(issues(tags, {}, ["UX", "a11y"])).toEqual([]);
+    expect(issues(tags, {}, ["UX", "ux"])).toEqual(["duplicate"]);
+    expect(issues(tags, { maxTags: 1 }, ["a", "b"])).toEqual(["tooMany"]);
+    expect(issues(tags, { maxLength: 3 }, ["long"])).toEqual(["tooLong"]);
+    expect(issues(tags, {}, [" padded"])).toEqual(["invalidType"]);
+  });
+
+  it("ranking holds every option once", () => {
+    expect(issues(ranking, opts, ["c", "a", "b"])).toEqual([]);
+    expect(issues(ranking, opts, ["c", "a"])).toEqual(["incompleteRanking"]);
+    expect(issues(ranking, opts, ["c", "a", "a"])).toEqual(["incompleteRanking"]);
+  });
+
+  it("image choice is single or multiple and wants safe image URLs", () => {
+    const pics = {
+      options: [
+        { value: "x", image: "https://e.com/x.jpg" },
+        { value: "y", image: "/y.png" },
+      ],
+    };
+    expect(issues(imageChoice, pics, "x")).toEqual([]);
+    expect(issues(imageChoice, { ...pics, multiple: true }, ["x", "y"])).toEqual([]);
+    expect(() =>
+      imageChoice.settings.parse({ options: [{ value: "x", image: "javascript:alert(1)" }] }),
+    ).toThrow();
+    expect(() =>
+      imageChoice.settings.parse({ options: [{ value: "x", image: "//evil.com/a.png" }] }),
+    ).toThrow();
+  });
+
+  it("matrix wants a column per row", () => {
+    const grid = {
+      rows: [{ value: "talks" }, { value: "venue" }],
+      columns: [{ value: "1" }, { value: "2" }],
+    };
+    expect(issues(matrix, grid, { talks: "1", venue: "2" })).toEqual([]);
+    expect(issues(matrix, grid, { talks: "1" })).toEqual(["incompleteRows"]);
+    expect(issues(matrix, { ...grid, everyRow: false }, { talks: "1" })).toEqual([]);
+    expect(issues(matrix, grid, { talks: "9", venue: "1" })).toEqual(["invalidOption"]);
+    expect(matrix.isEmpty?.({})).toBe(true);
   });
 });

@@ -537,4 +537,142 @@
     background: var(--fw-surface-2);
     font-weight: 600;
   }
+  .fw-combo {
+    position: relative;
+  }
+  .fw-listbox {
+    position: absolute;
+    z-index: 10;
+    inset-inline: 0;
+    max-block-size: 260px;
+    overflow-y: auto;
+    margin-block-start: 4px;
+    padding: 4px;
+    border: 1px solid var(--fw-line);
+    border-radius: var(--fw-radius);
+    background: var(--fw-surface);
+    box-shadow: 0 16px 32px -16px rgb(0 0 0 / 0.3);
+  }
+  .fw-listbox [role="option"] {
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .fw-listbox [data-active] {
+    background: var(--fw-surface-2);
+  }
+  .fw-listbox [aria-selected="true"] {
+    font-weight: 600;
+  }
+  .fw-listbox .fw-help {
+    margin: 0;
+    padding: 6px 10px;
+  }
+  .fw-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+  .fw-combo .fw-tags {
+    margin-block-end: 6px;
+  }
+  .fw-tags input {
+    flex: 1;
+    min-inline-size: 8ch;
+    border: 0;
+    outline: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+  }
+  .fw-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding-inline: 10px 4px;
+    border-radius: 8px;
+    background: var(--fw-primary-soft);
+    font-size: 14px;
+  }
+  .fw-tag button {
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    padding-inline: 4px;
+  }
+  .fw-rank {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .fw-rank li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border: 1px solid var(--fw-line);
+    border-radius: var(--fw-radius);
+    background: var(--fw-surface);
+  }
+  .fw-rank-label {
+    flex: 1;
+  }
+  .fw-pictures {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .fw-picture {
+    overflow: hidden;
+    border: 1px solid var(--fw-line);
+    border-radius: var(--fw-radius);
+    cursor: pointer;
+  }
+  .fw-picture:has(:checked) {
+    border-color: var(--fw-primary);
+    box-shadow: 0 0 0 3px var(--fw-primary-soft);
+  }
+  .fw-picture img {
+    display: block;
+    inline-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .fw-picture .fw-choice {
+    border: 0;
+  }
+  .fw-matrix-wrap {
+    overflow-x: auto;
+  }
+  .fw-matrix {
+    inline-size: 100%;
+    border-collapse: collapse;
+  }
+  .fw-matrix th,
+  .fw-matrix td {
+    padding: 10px 8px;
+    border-block-end: 1px solid var(--fw-line);
+    text-align: center;
+  }
+  .fw-matrix thead th {
+    color: var(--fw-muted);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .fw-matrix tbody th {
+    text-align: start;
+    font-weight: 500;
+  }
+  .fw-rank + .fw-button {
+    justify-self: start;
+  }
+  .fw-matrix input,
+  .fw-picture input {
+    accent-color: var(--fw-primary);
+  }
 }

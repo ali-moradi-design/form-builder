@@ -188,7 +188,14 @@
     "op_lte_date": "is on or before",
     "op_notEmpty_date": "is filled in",
     "op_empty_date": "is empty",
-    "op_eq_switch": "is"
+    "op_eq_switch": "is",
+    "imageUrl": "Image URL",
+    "imageUrlHelp": "Use an https:// address or a path such as /images/a.jpg.",
+    "matrixRows": "Rows",
+    "matrixColumns": "Columns",
+    "multiple": "Allow several answers",
+    "maxTags": "Most tags",
+    "everyRow": "Every row needs an answer"
   },
   "fieldTypes": {
     "shortText": "Short text",
@@ -218,7 +225,13 @@
     "rangeSlider": "Range slider",
     "dateRange": "Date range",
     "repeater": "Repeater",
-    "calculated": "Calculated"
+    "calculated": "Calculated",
+    "combobox": "Searchable list",
+    "multiSelect": "Multi-select",
+    "tags": "Tags",
+    "ranking": "Ranking",
+    "imageChoice": "Picture choice",
+    "matrix": "Matrix"
   },
   "languages": {
     "en": "English",
