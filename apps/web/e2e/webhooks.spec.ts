@@ -30,7 +30,8 @@ test("delivers signed events to a webhook", async ({ page }) => {
     await page.getByLabel("Password").fill("correct horse battery");
     await page.locator("form").getByRole("button", { name: "Create account" }).click();
     await page.waitForURL(/\/forms$/);
-    await page.getByRole("button", { name: /From a template/ }).click();
+    await page.getByRole("link", { name: /From a template/ }).click();
+    await page.getByRole("button", { name: "Use template: Product feedback" }).click();
     await page.waitForURL(/\/forms\/[^/]+$/);
     const formPath = new URL(page.url()).pathname;
     await page.getByRole("button", { name: "Publish" }).click();
