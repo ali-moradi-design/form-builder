@@ -7,3 +7,4 @@ docs-site
 test-results
 playwright-report
 .next
+apps/web/drizzle
