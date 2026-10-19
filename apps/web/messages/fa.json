@@ -97,7 +97,14 @@
     "invalidSchema": "سند خطا دارد و نمایش داده نمی‌شود.",
     "shortcuts": "میان‌برها: Ctrl+Z واگرد، Ctrl+Shift+Z ازنو، Delete حذف، Ctrl+D تکثیر، Alt+↑/↓ جابه‌جایی.",
     "dropHere": "اینجا رها کنید",
-    "dragHandle": "برای جابه‌جایی بکشید"
+    "dragHandle": "برای جابه‌جایی بکشید",
+    "jsonTitle": "JSON فرم",
+    "twoWay": "همگام دوطرفه",
+    "copy": "کپی JSON",
+    "validSchema": "ساختار معتبر",
+    "synced": "همگام با بوم",
+    "jsonSyntax": "هنوز JSON معتبر نیست: {message}",
+    "panel": "پنل کناری"
   },
   "fieldTypes": {
     "shortText": "متن کوتاه",

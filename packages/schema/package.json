@@ -19,13 +19,14 @@
       "types": "./dist/meta.d.ts",
       "default": "./dist/meta.js"
     },
+    "./schema.json": "./dist/form-document.schema.json",
     "./package.json": "./package.json"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown && node scripts/json-schema.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
     "check:package": "publint --strict && attw --pack . --profile esm-only",
