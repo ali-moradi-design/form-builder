@@ -1,14 +1,14 @@
-import { ChartColumn, Table2 } from "lucide-react";
+import { ChartColumn, Plug, Table2 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
-/** Switch between the responses table and the analytics charts. */
+/** Switch between the responses table, the analytics charts and the integrations. */
 export async function ResponsesNav({
   formId,
   current,
 }: {
   formId: string;
-  current: "table" | "analytics";
+  current: "table" | "analytics" | "integrations";
 }) {
   const t = await getTranslations("analytics");
   const tab =
@@ -33,6 +33,14 @@ export async function ResponsesNav({
       >
         <ChartColumn size={15} aria-hidden />
         {t("title")}
+      </Link>
+      <Link
+        href={`/forms/${formId}/integrations`}
+        aria-current={current === "integrations" ? "page" : undefined}
+        className={tab}
+      >
+        <Plug size={15} aria-hidden />
+        {t("integrations")}
       </Link>
     </nav>
   );

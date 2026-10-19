@@ -233,6 +233,39 @@
     "lastWeek": "Last 7 days",
     "versions": "Published versions",
     "perDay": "Responses per day",
-    "days": "{count} days"
+    "days": "{count} days",
+    "integrations": "Integrations"
+  },
+  "integrations": {
+    "title": "Integrations",
+    "subtitle": "Send every new response to other systems.",
+    "webhooks": "Webhooks",
+    "webhooksText": "Each new response is POSTed as JSON to these addresses, signed with the secret. Failed deliveries are retried three times (after 1, 5 and 25 seconds). Up to 5 per form.",
+    "none": "No webhooks yet.",
+    "enabled": "On",
+    "test": "Send test",
+    "testOk": "Test delivered (HTTP {status}).",
+    "testFailed": "Test failed: {error}",
+    "delete": "Delete webhook {url}",
+    "confirmDelete": "Delete this webhook and its delivery log?",
+    "secret": "Signing secret",
+    "show": "Show secret",
+    "hide": "Hide secret",
+    "copySecret": "Copy secret",
+    "url": "Endpoint URL",
+    "add": "Add webhook",
+    "problem": {
+      "invalid": "That isn't a valid URL.",
+      "protocol": "Use an https:// address.",
+      "private": "Private and local network addresses are not allowed.",
+      "unresolved": "That host name can't be found.",
+      "limit": "A form can have up to 5 webhooks."
+    },
+    "deliveries": "Recent deliveries",
+    "delivered": "Delivered",
+    "failed": "Failed",
+    "attempt": "try {n}",
+    "verifyTitle": "Checking the signature",
+    "verifyText": "Every request has X-Formweave-Event, X-Formweave-Timestamp and X-Formweave-Signature headers. Compute the HMAC of \"timestamp.body\" with your secret and compare:"
   }
 }

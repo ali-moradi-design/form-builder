@@ -130,3 +130,40 @@ export const response = pgTable(
   },
   (t) => [index("response_form_idx").on(t.formId, t.createdAt)],
 );
+
+/** An address that receives every new response of a form. */
+export const webhook = pgTable(
+  "webhook",
+  {
+    id: text("id").primaryKey(),
+    formId: text("form_id")
+      .notNull()
+      .references(() => form.id, { onDelete: "cascade" }),
+    url: text("url").notNull(),
+    /** Signs each delivery (HMAC-SHA256) so the receiver can check it came from us. */
+    secret: text("secret").notNull(),
+    enabled: boolean("enabled").notNull().default(true),
+    createdAt: created(),
+  },
+  (t) => [index("webhook_form_idx").on(t.formId)],
+);
+
+/** One attempt to deliver an event to a webhook (the newest are shown to the owner). */
+export const webhookDelivery = pgTable(
+  "webhook_delivery",
+  {
+    id: text("id").primaryKey(),
+    webhookId: text("webhook_id")
+      .notNull()
+      .references(() => webhook.id, { onDelete: "cascade" }),
+    event: text("event").notNull(),
+    /** HTTP status, or null when the request failed before a response. */
+    status: integer("status"),
+    ok: boolean("ok").notNull(),
+    error: text("error"),
+    attempt: integer("attempt").notNull(),
+    durationMs: integer("duration_ms").notNull(),
+    createdAt: created(),
+  },
+  (t) => [index("webhook_delivery_idx").on(t.webhookId, t.createdAt)],
+);

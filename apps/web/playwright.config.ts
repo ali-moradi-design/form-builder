@@ -21,6 +21,8 @@ export default defineConfig({
       BETTER_AUTH_SECRET: "e2e-secret-e2e-secret-e2e-secret-e2e-secret-0123",
       BETTER_AUTH_URL: "http://localhost:3200",
       AUTH_RATE_LIMIT: "off",
+      // The webhook test runs its receiver on localhost.
+      WEBHOOK_ALLOW_PRIVATE: "1",
     },
     url: "http://localhost:3200/forms",
     reuseExistingServer: !process.env.CI,

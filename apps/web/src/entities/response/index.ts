@@ -10,3 +10,5 @@ export type { ExportFormat, ExportLabels } from "./model/export";
 export { DAY_RANGES, parseFilter } from "./model/filter";
 export { perDay, summarize } from "./model/summary";
 export type { Bucket, FieldSummary } from "./model/summary";
+export { notifyWebhooks } from "./model/notify";
+export type { ResponseEvent } from "./model/notify";

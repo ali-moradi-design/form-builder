@@ -23,7 +23,7 @@ export interface SubmissionInput {
 export type SubmitResult =
   | AcceptResult
   | { readonly ok: false; readonly reason: "rateLimited"; readonly retryAfter: number }
-  | { readonly ok: true; readonly id: null; readonly version: null };
+  | { readonly ok: true; readonly id: null; readonly version: null; readonly formId: null };
 
 /**
  * The one way answers come in (hosted page and public API): rate limit per
@@ -34,7 +34,7 @@ export async function submit(db: Db, input: SubmissionInput): Promise<SubmitResu
   const limit: RateLimitResult = limiter.hit(`${input.ip}|${input.slug}`);
   if (!limit.ok) return { ok: false, reason: "rateLimited", retryAfter: limit.retryAfter };
   if (input.honeypot !== undefined && input.honeypot !== null && input.honeypot !== "") {
-    return { ok: true, id: null, version: null };
+    return { ok: true, id: null, version: null, formId: null };
   }
   return acceptResponse(db, input.slug, input.values, input.locale);
 }

@@ -2,8 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
+import { after } from "next/server";
 import { getUser } from "@/shared/auth";
 import { deleteResponses, getDb } from "@/shared/db";
+import { notifyWebhooks } from "../model/notify";
 import { clientIp, submit, type SubmitResult } from "../model/submit";
 
 /** Submits answers to a published form (used by the hosted page). */
@@ -13,7 +15,16 @@ export async function submitResponse(
   locale: string | undefined,
   honeypot: string,
 ): Promise<SubmitResult> {
-  return submit(await getDb(), { slug, values, locale, honeypot, ip: clientIp(await headers()) });
+  const db = await getDb();
+  const result = await submit(db, {
+    slug,
+    values,
+    locale,
+    honeypot,
+    ip: clientIp(await headers()),
+  });
+  after(() => notifyWebhooks(db, result));
+  return result;
 }
 
 /** Deletes some responses of one of the signed-in user's forms. */
