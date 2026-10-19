@@ -472,5 +472,10 @@
     "blankTitle": "Blank form",
     "none": "No template matches your search.",
     "close": "Close"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "This form or page does not exist, or it is not published.",
+    "home": "Go to your forms"
   }
 }
