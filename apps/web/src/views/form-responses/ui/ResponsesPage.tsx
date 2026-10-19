@@ -1,15 +1,15 @@
 import { resolveText } from "@formweave/engine/i18n";
 import { getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { deleteMyResponses, formatAnswer, responseColumns } from "@/entities/response";
+import { deleteMyResponses, formatAnswer, parseFilter, responseColumns } from "@/entities/response";
 import { getUser } from "@/shared/auth";
 import { getDb, getForm, listResponses, listVersions } from "@/shared/db";
 import { AppShell } from "@/widgets/app-shell";
+import { ExportMenu } from "./ExportMenu";
 import { ResponseFilters } from "./ResponseFilters";
 import { ResponsesTable } from "./ResponsesTable";
 
 const PAGE = 25;
-const RANGES = ["all", "7", "30", "90"] as const;
 
 /** Query string of the responses page. */
 export interface ResponsesQuery {
@@ -30,15 +30,15 @@ export async function ResponsesPage({ id, query }: { id: string; query: Response
 
   const versions = await listVersions(db, user.id, id);
   const page = Math.max(1, Number.parseInt(query.page ?? "1", 10) || 1);
-  const version = versions.some((v) => String(v.version) === query.version)
-    ? Number(query.version)
-    : undefined;
-  const days = RANGES.find((r) => r === query.days) ?? "all";
-  const from = days === "all" ? undefined : new Date(Date.now() - Number(days) * 86_400_000);
+  const { filter, days } = parseFilter(
+    query,
+    versions.map((v) => v.version),
+  );
+  const { version, from } = filter;
   const filtered = version !== undefined || from !== undefined;
 
   const [result, everything] = await Promise.all([
-    listResponses(db, user.id, id, { version, from }, { limit: PAGE, offset: (page - 1) * PAGE }),
+    listResponses(db, user.id, id, filter, { limit: PAGE, offset: (page - 1) * PAGE }),
     filtered ? listResponses(db, user.id, id, {}, { limit: 0, offset: 0 }) : null,
   ]);
   const rows = result?.rows ?? [];
@@ -60,6 +60,7 @@ export async function ResponsesPage({ id, query }: { id: string; query: Response
             {filtered && ` ${t("matching", { count: total })}`}
           </p>
         </div>
+        {versions.length > 0 && <ExportMenu formId={id} count={total} />}
       </div>
       <ResponseFilters versions={versions.map((v) => v.version)} version={version} days={days} />
       {versions.length === 0 ? (

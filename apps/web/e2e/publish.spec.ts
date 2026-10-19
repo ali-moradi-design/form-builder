@@ -86,6 +86,24 @@ test("publishes a form and collects a response on the hosted page", async ({ pag
   await page.getByLabel("Date range").selectOption("7");
   await expect(page).toHaveURL(/days=7/);
   await expect(table.getByRole("cell", { name: "Shiraz" })).toBeVisible();
+
+  // Exports: the menu builds the link; the files hold the answers.
+  await page.getByRole("button", { name: "Export" }).click();
+  const download = page.waitForEvent("download");
+  await page.getByRole("link", { name: "Download CSV" }).click();
+  expect((await download).suggestedFilename()).toBe("blank-form-responses.csv");
+  const base = new URL(page.url());
+  const exportUrl = (format: string) => `${base.pathname}/export?format=${format}`;
+  const csv = await page.request.get(exportUrl("csv"));
+  expect(csv.headers()["content-type"]).toContain("text/csv");
+  const csvText = await csv.text();
+  expect(csvText).toContain("Your city");
+  expect(csvText).toContain("Shiraz");
+  const json = (await (await page.request.get(exportUrl("json"))).json()) as { data: unknown }[];
+  expect(json.map((r) => r.data)).toEqual([{ text: "Shiraz" }]);
+  const xlsx = await page.request.get(exportUrl("xlsx"));
+  expect(xlsx.status()).toBe(200);
+  expect((await xlsx.body()).subarray(0, 2).toString()).toBe("PK");
 });
 
 test("shows 404 for an unknown form", async ({ page }) => {

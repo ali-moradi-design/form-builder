@@ -208,6 +208,12 @@
     "pageOf": "Page {page} of {pages}",
     "previous": "Previous",
     "next": "Next",
-    "dateRange": "Date range"
+    "dateRange": "Date range",
+    "export": "Export",
+    "exportTitle": "Export {count, plural, one {# response} other {# responses}}",
+    "format": "Format",
+    "onlyFilters": "Only current filters",
+    "download": "Download {format}",
+    "language": "Language"
   }
 }
