@@ -241,7 +241,7 @@ function FieldCard({
         <button
           type="button"
           aria-pressed={selected}
-          aria-label={`${t("field")}: ${label || node.key}`}
+          data-field-key={node.key}
           onClick={(e) => {
             e.stopPropagation();
             select();
@@ -249,6 +249,10 @@ function FieldCard({
           className="rounded-md px-1.5 py-0.5 font-mono text-[11.5px] text-ink-3 hover:bg-surface-2 focus-visible:outline-3 focus-visible:outline-primary-soft aria-pressed:bg-orange aria-pressed:text-white"
         >
           {node.key}
+          <span className="sr-only">
+            {" "}
+            ({t("field")}: {label || node.type})
+          </span>
         </button>
         {conditional && <ConditionBadge />}
         {selected && (

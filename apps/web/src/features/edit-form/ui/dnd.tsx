@@ -72,6 +72,7 @@ export function DropSlot({ place, empty }: { place: FieldPlace; empty?: ReactNod
   return (
     <div
       ref={ref}
+      data-drop-slot=""
       className={cn(
         "col-span-2 grid place-items-center rounded-lg border-2 border-dashed",
         empty ? "min-h-16" : "h-7",
