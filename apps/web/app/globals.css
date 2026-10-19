@@ -19,7 +19,7 @@
   --primary: var(--teal);
   --primary-fg: var(--teal);
   --primary-soft: #e4eff1;
-  --accent-text: #c44f0d;
+  --accent-text: #b9490a;
   /* Single-series chart marks (checked with the dataviz palette validator). */
   --chart: #0a87a3;
 }
@@ -83,4 +83,16 @@ body {
   background: var(--frame);
   color: var(--ink);
   font-family: var(--font-sans);
+}
+
+/* People who ask for less motion get no transitions or animations. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

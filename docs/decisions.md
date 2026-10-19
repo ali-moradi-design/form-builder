@@ -2,6 +2,14 @@
 
 Short log of what the user agreed. Newest first.
 
+- 2026-10-19: Accessibility audit for 1.0: `e2e/a11y.spec.ts` scans every
+  app page (sign-in, forms, templates, builder, publish dialog, preview,
+  responses, analytics, integrations, hosted form and its embed mode, 404)
+  with axe for WCAG 2.1 A/AA and best-practice rules, in English and
+  Persian, light and dark, plus a keyboard-only pass of the gallery. Fixes:
+  `--fw-accent-text` is #b9490a (4.8:1 on the grey frame), the preview page
+  has an `h1`, the 404 page has a `main` landmark, and the web app turns off
+  transitions for `prefers-reduced-motion`.
 - 2026-10-19: The engine's `allFields` budget is 4 KB brotli (was 3 KB):
   the 0.6 field types (choices, uploads, address, dynamic options) took it
   just over. Single field definitions keep their 600 B budget.
