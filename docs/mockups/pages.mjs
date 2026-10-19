@@ -348,6 +348,35 @@ const summary = shell("Analytics", ["Product feedback", "Analytics"], `
     </div></div>
 </div>`, true);
 
+
+/* ---------------- 10 Sign in ---------------- */
+const signIn = `<style>.si .mark{width:32px;height:32px}</style><div class="si" style="display:grid;grid-template-columns:1fr 1fr;height:100vh;background:var(--frame)">
+  <div style="display:flex;flex-direction:column;padding:32px 56px">
+    <div class="row" style="gap:10px">${LOGO}<span class="wm" style="font-family:'Comic Neue',cursive;font-weight:700;font-size:20px">formweave</span></div>
+    <div style="margin:auto 0;width:100%;max-width:400px;display:grid;gap:14px">
+      <div><h1 style="font-size:28px;font-weight:600;letter-spacing:-0.02em">Welcome back</h1><p class="muted">Sign in to build, publish and collect.</p></div>
+      <div class="seg" style="display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:11px;background:var(--surface-2);border:1px solid var(--line)"><span style="text-align:center;padding:7px;border-radius:8px;background:var(--surface);box-shadow:var(--shadow-sm);font-weight:500;font-size:13px">Sign in</span><span style="text-align:center;padding:7px;font-size:13px;color:var(--ink-2)">Create account</span></div>
+      <div class="fld"><span class="label">Email</span><div class="input">${i("mail", "icon-sm")}ali@example.com</div></div>
+      <div class="fld"><span class="label">Password</span><div class="input">${i("lock", "icon-sm")}••••••••••</div></div>
+      <button class="btn primary lg" style="width:100%">Sign in</button>
+      <div class="row" style="gap:12px;color:var(--ink-3);font-size:12px"><span style="flex:1;height:1px;background:var(--line)"></span>or<span style="flex:1;height:1px;background:var(--line)"></span></div>
+      <button class="btn lg" style="width:100%">${i("sparkles", "icon-sm")}Try the demo account</button>
+      <p class="muted" style="font-size:12.5px;text-align:center">The demo has sample forms and responses. Anyone can open it, so don't put private data there.</p>
+    </div>
+    ${CREDIT_EN()}
+  </div>
+  <div style="margin:16px;border-radius:22px;background:radial-gradient(120% 90% at 85% 10%, #9a031e 0%, #5f0f40 55%, #3d0a2a 100%);color:#fff4e8;display:flex;flex-direction:column;justify-content:flex-end;padding:48px;position:relative;overflow:hidden">
+    <div style="position:absolute;inset-block-start:64px;inset-inline-end:56px;width:340px;background:var(--surface);color:var(--ink);border-radius:16px;padding:20px;box-shadow:0 30px 60px -20px rgb(0 0 0 / 0.45);display:grid;gap:12px;transform:rotate(-3deg)">
+      <div class="row" style="gap:8px"><span style="width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:600">1</span><b style="font-size:14px">About you</b></div>
+      <div class="fld"><span class="label">Your name<span class="req">*</span></span><div class="input ph">Jane Doe</div></div>
+      <div class="fld"><span class="label">Which plan do you use?</span><div class="row" style="gap:6px"><span class="pchip">Free</span><span class="pchip" style="border-color:var(--teal);background:var(--primary-soft);color:var(--teal)">Team</span><span class="pchip">Enterprise</span></div></div>
+    </div>
+    <div style="position:absolute;inset-block-start:330px;inset-inline-end:200px;background:#fb8b24;color:#3d0a2a;border-radius:12px;padding:10px 14px;font-family:var(--mono);font-size:12px;transform:rotate(4deg);box-shadow:0 20px 40px -18px rgb(0 0 0 / 0.5)">{ "op": "eq", "args": [{ "var": "plan" }, "team"] }</div>
+    <h2 style="font-size:32px;line-height:1.15;font-weight:600;letter-spacing:-0.02em;max-width:460px">One schema. A builder for people, an engine for code.</h2>
+    <p style="opacity:.8;margin-top:10px;max-width:440px">Design a form by drag and drop, publish it as a link, an embed or a React component, and read the answers in one place.</p>
+  </div>
+</div>`;
+
 export const pages = [
   { name: "01-dashboard", title: "Dashboard", body: dashboard, height: 960 },
   { name: "02-builder", title: "Builder", body: builder(settings) },
@@ -357,4 +386,5 @@ export const pages = [
   ...makeVariants({ i, fa, P, LOGO, CREDIT_FA }),
   { name: "08-responses", title: "Responses", body: responses },
   { name: "09-analytics-dark", title: "Analytics", body: summary, theme: "dark" },
+  { name: "10-sign-in", title: "Sign in", body: signIn },
 ];

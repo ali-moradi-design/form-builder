@@ -286,3 +286,11 @@ export function duplicateField(
     key: clone.key,
   };
 }
+
+/** Counts the fields of a document, including nested ones. */
+export function countFields(document: FormDocument): number {
+  type Node = { readonly fields?: readonly Node[] | undefined };
+  const count = (nodes: readonly Node[]): number =>
+    nodes.reduce((n, f) => n + 1 + count(f.fields ?? []), 0);
+  return document.steps.reduce((n, s) => n + count(s.fields), 0);
+}

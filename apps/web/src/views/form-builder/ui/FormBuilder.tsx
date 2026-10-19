@@ -5,7 +5,8 @@ import { Eye, PencilRuler } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
-import { saveDraft, useDraft } from "@/entities/form";
+import type { FormDocument } from "@formweave/schema";
+import { saveMyDraft } from "@/entities/form";
 import {
   BuilderDnd,
   BuilderProvider,
@@ -18,21 +19,17 @@ import {
   useBuilderShortcuts,
 } from "@/features/edit-form";
 import { LocaleSwitch } from "@/features/switch-locale";
-import { useHydrated } from "@/shared/lib";
 import { LogoMark } from "@/shared/ui";
 
-/** The builder for one draft: palette, canvas and settings. */
-export function FormBuilder({ id }: { id: string }) {
-  const draft = useDraft(id);
-  const hydrated = useHydrated();
-  const t = useTranslations("preview");
-  if (!hydrated) return null;
-  if (!draft) return <p className="p-8 text-ink-2">{t("notFound")}</p>;
+/** The builder for one form: palette, canvas and settings. */
+export function FormBuilder({ id, initial }: { id: string; initial: FormDocument }) {
   return (
     <BuilderProvider
-      initial={draft.document}
+      initial={initial}
       save={(doc) => {
-        saveDraft(id, doc);
+        saveMyDraft(id, doc).catch((error: unknown) => {
+          console.error("Saving the draft failed", error);
+        });
       }}
     >
       <BuilderDnd>

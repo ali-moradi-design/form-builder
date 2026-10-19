@@ -23,7 +23,12 @@
     "edited": "Edited {date}",
     "open": "Open",
     "delete": "Delete",
-    "localNote": "Drafts are saved in this browser until accounts arrive in version 0.4."
+    "live": "Live v{version}",
+    "responses": "{count, plural, one {# response} other {# responses}}",
+    "confirmDelete": "Delete “{title}” with all its versions and responses?",
+    "importText": "{count, plural, one {# draft is} other {# drafts are}} saved in this browser from before accounts. Move them into your account?",
+    "importAction": "Import",
+    "importSkip": "Discard"
   },
   "preview": {
     "back": "All forms",
@@ -121,5 +126,26 @@
   "languages": {
     "en": "English",
     "fa": "فارسی"
+  },
+  "auth": {
+    "welcome": "Welcome back",
+    "create": "Create your account",
+    "subtitle": "Sign in to build, publish and collect.",
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "or": "or",
+    "demo": "Try the demo account",
+    "demoNote": "The demo has sample forms. Anyone can open it, so don't put private data there.",
+    "failed": "That didn't work. Check the email and password.",
+    "signOut": "Sign out",
+    "artStep": "About you",
+    "artQuestion": "Which plan do you use?",
+    "artFree": "Free",
+    "artTeam": "Team",
+    "artTitle": "One schema. A builder for people, an engine for code.",
+    "artText": "Design a form by drag and drop, publish it as a link, an embed or a React component, and read the answers in one place."
   }
 }

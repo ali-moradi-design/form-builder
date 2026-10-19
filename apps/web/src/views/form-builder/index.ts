@@ -1,1 +1,1 @@
-export { FormBuilder } from "./ui/FormBuilder";
+export { FormBuilderPage } from "./ui/FormBuilderPage";

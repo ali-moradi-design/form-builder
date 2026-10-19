@@ -1,8 +1,21 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
+/** Creates a fresh account, so tests don't share forms. */
+const signUp = async (page: Page) => {
+  await page.goto("/sign-in");
+  await page.getByRole("tab", { name: /Create account|ساخت حساب/ }).click();
+  await page.getByLabel(/^(Email|ایمیل)$/).fill(`user-${crypto.randomUUID()}@example.com`);
+  await page.getByLabel(/^(Password|گذرواژه)$/).fill("correct horse battery");
+  await page
+    .locator("form")
+    .getByRole("button", { name: /Create account|ساخت حساب/ })
+    .click();
+  await page.waitForURL(/\/forms$/);
+};
+
 const newForm = async (page: Page, kind: RegExp) => {
-  await page.goto("/forms");
+  await signUp(page);
   await page.getByRole("button", { name: kind }).click();
   await page.waitForURL(/\/forms\/[^/]+$/);
 };
@@ -34,6 +47,7 @@ test("moves, undoes and keeps edits after a reload", async ({ page }) => {
   await expect(keys.first()).toHaveAttribute("data-field-key", "name");
   await page.getByRole("button", { name: "Redo" }).click();
   await expect(keys.first()).toHaveAttribute("data-field-key", "email");
+  await expect(page.getByRole("status").first()).toHaveText("Saved");
   await page.reload();
   await expect(keys.first()).toHaveAttribute("data-field-key", "email");
 });
@@ -44,9 +58,18 @@ test("renaming a key updates the conditions that read it", async ({ page }) => {
   await page.getByLabel(/^Key/).fill("tier");
   await page.getByRole("tab", { name: "JSON" }).click();
   await expect(page.getByText("Valid schema")).toBeVisible({ timeout: 30_000 });
-  const saved = () => page.evaluate(() => localStorage.getItem("formweave:drafts") ?? "");
-  await expect.poll(saved).toContain('{"var":"tier"}');
-  await expect.poll(saved).not.toContain('"plan"');
+  await expect(page.getByRole("status").first()).toHaveText("Saved");
+  await page.reload();
+  await page.getByRole("tab", { name: "JSON" }).click();
+  await expect(page.getByText("Valid schema")).toBeVisible({ timeout: 30_000 });
+  const json = await page.evaluate(() => {
+    const monaco = (
+      window as unknown as { monaco: { editor: { getModels: () => { getValue: () => string }[] } } }
+    ).monaco;
+    return monaco.editor.getModels()[0]?.getValue() ?? "";
+  });
+  expect(json).toContain('"var": "tier"');
+  expect(json).not.toContain('"plan"');
 });
 
 test("drags a field from the palette onto the canvas", async ({ page }) => {
