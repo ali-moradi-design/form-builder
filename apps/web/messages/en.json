@@ -287,7 +287,7 @@
     "password": "Password",
     "or": "or",
     "demo": "Try the demo account",
-    "demoNote": "The demo has sample forms. Anyone can open it, so don't put private data there.",
+    "demoNote": "The demo has sample forms and is reset every night. Anyone can open it, so don't put private data there.",
     "failed": "That didn't work. Check the email and password.",
     "signOut": "Sign out",
     "artStep": "About you",
