@@ -216,6 +216,41 @@ const jsonPanel = `
 </section>`;
 const builder = (right, cls = "", status = `<span class="pill draft">Draft</span>`) => `<div class="bshell">${builderBar(status)}<div class="bgrid ${cls}">${palette}${jobSheet}${right}</div></div>`;
 
+
+/* ---------------- 11 Logic editor ---------------- */
+const sel = (t, k = false) => `<span class="lg-sel ${k ? "k" : ""}">${t}${i("chevron-down", "icon-xs")}</span>`;
+const cond = (f, op, v) => `<div class="lg-row">${sel(f)}${sel(op)}<span class="lg-val">${v}</span><button class="btn ghost square sm">${i("x", "icon-sm")}</button></div>`;
+const logicPanel = `
+<section class="panel">
+  <div class="panel-head"><span class="tile t" style="width:28px;height:28px">${i("banknote", "icon-sm")}</span><h2>Day rate</h2><div class="grow"></div>
+    <button class="btn ghost square">${i("copy", "icon-sm")}</button><button class="btn ghost square">${i("trash-2", "icon-sm")}</button></div>
+  <div class="tabs-u"><span>Field</span><span>Validation</span><span class="on">Logic</span><span>Style</span></div>
+  <div class="setp">
+    <div class="lg-sec">
+      <div class="lg-h"><b>Show this question</b><div class="seg sm"><span>Always</span><span class="on">When…</span></div></div>
+      <div class="lg-group">
+        <div class="lg-gh"><div class="seg xs"><span class="on">All</span><span>Any</span></div><span class="faint">of these are true</span></div>
+        ${cond("Employment type", "is", "Contract")}
+        <div class="lg-group nested">
+          <div class="lg-gh"><div class="seg xs"><span>All</span><span class="on">Any</span></div><span class="faint">of these are true</span><div class="grow"></div><button class="btn ghost square sm">${i("x", "icon-sm")}</button></div>
+          ${cond("Years of experience", "≥", "3")}
+          ${cond("Portfolio", "is filled in", "")}
+          <div class="lg-add">${i("plus", "icon-sm")}Condition</div>
+        </div>
+        <div class="row" style="gap:14px"><div class="lg-add">${i("plus", "icon-sm")}Condition</div><div class="lg-add">${i("plus", "icon-sm")}Group</div></div>
+      </div>
+      <p class="lg-sum">${i("eye", "icon-sm")}<span>Shown when <b>employment type</b> is <b>Contract</b> and (<b>years of experience</b> is at least <b>3</b> or <b>portfolio</b> is filled in).</span></p>
+    </div>
+    <div class="lg-sec">
+      <div class="lg-h"><b>Required</b><div class="seg sm"><span>Never</span><span>Always</span><span class="on">When…</span></div></div>
+      <div class="lg-group">${cond("Employment type", "is", "Contract")}<div class="lg-add">${i("plus", "icon-sm")}Condition</div></div>
+    </div>
+    <div class="lg-sec">
+      <div class="lg-h"><b>Read-only</b><div class="seg sm"><span class="on">Never</span><span>Always</span><span>When…</span></div></div>
+    </div>
+  </div>
+</section>`;
+
 /* ---------------- 04 Publish ---------------- */
 const publish = `${builder(settings, "", `<span class="pill live">Live, v3</span>`)}
 <div class="scrim"><div class="dialog" style="width:760px">
@@ -387,4 +422,5 @@ export const pages = [
   { name: "08-responses", title: "Responses", body: responses },
   { name: "09-analytics-dark", title: "Analytics", body: summary, theme: "dark" },
   { name: "10-sign-in", title: "Sign in", body: signIn },
+  { name: "11-builder-logic", title: "Logic editor", body: builder(logicPanel) },
 ];

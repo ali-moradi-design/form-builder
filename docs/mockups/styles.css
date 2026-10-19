@@ -560,3 +560,25 @@ tr.sel td { background: var(--mark-soft); }
 .rep-grid { display: grid; grid-template-columns: 2fr 1fr 1.4fr; gap: 14px; align-items: start; }
 .rep-add { display: flex; align-items: center; justify-content: center; gap: 8px; height: 48px; border: 1.5px dashed var(--line-strong); border-radius: 14px; background: transparent; color: var(--primary-fg); font: inherit; font-weight: 600; }
 .pchip.on { border-color: var(--teal); background: var(--primary-soft); color: var(--teal); }
+
+/* Logic editor */
+.lg-sec { display: grid; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.lg-sec:last-child { border-bottom: 0; }
+.lg-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; }
+.seg.sm span { padding: 4px 9px; font-size: 12px; }
+.seg.xs { padding: 2px; border-radius: 8px; }
+.seg.xs span { padding: 2px 8px; font-size: 11.5px; border-radius: 6px; }
+.lg-group { display: grid; gap: 8px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); }
+.lg-group.nested { background: var(--surface); border-inline-start: 3px solid var(--amber); }
+.lg-gh { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.lg-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 6px; align-items: center; padding: 8px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.lg-row > :first-child { grid-column: 1 / 3; }
+.lg-row > button { grid-column: 3; grid-row: 1; }
+.lg-sel, .lg-val { display: flex; align-items: center; justify-content: space-between; gap: 4px; height: 32px; padding-inline: 9px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface); font-size: 12px; white-space: nowrap; overflow: hidden; }
+.lg-sel.k { font-family: var(--mono); font-size: 11.5px; color: var(--teal); }
+.lg-val:empty { background: transparent; border-style: dashed; }
+.btn.square.sm { width: 28px; height: 28px; }
+.lg-add { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 500; color: var(--primary-fg); }
+.lg-sum { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: var(--ink-2); line-height: 1.55; }
+.lg-sum b { color: var(--ink); font-weight: 600; }
+.icon-xs { width: 12px; height: 12px; }
