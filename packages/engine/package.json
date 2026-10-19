@@ -76,7 +76,7 @@
     {
       "name": "all fields",
       "path": "dist/fields/all.js",
-      "limit": "3 kB"
+      "limit": "4 kB"
     },
     {
       "name": "i18n",

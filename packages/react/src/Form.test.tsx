@@ -570,4 +570,87 @@ describe("<Form>", () => {
       });
     });
   });
+
+  it("changes a dependent list, loads remote options and collects an address", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    const fetchMock = vi.fn(() =>
+      Promise.resolve(
+        new Response(JSON.stringify(["9-10", { value: "10-11", label: "10 to 11" }])),
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const order: FormDocument = {
+      ...doc,
+      steps: [
+        {
+          key: "main",
+          fields: [
+            {
+              type: "select",
+              key: "country",
+              label: "Country",
+              settings: {
+                options: [
+                  { value: "ir", label: "Iran" },
+                  { value: "de", label: "Germany" },
+                ],
+              },
+            },
+            {
+              type: "radio",
+              key: "city",
+              label: "City",
+              settings: {
+                options: [],
+                optionsBy: {
+                  field: "country",
+                  options: {
+                    ir: [{ value: "shz", label: "Shiraz" }],
+                    de: [{ value: "ber", label: "Berlin" }],
+                  },
+                },
+              },
+            },
+            {
+              type: "select",
+              key: "slot",
+              label: "Slot",
+              settings: { options: [], optionsUrl: "https://example.com/slots" },
+            },
+            { type: "address", key: "ship", label: "Ship to", required: true },
+          ],
+        },
+      ],
+    };
+    render(
+      <Form
+        schema={order}
+        registry={registry}
+        renderers={createRenderers(allRenderers)}
+        onSubmit={onSubmit}
+      />,
+    );
+    await user.selectOptions(screen.getByRole("combobox", { name: "Country" }), "ir");
+    await user.click(await screen.findByLabelText("Shiraz"));
+    await user.selectOptions(screen.getByRole("combobox", { name: "Country" }), "de");
+    // The answer for the other country is cleared; the new list is shown.
+    expect(screen.queryByLabelText("Shiraz")).toBeNull();
+    await user.click(screen.getByLabelText("Berlin"));
+    await screen.findByRole("option", { name: "10 to 11" });
+    await user.selectOptions(screen.getByLabelText("Slot"), "10-11");
+    await user.type(screen.getByLabelText("Street and number"), "Unter den Linden 1");
+    await user.type(screen.getByRole("textbox", { name: "City" }), "Berlin");
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        country: "de",
+        city: "ber",
+        slot: "10-11",
+        ship: { line1: "Unter den Linden 1", city: "Berlin" },
+      });
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    vi.unstubAllGlobals();
+  });
 });

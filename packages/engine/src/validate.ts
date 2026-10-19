@@ -140,6 +140,16 @@ export function validate(
       issues.push(toIssue(key, result.error.issues[0]));
       continue;
     }
+    // Dependent lists: the answer must be in the list for the other answer now.
+    const allowed = field.definition.options?.(field.settings, (k) => all[k]);
+    if (allowed) {
+      const values = new Set(allowed.map((o) => o.value));
+      const picked = Array.isArray(result.data) ? (result.data as unknown[]) : [result.data];
+      if (!picked.every((v) => typeof v === "string" && values.has(v))) {
+        issues.push({ key, code: "invalidOption" });
+        continue;
+      }
+    }
     if (!field.rows) {
       data[key] = result.data;
       continue;

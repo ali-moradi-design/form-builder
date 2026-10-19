@@ -93,6 +93,13 @@ export function formatAnswer(
   };
   if (typeof value === "boolean") return value ? yesNo[0] : yesNo[1];
   if (isFileRef(value)) return value.name;
+  if (column?.type === "address" && typeof value === "object") {
+    const a = value as Record<string, unknown>;
+    return ["line1", "line2", "city", "region", "postalCode", "country"]
+      .map((k) => a[k])
+      .filter((v): v is string => typeof v === "string" && v !== "")
+      .join(", ");
+  }
   if (Array.isArray(value) && value.length > 0 && value.every(isFileRef))
     return value.map((f) => f.name).join(", ");
   if (Array.isArray(value)) {

@@ -204,7 +204,16 @@
     "crop": "Crop",
     "crop_square": "Square",
     "crop_none": "Keep the whole picture",
-    "imageSize": "Saved size (pixels)"
+    "imageSize": "Saved size (pixels)",
+    "addressParts": "Parts to ask for",
+    "addressRequired": "Parts that need an answer",
+    "part_line2": "Flat, floor",
+    "part_city": "City",
+    "part_region": "State or province",
+    "part_postalCode": "Postal code",
+    "part_country": "Country",
+    "optionsUrl": "Load options from",
+    "optionsUrlHelp": "An https:// address that returns a JSON list. Dependent lists (for example cities by country) are set in the JSON panel with optionsBy."
   },
   "fieldTypes": {
     "shortText": "Short text",
@@ -243,7 +252,8 @@
     "matrix": "Matrix",
     "file": "File upload",
     "imageUpload": "Photo",
-    "signature": "Signature"
+    "signature": "Signature",
+    "address": "Address"
   },
   "languages": {
     "en": "English",

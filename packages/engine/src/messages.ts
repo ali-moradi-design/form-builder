@@ -47,6 +47,7 @@ export const en: MessageCatalog = {
   fileTooBig: "This file is too big.",
   fileType: "This type of file is not allowed here.",
   fileMissing: "This file was not received. Upload it again.",
+  incompleteAddress: "Fill in the rest of the address.",
 };
 
 /**
@@ -86,6 +87,7 @@ export const fa: MessageCatalog = {
   fileTooBig: "حجم این فایل بیش از حد مجاز است.",
   fileType: "این نوع فایل اینجا پذیرفته نمی‌شود.",
   fileMissing: "این فایل به دست ما نرسید. دوباره بارگذاری کنید.",
+  incompleteAddress: "بقیهٔ نشانی را هم بنویسید.",
 };
 
 /**

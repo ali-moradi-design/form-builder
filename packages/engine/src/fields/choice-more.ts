@@ -5,10 +5,14 @@ import type { CheckboxesSettings } from "./choice.js";
 import {
   choiceSettings,
   count,
+  dynamicOptions,
+  someOptions,
   oneOf,
   options,
   type ChoiceOption,
   type ChoiceSettings,
+  currentOptions,
+  optionSources,
 } from "./shared.js";
 
 const localized: z.ZodMiniType<LocalizedText> = /*#__PURE__*/ z.union([
@@ -23,15 +27,13 @@ const manyOf = (settings: CheckboxesSettings): z.ZodMiniType<string[]> =>
     .array(oneOf(settings), "invalidType")
     .check(
       z.minLength(settings.minSelected ?? 0, "tooFew"),
-      z.maxLength(settings.maxSelected ?? settings.options.length, "tooMany"),
+      z.maxLength(settings.maxSelected ?? Number.MAX_SAFE_INTEGER, "tooMany"),
       z.refine(unique, "duplicate"),
     );
 
-const manySettings: z.ZodMiniType<CheckboxesSettings> = /*#__PURE__*/ z.object({
-  options,
-  minSelected: count,
-  maxSelected: count,
-});
+const manySettings: z.ZodMiniType<CheckboxesSettings> = /*#__PURE__*/ z
+  .object({ ...dynamicOptions, minSelected: count, maxSelected: count })
+  .check(z.refine(someOptions, "A choice field needs options."));
 
 /**
  * A searchable list with one answer, for long lists such as cities.
@@ -41,6 +43,8 @@ const manySettings: z.ZodMiniType<CheckboxesSettings> = /*#__PURE__*/ z.object({
  */
 export const combobox: FieldDefinition<ChoiceSettings, string> = /*#__PURE__*/ defineField({
   type: "combobox",
+  reads: optionSources,
+  options: currentOptions,
   settings: choiceSettings,
   defaultValue: () => undefined,
   validator: ({ settings }) => oneOf(settings),
@@ -55,6 +59,8 @@ export const combobox: FieldDefinition<ChoiceSettings, string> = /*#__PURE__*/ d
 export const multiSelect: FieldDefinition<CheckboxesSettings, string[]> = /*#__PURE__*/ defineField(
   {
     type: "multiSelect",
+    reads: optionSources,
+    options: currentOptions,
     settings: manySettings,
     defaultValue: () => undefined,
     validator: ({ settings }) => manyOf(settings),
@@ -114,6 +120,8 @@ export const tags: FieldDefinition<TagsSettings, string[]> = /*#__PURE__*/ defin
       ),
 });
 
+const rankingSettings: z.ZodMiniType<ChoiceSettings> = /*#__PURE__*/ z.object({ options });
+
 /**
  * Options put in order by preference. Value: `string[]` holding every option
  * value once, first is best. Issue codes: `invalidType`, `invalidOption`,
@@ -123,7 +131,7 @@ export const tags: FieldDefinition<TagsSettings, string[]> = /*#__PURE__*/ defin
  */
 export const ranking: FieldDefinition<ChoiceSettings, string[]> = /*#__PURE__*/ defineField({
   type: "ranking",
-  settings: choiceSettings,
+  settings: rankingSettings,
   defaultValue: () => undefined,
   validator: ({ settings }) =>
     z

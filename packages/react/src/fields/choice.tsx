@@ -2,10 +2,8 @@ import type { ChoiceOption } from "@formweave/engine/fields";
 import { resolveText } from "@formweave/engine/i18n";
 import type { ReactNode, Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
+import { useChoiceOptions } from "./options.js";
 import { controlProps, FieldShell } from "./shell.js";
-
-const optionsOf = (p: FieldRendererProps): readonly ChoiceOption[] =>
-  (p.field.settings as { options: readonly ChoiceOption[] }).options;
 
 const optionLabel = (o: ChoiceOption, p: FieldRendererProps): string =>
   resolveText(o.label, p.locale, p.fallbackLocale) || o.value;
@@ -15,35 +13,42 @@ const optionLabel = (o: ChoiceOption, p: FieldRendererProps): string =>
  *
  * @since 0.2.0
  */
-export const selectRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("select", (p) => (
-  <FieldShell props={p}>
-    <select
-      {...controlProps(p)}
-      ref={p.inputRef as Ref<HTMLSelectElement>}
-      className="fw-input fw-select"
-      value={typeof p.value === "string" ? p.value : ""}
-      onChange={(e) => {
-        p.onChange(e.target.value || undefined);
-      }}
-    >
-      <option value="">{p.placeholder}</option>
-      {optionsOf(p).map((o) => (
-        <option key={o.value} value={o.value}>
-          {optionLabel(o, p)}
-        </option>
-      ))}
-    </select>
-  </FieldShell>
-));
+export const selectRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("select", Select);
+
+function Select(p: FieldRendererProps): ReactNode {
+  const { options, loading } = useChoiceOptions(p);
+  return (
+    <FieldShell props={p}>
+      <select
+        {...controlProps(p)}
+        ref={p.inputRef as Ref<HTMLSelectElement>}
+        className="fw-input fw-select"
+        aria-busy={loading}
+        value={typeof p.value === "string" ? p.value : ""}
+        onChange={(e) => {
+          p.onChange(e.target.value || undefined);
+        }}
+      >
+        <option value="">{p.placeholder}</option>
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {optionLabel(o, p)}
+          </option>
+        ))}
+      </select>
+    </FieldShell>
+  );
+}
 
 function Choices(p: FieldRendererProps & { multiple: boolean }): ReactNode {
+  const { options } = useChoiceOptions(p);
   const selected = p.multiple
     ? new Set(Array.isArray(p.value) ? (p.value as string[]) : [])
     : new Set(typeof p.value === "string" ? [p.value] : []);
   return (
     <FieldShell props={p} asFieldset>
       <div className="fw-choices" role={p.multiple ? "group" : "radiogroup"}>
-        {optionsOf(p).map((o, i) => {
+        {options.map((o, i) => {
           const id = `${p.id}-${String(i)}`;
           return (
             <label key={o.value} className="fw-choice" htmlFor={id}>
@@ -65,11 +70,7 @@ function Choices(p: FieldRendererProps & { multiple: boolean }): ReactNode {
                   const next = new Set(selected);
                   if (e.target.checked) next.add(o.value);
                   else next.delete(o.value);
-                  p.onChange(
-                    optionsOf(p)
-                      .map((x) => x.value)
-                      .filter((v) => next.has(v)),
-                  );
+                  p.onChange(options.map((x) => x.value).filter((v) => next.has(v)));
                 }}
               />
               <span>{optionLabel(o, p)}</span>

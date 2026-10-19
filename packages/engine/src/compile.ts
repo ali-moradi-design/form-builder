@@ -183,6 +183,11 @@ export function compile(document: FormDocument, options: CompileOptions): Compil
         link(node.key, node.visibleWhen);
         link(node.key, node.requiredWhen);
         link(node.key, node.disabledWhen);
+        for (const source of definition.reads?.(parsed.data) ?? []) {
+          let set = dependents.get(source);
+          if (!set) dependents.set(source, (set = new Set()));
+          set.add(node.key);
+        }
         if (node.calculate !== undefined) {
           link(node.key, node.calculate);
           calculated.set(node.key, here);

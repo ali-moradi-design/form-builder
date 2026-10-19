@@ -1,6 +1,7 @@
 import type { Expression } from "@formweave/schema";
 import { calculateValues } from "./calculate.js";
 import type { CompiledForm } from "./compile.js";
+import type { ChoiceOption } from "./fields/shared.js";
 import { evalExpression, truthy } from "./expr.js";
 
 /**
@@ -15,6 +16,13 @@ export interface FieldState {
   readonly required: boolean;
   /** Whether the field is read-only (always `true` for calculated fields). */
   readonly disabled: boolean;
+  /**
+   * The choices to offer now, for fields with dependent options (see
+   * `optionsBy`). Missing for other fields.
+   *
+   * @since 0.6.0
+   */
+  readonly options?: readonly ChoiceOption[] | undefined;
 }
 
 /**
@@ -64,7 +72,8 @@ const sameState = (a: FieldState | undefined, b: FieldState): boolean =>
   a !== undefined &&
   a.visible === b.visible &&
   a.required === b.required &&
-  a.disabled === b.disabled;
+  a.disabled === b.disabled &&
+  a.options === b.options;
 
 /**
  * Works out which fields and steps are visible, required and disabled for the
@@ -141,6 +150,7 @@ export function evaluate(
         (node.visibleWhen === undefined || holds(node.visibleWhen, read));
       let next: FieldState = HIDDEN;
       if (visible) {
+        const options = field.definition.options?.(field.settings, read);
         next = {
           visible,
           required:
@@ -150,6 +160,7 @@ export function evaluate(
             node.calculate !== undefined ||
             (parent?.disabled ?? false) ||
             holds(node.disabledWhen, read),
+          ...(options ? { options } : {}),
         };
       }
       if (sameState(old, next)) {

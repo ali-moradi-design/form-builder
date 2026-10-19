@@ -764,4 +764,16 @@
     display: inline-flex;
     align-items: center;
   }
+  .fw-address {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .fw-address-part {
+    display: grid;
+    gap: 4px;
+  }
+  .fw-address-part:is([data-part="line1"], [data-part="line2"]) {
+    grid-column: 1 / -1;
+  }
 }

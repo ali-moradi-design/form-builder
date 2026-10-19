@@ -7,6 +7,7 @@ import type {
 import { formatNumber, normalizeDigits, resolveText } from "@formweave/engine/i18n";
 import { useId, useState, type KeyboardEvent, type ReactNode, type Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
+import { useChoiceOptions } from "./options.js";
 import { controlProps, FieldShell } from "./shell.js";
 
 const WORDS = {
@@ -47,7 +48,7 @@ const fold = (s: string): string =>
 function Combo(p: FieldRendererProps & { multiple: boolean }): ReactNode {
   const w = words(p.locale);
   const listId = useId();
-  const all = optionsOf(p);
+  const { options: all } = useChoiceOptions(p);
   const chosen = p.multiple ? asList(p.value) : typeof p.value === "string" ? [p.value] : [];
   const current = all.find((o) => o.value === chosen[0]);
   const [query, setQuery] = useState<string | null>(null);

@@ -2,6 +2,10 @@
 
 Short log of what the user agreed. Newest first.
 
+- 2026-10-19: The engine's `allFields` budget is 4 KB brotli (was 3 KB):
+  the 0.6 field types (choices, uploads, address, dynamic options) took it
+  just over. Single field definitions keep their 600 B budget.
+
 - 2026-10-19: The default stylesheet budget is 4 KB gzip (was 3 KB). The
   choice fields (combobox, tags, ranking, image choice, matrix) took it to
   about 3.1 KB, and uploads, signature and address still need styles. One

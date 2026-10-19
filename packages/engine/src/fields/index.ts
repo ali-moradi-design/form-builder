@@ -39,3 +39,7 @@ export type {
 } from "./choice-more.js";
 export { acceptsFile, file, imageUpload, signature } from "./files.js";
 export type { FileRef, FileSettings, ImageUploadSettings } from "./files.js";
+export { address } from "./address.js";
+export type { AddressPart, AddressSettings, AddressValue } from "./address.js";
+export { currentOptions, optionSources } from "./shared.js";
+export type { OptionsBy } from "./shared.js";
