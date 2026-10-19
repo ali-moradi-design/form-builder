@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import { compile } from "./compile.js";
 import { allFields } from "./fields/all.js";
 import { createRegistry } from "./registry.js";
+import { calculateValues } from "./calculate.js";
+import { evaluate } from "./evaluate.js";
 import { toStandardSchema, validate } from "./validate.js";
 
 const doc: FormDocument = {
@@ -172,5 +174,83 @@ describe("repeater", () => {
     ]);
     const none = validate(trip, { people: [] });
     expect(none.success ? [] : none.issues).toEqual([{ key: "people", code: "required" }]);
+  });
+});
+
+describe("calculated fields", () => {
+  const order = compile(
+    {
+      ...doc,
+      steps: [
+        {
+          key: "a",
+          fields: [
+            { type: "number", key: "quantity" },
+            { type: "number", key: "price" },
+            {
+              type: "calculated",
+              key: "total",
+              calculate: { op: "mul", args: [{ var: "subtotal" }, 1.1] },
+            },
+            {
+              type: "calculated",
+              key: "subtotal",
+              calculate: { op: "mul", args: [{ var: "quantity" }, { var: "price" }] },
+            },
+            {
+              type: "shortText",
+              key: "approver",
+              requiredWhen: { op: "gt", args: [{ var: "total" }, 100] },
+            },
+          ],
+        },
+      ],
+    },
+    { registry: createRegistry(allFields) },
+  );
+
+  it("works out values in dependency order and ignores sent values", () => {
+    expect(order.calculated).toEqual(["subtotal", "total"]);
+    expect(calculateValues(order, { quantity: 3, price: 0.1 })).toMatchObject({
+      subtotal: 0.3,
+      total: 0.33,
+    });
+    const r = validate(order, { quantity: 2, price: 5, total: 999 });
+    expect(r).toEqual({
+      success: true,
+      data: { quantity: 2, price: 5, subtotal: 10, total: 11 },
+    });
+  });
+
+  it("lets conditions read results and updates them incrementally", () => {
+    const first = evaluate(order, { quantity: 1, price: 5 });
+    expect(first.fields.approver?.required).toBe(false);
+    expect(first.fields.total?.disabled).toBe(true);
+    const next = evaluate(
+      order,
+      { quantity: 100, price: 5 },
+      { previous: first, changed: ["quantity"] },
+    );
+    expect(next.fields.approver?.required).toBe(true);
+  });
+
+  it("rejects fields calculated from themselves", () => {
+    expect(() =>
+      compile(
+        {
+          ...doc,
+          steps: [
+            {
+              key: "a",
+              fields: [
+                { type: "calculated", key: "x", calculate: { op: "add", args: [{ var: "y" }, 1] } },
+                { type: "calculated", key: "y", calculate: { op: "add", args: [{ var: "x" }, 1] } },
+              ],
+            },
+          ],
+        },
+        { registry: createRegistry(allFields) },
+      ),
+    ).toThrow(/calculated from itself/);
   });
 });

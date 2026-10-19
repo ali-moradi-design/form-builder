@@ -95,6 +95,12 @@ describe("parseFormDocument", () => {
       ]),
     );
     expect(m).toContain('Unknown field "missing" in expression.');
+    const calc = messages(
+      withStep([
+        { type: "calculated", key: "t", calculate: { op: "mul", args: [{ var: "q" }, 2] } },
+      ]),
+    );
+    expect(calc).toContain('Unknown field "q" in expression.');
   });
 
   it("requires the default locale to be supported", () => {

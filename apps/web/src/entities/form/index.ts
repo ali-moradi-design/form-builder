@@ -24,3 +24,5 @@ export {
   updateStep,
 } from "./model/commands";
 export type { FieldPlace, FoundField } from "./model/commands";
+export { parseFormula, printFormula } from "./model/formula";
+export type { FormulaError } from "./model/formula";

@@ -1,5 +1,6 @@
 import type * as z from "zod/mini";
 import type { CompiledField, CompiledForm } from "./compile.js";
+import { calculateValues } from "./calculate.js";
 import { evaluate, type FormState } from "./evaluate.js";
 
 /**
@@ -117,7 +118,8 @@ export function validate(
   values: Readonly<Record<string, unknown>>,
   options?: ValidateOptions,
 ): ValidationResult {
-  const state = options?.state ?? evaluate(form, values);
+  const all = calculateValues(form, values);
+  const state = options?.state ?? evaluate(form, all);
   const keys = options?.step
     ? (form.steps.find((s) => s.key === options.step)?.fields ?? [])
     : form.order;
@@ -127,7 +129,7 @@ export function validate(
     const field = form.fields.get(key);
     const fieldState = state.fields[key];
     if (!field || !fieldState?.visible || field.definition.container) continue;
-    const value = values[key];
+    const value = all[key];
     const empty = (field.definition.isEmpty ?? isEmptyValue)(value);
     if (empty) {
       if (fieldState.required) issues.push({ key, code: "required" });

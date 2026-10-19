@@ -1,3 +1,4 @@
+export { calculateValues } from "./calculate.js";
 export { compile, SchemaError } from "./compile.js";
 export type { CompiledField, CompiledForm, CompiledStep, CompileOptions } from "./compile.js";
 export { evaluate } from "./evaluate.js";

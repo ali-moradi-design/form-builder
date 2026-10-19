@@ -4,9 +4,12 @@ import { Form, type Values } from "@formweave/react";
 import type { FieldNode, FormDocument, Locale } from "@formweave/schema";
 import { ArrowDown, ArrowUp, Plus, Trash2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useRef } from "react";
+import { readsFields } from "@formweave/engine";
+import { useId, useRef, useState } from "react";
 import {
   findField,
+  parseFormula,
+  printFormula,
   removeStep,
   renameField,
   updateField,
@@ -17,6 +20,7 @@ import { fieldType } from "@/shared/config";
 import { registry, renderers } from "@/shared/formweave";
 import { Button } from "@/shared/ui";
 import { useBuilder, useBuilderApi } from "../model/context";
+import { formulaKeys, makesCycle } from "../model/formula-scope";
 import {
   docLocales,
   fieldPatch,
@@ -134,6 +138,9 @@ export function Inspector({ locale }: { locale: Locale }) {
           {t("keyTaken")}
         </p>
         {hasOptions(node.type) && <OptionsEditor node={node} doc={doc} onEdit={edit} />}
+        {node.type === "calculated" && (
+          <FormulaEditor key={node.key} node={node} doc={doc} onEdit={edit} />
+        )}
       </>
     );
   } else if (selection.kind === "step") {
@@ -327,5 +334,94 @@ function OptionsEditor({
         {t("addOption")}
       </Button>
     </fieldset>
+  );
+}
+
+/** Edits the formula of a calculated field as text such as `quantity * price`. */
+function FormulaEditor({
+  node,
+  doc,
+  onEdit,
+}: {
+  node: FieldNode;
+  doc: FormDocument;
+  onEdit: (fn: (d: FormDocument) => FormDocument, group: string) => void;
+}) {
+  const t = useTranslations("builder");
+  const id = useId();
+  const keys = formulaKeys(doc, node.key);
+  const [text, setText] = useState(() =>
+    node.calculate === undefined ? "" : (printFormula(node.calculate) ?? ""),
+  );
+  const [error, setError] = useState<string | null>(null);
+  const apply = (next: string) => {
+    setText(next);
+    if (next.trim() === "") {
+      setError(null);
+      onEdit((d) => updateField(d, node.key, { calculate: undefined }), `formula:${node.key}`);
+      return;
+    }
+    const parsed = parseFormula(next, new Set(keys));
+    if ("error" in parsed) {
+      const { code, name } = parsed.error;
+      setError(
+        code === "unknownField"
+          ? t("formulaUnknownField", { name: name ?? "" })
+          : code === "unknownFunction"
+            ? t("formulaUnknownFunction", { name: name ?? "" })
+            : t("formulaSyntax"),
+      );
+      return;
+    }
+    if (makesCycle(doc, node.key, readsFields(parsed.expr))) {
+      setError(t("formulaCycle"));
+      return;
+    }
+    setError(null);
+    onEdit((d) => updateField(d, node.key, { calculate: parsed.expr }), `formula:${node.key}`);
+  };
+  return (
+    <div className="flex flex-col gap-1.5">
+      <label htmlFor={id} className="text-[13px] font-medium">
+        {t("formula")}
+      </label>
+      <textarea
+        id={id}
+        dir="ltr"
+        rows={2}
+        value={text}
+        aria-invalid={error !== null}
+        aria-describedby={`${id}-help`}
+        onChange={(e) => {
+          apply(e.target.value);
+        }}
+        className="rounded-lg border border-line bg-surface px-3 py-2 font-mono text-[13px] aria-invalid:border-[#c0392b] focus-visible:outline-3 focus-visible:outline-primary-soft"
+      />
+      <div id={`${id}-help`} className="text-[12.5px]">
+        {error ? (
+          <p role="alert" className="text-[#c0392b]">
+            {error}
+          </p>
+        ) : (
+          <p className="text-ink-3">{t("formulaHelp")}</p>
+        )}
+      </div>
+      {keys.length > 0 && (
+        <div className="flex flex-wrap gap-1" aria-label={t("formulaFields")} role="group">
+          {keys.map((k) => (
+            <button
+              key={k}
+              type="button"
+              onClick={() => {
+                apply(text.trim() === "" ? k : `${text.trimEnd()} ${k}`);
+              }}
+              className="rounded-md bg-surface-2 px-1.5 py-0.5 font-mono text-[11.5px] text-ink-2 hover:text-ink focus-visible:outline-3 focus-visible:outline-primary-soft"
+            >
+              {k}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

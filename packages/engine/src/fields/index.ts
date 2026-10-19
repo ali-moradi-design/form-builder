@@ -28,3 +28,5 @@ export { dateRange, rangeSlider } from "./range.js";
 export type { Range } from "./range.js";
 export { repeater } from "./repeater.js";
 export type { RepeaterSettings } from "./repeater.js";
+export { calculated } from "./calculated.js";
+export type { CalculatedSettings } from "./calculated.js";

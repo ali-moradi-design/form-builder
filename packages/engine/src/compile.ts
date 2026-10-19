@@ -89,6 +89,13 @@ export interface CompiledForm {
   readonly dependents: ReadonlyMap<string, ReadonlySet<string>>;
   /** Starting values of all fields that have a value. */
   readonly defaults: Readonly<Record<string, unknown>>;
+  /**
+   * Keys of fields with a `calculate` expression, ordered so that each one
+   * comes after the calculated fields it reads.
+   *
+   * @since 0.6.0
+   */
+  readonly calculated: readonly string[];
 }
 
 /**
@@ -124,6 +131,7 @@ export function compile(document: FormDocument, options: CompileOptions): Compil
   const order: string[] = [];
   const defaults: Record<string, unknown> = {};
   const dependents = new Map<string, Set<string>>();
+  const calculated = new Map<string, (string | number)[]>();
   const link = (target: string, expr: Expression | undefined): void => {
     for (const source of readsFields(expr)) {
       let set = dependents.get(source);
@@ -175,6 +183,10 @@ export function compile(document: FormDocument, options: CompileOptions): Compil
         link(node.key, node.visibleWhen);
         link(node.key, node.requiredWhen);
         link(node.key, node.disabledWhen);
+        if (node.calculate !== undefined) {
+          link(node.key, node.calculate);
+          calculated.set(node.key, here);
+        }
         if (node.fields && !rows) visit(node.fields, node.key, [...here, "fields"]);
       }
     };
@@ -189,7 +201,36 @@ export function compile(document: FormDocument, options: CompileOptions): Compil
     steps,
     dependents,
     defaults: Object.freeze(defaults),
+    calculated: calculationOrder(fields, calculated),
   });
+}
+
+// Orders calculated fields so each comes after the calculated fields it
+// reads; a field that reads itself, directly or not, is a SchemaError.
+function calculationOrder(
+  fields: ReadonlyMap<string, CompiledField>,
+  paths: ReadonlyMap<string, (string | number)[]>,
+): string[] {
+  const out: string[] = [];
+  const state = new Map<string, "visiting" | "done">();
+  const visit = (key: string): void => {
+    const seen = state.get(key);
+    if (seen === "done") return;
+    if (seen === "visiting") {
+      throw new SchemaError(`Field "${key}" is calculated from itself.`, [
+        ...(paths.get(key) ?? []),
+        "calculate",
+      ]);
+    }
+    state.set(key, "visiting");
+    for (const source of readsFields(fields.get(key)?.node.calculate)) {
+      if (paths.has(source)) visit(source);
+    }
+    state.set(key, "done");
+    out.push(key);
+  };
+  for (const key of paths.keys()) visit(key);
+  return out;
 }
 
 // Compiles the children of a row field as a one-step form.

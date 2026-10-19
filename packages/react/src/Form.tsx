@@ -1,4 +1,5 @@
 import {
+  calculateValues,
   compile,
   validate,
   type CompiledForm,
@@ -158,6 +159,24 @@ interface FormweaveContextValue {
   readonly prefix: string;
 }
 
+/**
+ * Writes calculated results into the form values where they differ, so
+ * renderers show them and submissions carry them. Setting a value runs the
+ * watcher again, which then finds nothing left to change.
+ */
+const syncCalculated = (
+  form: CompiledForm,
+  values: Readonly<Record<string, unknown>>,
+  prefix: string,
+  setValue: (name: string, value: unknown) => void,
+): void => {
+  if (form.calculated.length === 0) return;
+  const next = calculateValues(form, values);
+  for (const key of form.calculated) {
+    if (!Object.is(next[key], values[key])) setValue(prefix + key, next[key]);
+  }
+};
+
 /** Reads a value at a dot path such as `people.0.name`. */
 const getPath = (obj: unknown, path: string): unknown =>
   path
@@ -241,7 +260,7 @@ export function Form(props: FormProps): ReactNode {
 
   const form = useMemo(() => compile(schema, { registry }), [schema, registry]);
   const initial = useMemo(
-    () => ({ ...form.defaults, ...props.defaultValues }),
+    () => calculateValues(form, { ...form.defaults, ...props.defaultValues }),
     // Starting values are read once per compiled form.
     [form],
   );
@@ -278,12 +297,13 @@ export function Form(props: FormProps): ReactNode {
     const sub = methods.watch((values, { name }) => {
       // A change inside a row ("people.0.name") changes the row field "people".
       store.update(values, name ? [name.split(".")[0] ?? name] : undefined);
+      syncCalculated(form, values, "", methods.setValue);
       onChangeRef.current?.(values, name);
     });
     return () => {
       sub.unsubscribe();
     };
-  }, [methods, store]);
+  }, [methods, store, form]);
 
   const state = useSyncExternalStore(store.subscribe, store.get, store.get);
   const layout = props.layout ?? "classic";
@@ -567,10 +587,12 @@ function RowScope(p: {
   const { control } = useFormContext();
   const path = p.prefix.slice(0, -1);
   const values = useWatch({ control, name: path }) as Readonly<Record<string, unknown>> | undefined;
+  const { setValue } = useFormContext();
   const [store] = useState(() => createStateStore(p.form, values ?? {}));
   useEffect(() => {
     store.update(values ?? {});
-  }, [store, values]);
+    syncCalculated(p.form, values ?? {}, p.prefix, setValue);
+  }, [store, values, p.form, p.prefix, setValue]);
   const value = useMemo<FormweaveContextValue>(
     () => ({ ...p.ctx, form: p.form, store, prefix: p.prefix }),
     [p.ctx, p.form, store, p.prefix],
