@@ -17,7 +17,6 @@ export function LocaleSwitch() {
   return (
     <Button
       disabled={pending}
-      aria-label={t("language")}
       onClick={() => {
         start(async () => {
           await setLocale(next);
@@ -26,6 +25,7 @@ export function LocaleSwitch() {
       }}
     >
       <Languages size={16} aria-hidden />
+      <span className="sr-only">{t("language")}:</span>
       {next === "fa" ? "فارسی" : "English"}
     </Button>
   );

@@ -1,0 +1,80 @@
+import AxeBuilder from "@axe-core/playwright";
+import { expect, test, type Page } from "@playwright/test";
+
+const newForm = async (page: Page, kind: RegExp) => {
+  await page.goto("/forms");
+  await page.getByRole("button", { name: kind }).click();
+  await page.waitForURL(/\/forms\/[^/]+$/);
+};
+
+test("builds a form, previews it and submits", async ({ page }) => {
+  await newForm(page, /Blank form/);
+  await page.getByRole("button", { name: "Add Short text" }).click();
+  await page.getByLabel("Label · English").fill("Favourite colour");
+  await page.getByRole("switch", { name: "Required" }).click();
+  await expect(page.getByRole("main").getByLabel("Favourite colour")).toBeVisible();
+  await expect(page.getByRole("status").first()).toHaveText("Saved");
+
+  await page.getByRole("link", { name: "Preview" }).click();
+  await page.getByRole("button", { name: "Submit" }).click();
+  await expect(page.getByText("This field is required.")).toBeVisible();
+  await page.getByLabel("Favourite colour").fill("Teal");
+  await page.getByRole("button", { name: "Submit" }).click();
+  await expect(page.getByText('"text": "Teal"')).toBeVisible();
+});
+
+test("moves, undoes and keeps edits after a reload", async ({ page }) => {
+  await newForm(page, /From a template/);
+  const keys = page.locator("[data-field-key]");
+  await expect(keys.first()).toHaveAttribute("data-field-key", "name");
+  await keys.first().click();
+  await page.keyboard.press("Alt+ArrowDown");
+  await expect(keys.first()).toHaveAttribute("data-field-key", "email");
+  await page.keyboard.press("Control+z");
+  await expect(keys.first()).toHaveAttribute("data-field-key", "name");
+  await page.getByRole("button", { name: "Redo" }).click();
+  await expect(keys.first()).toHaveAttribute("data-field-key", "email");
+  await page.reload();
+  await expect(keys.first()).toHaveAttribute("data-field-key", "email");
+});
+
+test("renaming a key updates the conditions that read it", async ({ page }) => {
+  await newForm(page, /From a template/);
+  await page.locator('[data-field-key="plan"]').click();
+  await page.getByLabel(/^Key/).fill("tier");
+  await page.getByRole("tab", { name: "JSON" }).click();
+  await expect(page.getByText("Valid schema")).toBeVisible({ timeout: 30_000 });
+  const saved = () => page.evaluate(() => localStorage.getItem("formweave:drafts") ?? "");
+  await expect.poll(saved).toContain('{"var":"tier"}');
+  await expect.poll(saved).not.toContain('"plan"');
+});
+
+test("drags a field from the palette onto the canvas", async ({ page }) => {
+  await newForm(page, /Blank form/);
+  const source = page.getByRole("button", { name: "Add Email" });
+  const box = await source.boundingBox();
+  if (!box) throw new Error("no palette item");
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 40, box.y + 40, { steps: 5 });
+  const slot = page.locator("[data-drop-slot]").first();
+  const target = await slot.boundingBox();
+  if (!target) throw new Error("no slot");
+  await page.mouse.move(target.x + target.width / 2, target.y + target.height / 2, { steps: 10 });
+  await page.mouse.up();
+  await expect(page.locator("[data-field-key]")).toHaveAttribute("data-field-key", "email");
+});
+
+for (const locale of ["en", "fa"]) {
+  test(`builder has no accessibility violations (${locale})`, async ({ page, context }) => {
+    await context.addCookies([{ name: "locale", value: locale, url: "http://localhost:3200" }]);
+    await newForm(page, locale === "fa" ? /از روی الگو/ : /From a template/);
+    await expect(page.locator("html")).toHaveAttribute("dir", locale === "fa" ? "rtl" : "ltr");
+    const results = await new AxeBuilder({ page }).analyze();
+    expect(
+      results.violations.map(
+        (v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`,
+      ),
+    ).toEqual([]);
+  });
+}

@@ -57,6 +57,7 @@ function Workspace({ id }: { id: string }) {
   return (
     <div className="flex h-dvh flex-col">
       <header className="flex flex-wrap items-center gap-3 px-4 py-2.5">
+        <h1 className="sr-only">{title}</h1>
         <Link href="/forms" aria-label={tf("title")}>
           <LogoMark size={32} />
         </Link>
@@ -90,13 +91,19 @@ function Workspace({ id }: { id: string }) {
         <LocaleSwitch />
       </header>
       <div className="grid min-h-0 grow gap-3 px-3 pb-3 lg:grid-cols-[272px_minmax(0,1fr)_380px]">
-        <aside className="min-h-0 overflow-y-auto rounded-[14px] border border-line bg-surface">
+        <aside
+          aria-label={t("fields")}
+          className="min-h-0 overflow-y-auto rounded-[14px] border border-line bg-surface"
+        >
           <Palette />
         </aside>
         <main className="min-h-0 overflow-y-auto rounded-[14px] border border-line bg-[radial-gradient(var(--line-strong)_1px,transparent_1px)] [background-size:18px_18px] px-3">
           <Canvas locale={contentLocale} />
         </main>
-        <aside className="flex min-h-0 flex-col rounded-[14px] border border-line bg-surface">
+        <aside
+          aria-label={t("panel")}
+          className="flex min-h-0 flex-col rounded-[14px] border border-line bg-surface"
+        >
           <div
             role="tablist"
             aria-label={t("panel")}
