@@ -20,6 +20,7 @@ import { fieldType } from "@/shared/config";
 import { registry, renderers } from "@/shared/formweave";
 import { Button } from "@/shared/ui";
 import { useBuilder, useBuilderApi } from "../model/context";
+import { FieldLogic, StepLogic } from "./LogicEditor";
 import { formulaKeys, makesCycle } from "../model/formula-scope";
 import {
   docLocales,
@@ -89,6 +90,12 @@ export function Inspector({ locale }: { locale: Locale }) {
     panel.markOwn(store.getState().doc);
   };
 
+  // Logic edits also change what the settings form shows (the Required
+  // switch), so they let it remount.
+  const editAll = (fn: (d: FormDocument) => FormDocument, group: string) => {
+    store.getState().edit(fn, group);
+  };
+
   const live = (
     document: FormDocument,
     values: Values,
@@ -141,6 +148,7 @@ export function Inspector({ locale }: { locale: Locale }) {
         {node.type === "calculated" && (
           <FormulaEditor key={node.key} node={node} doc={doc} onEdit={edit} />
         )}
+        <FieldLogic key={node.key} node={node} doc={doc} locale={locale} onEdit={editAll} />
       </>
     );
   } else if (selection.kind === "step") {
@@ -172,6 +180,7 @@ export function Inspector({ locale }: { locale: Locale }) {
           <Trash2 size={15} aria-hidden />
           {t("deleteStep")}
         </Button>
+        <StepLogic key={step.key} stepKey={step.key} doc={doc} locale={locale} onEdit={editAll} />
       </>
     );
   } else {

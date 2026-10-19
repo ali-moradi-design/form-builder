@@ -52,6 +52,34 @@ test("moves, undoes and keeps edits after a reload", async ({ page }) => {
   await expect(keys.first()).toHaveAttribute("data-field-key", "email");
 });
 
+test("logic editor writes a condition", async ({ page }) => {
+  await newForm(page, /From a template/);
+  await page.locator('[data-field-key="comment"]').click();
+  const logic = page.getByRole("region", { name: "Logic" });
+  await logic
+    .getByRole("group", { name: "Show this question" })
+    .getByRole("button", { name: "When…" })
+    .click();
+  await logic.getByRole("combobox", { name: "Field", exact: true }).selectOption("satisfaction");
+  await logic.getByRole("combobox", { name: "Comparison" }).selectOption("lte");
+  await logic.getByRole("spinbutton", { name: "Value" }).fill("2");
+  await expect(logic.getByText(/Shown when/)).toContainText("is at most 2");
+  await expect(page.getByRole("status").first()).toHaveText("Saved");
+
+  await page.getByRole("tab", { name: "JSON" }).click();
+  await expect(page.getByText("Valid schema")).toBeVisible({ timeout: 30_000 });
+  const editorText = () =>
+    page.evaluate(() => {
+      const w = window as unknown as {
+        monaco?: { editor: { getModels: () => { getValue: () => string }[] } };
+      };
+      return w.monaco?.editor.getModels()[0]?.getValue() ?? "";
+    });
+  await expect
+    .poll(async () => (await editorText()).replace(/\s+/g, ""))
+    .toContain('"visibleWhen":{"op":"lte","args":[{"var":"satisfaction"},2]}');
+});
+
 test("renaming a key updates the conditions that read it", async ({ page }) => {
   await newForm(page, /From a template/);
   await page.locator('[data-field-key="plan"]').click();
