@@ -300,12 +300,12 @@
       "title": "React package",
       "text": "<Form formId /> in your own app."
     },
-    "soon": "Coming in version 0.7",
     "copy": "Copy link",
     "copied": "Copied",
     "versionNote": "Responses keep the version they were filled in. Edits from now on go into a draft of version {next}.",
     "open": "Open form",
-    "done": "Done"
+    "done": "Done",
+    "copyCode": "Copy code"
   },
   "hosted": {
     "thanks": "Thank you!",
