@@ -8,6 +8,9 @@ export default defineConfig(
   globalIgnores([
     "**/dist/",
     "**/node_modules/",
+    "**/.next/",
+    "**/next-env.d.ts",
+    "**/test-results/",
     "docs/",
     "docs-site/",
     "graphify-out/",

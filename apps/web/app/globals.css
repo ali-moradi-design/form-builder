@@ -1,0 +1,83 @@
+@import "tailwindcss";
+@import "@formweave/react/styles.css";
+
+/* Tokens from docs/mockups (with the contrast fixes in docs/decisions.md). */
+:root {
+  --plum: #5f0f40;
+  --carmine: #9a031e;
+  --amber: #fb8b24;
+  --orange: #e36414;
+  --teal: #0f4c5c;
+  --frame: #f6f6f5;
+  --surface: #ffffff;
+  --surface-2: #f3f4f3;
+  --line: #e7e8e6;
+  --line-strong: #d5d8d5;
+  --ink: #141a1c;
+  --ink-2: #5a6366;
+  --ink-3: #666f72;
+  --primary: var(--teal);
+  --primary-fg: var(--teal);
+  --primary-soft: #e4eff1;
+  --accent-text: #c44f0d;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --frame: #0e1416;
+    --surface: #151e20;
+    --surface-2: #1b2628;
+    --line: #233033;
+    --line-strong: #314246;
+    --ink: #eaf0f0;
+    --ink-2: #a2afb1;
+    --ink-3: #93a2a5;
+    --primary: #13617a;
+    --primary-fg: #7ec3d2;
+    --primary-soft: #16343b;
+    --accent-text: #fb8b24;
+  }
+  .fw-form {
+    --fw-text: #eaf0f0;
+    --fw-muted: #a2afb1;
+    --fw-faint: #93a2a5;
+    --fw-surface: #151e20;
+    --fw-surface-2: #1b2628;
+    --fw-line: #314246;
+    --fw-primary: #13617a;
+    --fw-primary-soft: #16343b;
+    --fw-danger: #e2566b;
+    --fw-danger-soft: #3a1820;
+    --fw-accent-text: #fb8b24;
+  }
+}
+
+@theme inline {
+  --color-frame: var(--frame);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-soft: var(--primary-soft);
+  --color-plum: var(--plum);
+  --color-carmine: var(--carmine);
+  --color-amber: var(--amber);
+  --color-orange: var(--orange);
+  --color-accent-text: var(--accent-text);
+  --font-sans: var(--font-geist), var(--font-vazirmatn), system-ui, sans-serif;
+  --font-wordmark: var(--font-comic), cursive;
+}
+
+:root[lang="fa"] {
+  --font-sans: var(--font-vazirmatn), var(--font-geist), system-ui, sans-serif;
+}
+
+body {
+  background: var(--frame);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
