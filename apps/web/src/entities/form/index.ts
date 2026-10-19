@@ -1,4 +1,10 @@
-export { createMyForm, deleteMyForm, importMyDrafts, saveMyDraft } from "./api/actions";
+export {
+  createMyForm,
+  deleteMyForm,
+  importMyDrafts,
+  publishMyForm,
+  saveMyDraft,
+} from "./api/actions";
 export { clearLocalDrafts, readLocalDrafts } from "./model/drafts";
 export {
   addStep,

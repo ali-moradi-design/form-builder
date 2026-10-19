@@ -16,13 +16,23 @@ import {
   Palette,
   Toolbar,
   useBuilder,
+  useBuilderApi,
   useBuilderShortcuts,
 } from "@/features/edit-form";
+import { PublishControls, type LiveInfo } from "@/features/publish-form";
 import { LocaleSwitch } from "@/features/switch-locale";
 import { LogoMark } from "@/shared/ui";
 
 /** The builder for one form: palette, canvas and settings. */
-export function FormBuilder({ id, initial }: { id: string; initial: FormDocument }) {
+export function FormBuilder({
+  id,
+  initial,
+  live,
+}: {
+  id: string;
+  initial: FormDocument;
+  live: LiveInfo | null;
+}) {
   return (
     <BuilderProvider
       initial={initial}
@@ -33,18 +43,19 @@ export function FormBuilder({ id, initial }: { id: string; initial: FormDocument
       }}
     >
       <BuilderDnd>
-        <Workspace id={id} />
+        <Workspace id={id} live={live} />
       </BuilderDnd>
     </BuilderProvider>
   );
 }
 
-function Workspace({ id }: { id: string }) {
+function Workspace({ id, live }: { id: string; live: LiveInfo | null }) {
   useBuilderShortcuts();
   const t = useTranslations("builder");
   const tf = useTranslations("forms");
   const appLocale = useLocale();
   const doc = useBuilder((s) => s.doc);
+  const { store } = useBuilderApi();
   const [panel, setPanel] = useState<"settings" | "json">("settings");
   const supported = doc.locales.supported ?? [doc.locales.default];
   const contentLocale = supported.includes(appLocale) ? appLocale : doc.locales.default;
@@ -85,6 +96,7 @@ function Workspace({ id }: { id: string }) {
           </Link>
         </nav>
         <Toolbar />
+        <PublishControls id={id} initial={live} getDocument={() => store.getState().doc} />
         <LocaleSwitch />
       </header>
       <div className="grid min-h-0 grow gap-3 px-3 pb-3 lg:grid-cols-[272px_minmax(0,1fr)_380px]">

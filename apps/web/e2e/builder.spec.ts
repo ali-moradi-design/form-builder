@@ -62,6 +62,7 @@ test("renaming a key updates the conditions that read it", async ({ page }) => {
   await page.reload();
   await page.getByRole("tab", { name: "JSON" }).click();
   await expect(page.getByText("Valid schema")).toBeVisible({ timeout: 30_000 });
+  await page.waitForFunction(() => "monaco" in window);
   const json = await page.evaluate(() => {
     const monaco = (
       window as unknown as { monaco: { editor: { getModels: () => { getValue: () => string }[] } } }
