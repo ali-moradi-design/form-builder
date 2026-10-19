@@ -15,6 +15,7 @@ import {
   useEffect,
   useId,
   useMemo,
+  useRef,
   useState,
   useSyncExternalStore,
   type ReactNode,
@@ -108,10 +109,28 @@ export interface FormProps {
   readonly defaultValues?: Readonly<Values> | undefined;
   /**
    * Called with the validated data: values of visible, non-empty fields only.
+   * Optional for live forms that only use {@link FormProps.onChange}.
    *
    * @param data - The cleaned values.
    */
-  readonly onSubmit: (data: Readonly<Values>) => void | Promise<void>;
+  readonly onSubmit?: ((data: Readonly<Values>) => void | Promise<void>) | undefined;
+  /**
+   * Called after every change with all current values (not validated), for
+   * live forms such as a settings panel.
+   *
+   * @param values - Every value, including hidden fields.
+   * @param name - Key of the field that changed, when known.
+   * @since 0.3.0
+   */
+  readonly onChange?: ((values: Readonly<Values>, name: string | undefined) => void) | undefined;
+  /**
+   * Shows the navigation and submit buttons. Turn off for live forms; Enter
+   * then does nothing.
+   *
+   * @defaultValue `true`
+   * @since 0.3.0
+   */
+  readonly actions?: boolean | undefined;
   /**
    * How questions are laid out.
    *
@@ -219,9 +238,15 @@ export function Form(props: FormProps): ReactNode {
 
   const methods = useForm<Values>({ defaultValues: initial, resolver, mode: "onTouched" });
 
+  const onChangeRef = useRef(props.onChange);
+  useEffect(() => {
+    onChangeRef.current = props.onChange;
+  });
+
   useEffect(() => {
     const sub = methods.watch((values, { name }) => {
       store.update(values, name ? [name] : undefined);
+      onChangeRef.current?.(values, name);
     });
     return () => {
       sub.unsubscribe();
@@ -283,12 +308,16 @@ export function Form(props: FormProps): ReactNode {
           lang={locale}
           noValidate
           onSubmit={(e) => {
+            if (props.actions === false) {
+              e.preventDefault();
+              return;
+            }
             if (!isLast) {
               e.preventDefault();
               void next();
               return;
             }
-            void methods.handleSubmit((data) => onSubmit(data))(e);
+            void methods.handleSubmit((data) => onSubmit?.(data))(e);
           }}
         >
           {layout === "focus" ? (
@@ -344,22 +373,24 @@ export function Form(props: FormProps): ReactNode {
               <Field key={k} fieldKey={k} />
             ))}
           </div>
-          <div className="fw-actions">
-            {index > 0 && (
-              <button
-                type="button"
-                className="fw-button"
-                onClick={() => {
-                  setPageIndex(index - 1);
-                }}
-              >
-                {labels.back}
+          {props.actions !== false && (
+            <div className="fw-actions">
+              {index > 0 && (
+                <button
+                  type="button"
+                  className="fw-button"
+                  onClick={() => {
+                    setPageIndex(index - 1);
+                  }}
+                >
+                  {labels.back}
+                </button>
+              )}
+              <button type="submit" className="fw-button fw-button-primary">
+                {isLast ? labels.submit : layout === "focus" ? labels.ok : labels.next}
               </button>
-            )}
-            <button type="submit" className="fw-button fw-button-primary">
-              {isLast ? labels.submit : layout === "focus" ? labels.ok : labels.next}
-            </button>
-          </div>
+            </div>
+          )}
         </form>
       </FormProvider>
     </Ctx.Provider>

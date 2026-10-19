@@ -161,4 +161,22 @@ describe("<Form>", () => {
       expect(onSubmit).toHaveBeenCalledWith({ name: "سارا", plan: "team", seats: 3 });
     });
   });
+
+  it("reports changes and hides the buttons in a live form", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(
+      <Form
+        schema={doc}
+        registry={registry}
+        renderers={renderers}
+        actions={false}
+        onChange={onChange}
+      />,
+    );
+    expect(screen.queryByRole("button")).toBeNull();
+    await user.type(screen.getByLabelText(/Name/), "Al{Enter}");
+    expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ name: "Al" }), "name");
+    expect(screen.queryByText("This field is required.")).toBeNull();
+  });
 });
