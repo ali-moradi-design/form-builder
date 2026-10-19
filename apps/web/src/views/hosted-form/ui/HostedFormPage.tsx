@@ -31,9 +31,9 @@ export async function HostedFormPage({ slug }: { slug: string }) {
       slug={slug}
       document={document}
       initialLocale={supported.includes(appLocale) ? appLocale : document.locales.default}
-      submit={async (s, values, locale) => {
+      submit={async (s, values, locale, honeypot) => {
         "use server";
-        const result = await submitResponse(s, values, locale);
+        const result = await submitResponse(s, values, locale, honeypot);
         return result.ok ? { ok: true } : { ok: false, reason: result.reason };
       }}
     />

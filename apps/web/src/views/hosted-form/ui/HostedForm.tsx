@@ -5,7 +5,7 @@ import { Form, type Values } from "@formweave/react";
 import type { FormDocument, Locale } from "@formweave/schema";
 import { CircleCheck, Heart, Languages } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { registry, renderers } from "@/shared/formweave";
 import { Button, LogoMark } from "@/shared/ui";
 
@@ -24,15 +24,16 @@ export function HostedForm({
   slug: string;
   document: FormDocument;
   initialLocale: Locale;
-  submit: (slug: string, values: Values, locale: string) => Promise<SubmitResult>;
+  submit: (slug: string, values: Values, locale: string, honeypot: string) => Promise<SubmitResult>;
 }) {
   const t = useTranslations("hosted");
   const tb = useTranslations("brand");
   const supported = document.locales.supported ?? [document.locales.default];
   const [locale, setLocale] = useState(initialLocale);
   const [done, setDone] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<string | false>(false);
   const [round, setRound] = useState(0);
+  const trap = useRef<HTMLInputElement>(null);
   const next = supported[(supported.indexOf(locale) + 1) % supported.length] ?? locale;
   const dir = isRtl(locale) ? "rtl" : "ltr";
 
@@ -85,14 +86,24 @@ export function HostedForm({
               className="fw-form fw-hosted"
               onSubmit={async (values) => {
                 setFailed(false);
-                const result = await submit(slug, values, locale);
+                const result = await submit(slug, values, locale, trap.current?.value ?? "");
                 if (result.ok) setDone(true);
-                else setFailed(true);
+                else setFailed(result.reason);
               }}
+            />
+            {/* Honeypot: hidden from people and screen readers; bots tend to fill it. */}
+            <input
+              ref={trap}
+              name="company_website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden
+              className="absolute -start-[9999px] size-px opacity-0"
             />
             {failed && (
               <p role="alert" className="mt-4 text-[13px] text-carmine dark:text-[#e2566b]">
-                {t("failed")}
+                {t(failed === "rateLimited" ? "slowDown" : "failed")}
               </p>
             )}
           </>

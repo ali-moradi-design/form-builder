@@ -38,8 +38,32 @@ test("publishes a form and collects a response on the hosted page", async ({ pag
   await visitor.getByRole("button", { name: "Submit" }).click();
   await expect(visitor.getByRole("heading", { name: "Thank you!" })).toBeVisible();
 
+  // Public API: same validation, honeypot, error codes.
+  const slug = new URL(url).pathname.split("/").pop() ?? "";
+  const api = page.request;
+  const live = await api.get(`/api/forms/${slug}`);
+  expect(live.status()).toBe(200);
+  expect(await live.json()).toMatchObject({ version: 1, document: { title: "Blank form" } });
+  const post = (data: unknown) => api.post(`/api/forms/${slug}/responses`, { data });
+  const invalid = await post({ values: {} });
+  expect(invalid.status()).toBe(422);
+  const body = (await invalid.json()) as { issues: unknown[] };
+  expect(body.issues[0]).toMatchObject({ key: "text", code: "required" });
+  const created = await post({ values: { text: "Tabriz" }, locale: "en" });
+  expect(created.status()).toBe(201);
+  expect(await created.json()).toMatchObject({ version: 1 });
+  const bot = await post({ values: { text: "spam" }, _hp: "https://spam.example" });
+  expect(bot.status()).toBe(201);
+  expect(await bot.json()).toEqual({ id: null, version: null });
+  const text = await api.post(`/api/forms/${slug}/responses`, {
+    data: "x",
+    headers: { "content-type": "text/plain" },
+  });
+  expect(text.status()).toBe(415);
+  expect((await api.get("/api/forms/nope")).status()).toBe(404);
+
   await page.goto("/forms");
-  await expect(page.getByText("1 response")).toBeVisible();
+  await expect(page.getByText("2 responses")).toBeVisible();
 });
 
 test("shows 404 for an unknown form", async ({ page }) => {
