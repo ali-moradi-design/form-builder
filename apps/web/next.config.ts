@@ -10,6 +10,23 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@electric-sql/pglite"],
   // The repo keeps its own agent notes in CLAUDE.md.
   agentRules: false,
+  headers() {
+    return Promise.resolve([
+      // Only published forms may be shown in frames on other sites (embeds);
+      // the builder and the rest of the app may not (clickjacking).
+      ...["/", "/:path((?!f/|embed\\.js$).*)"].map((source) => ({
+        source,
+        headers: [
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        ],
+      })),
+      {
+        source: "/f/:slug*",
+        headers: [{ key: "Content-Security-Policy", value: "frame-ancestors *" }],
+      },
+    ]);
+  },
 };
 
 export default withNextIntl(nextConfig);

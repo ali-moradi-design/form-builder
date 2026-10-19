@@ -5,8 +5,9 @@ import { Form, type Values } from "@formweave/react";
 import type { FormDocument, Locale } from "@formweave/schema";
 import { CircleCheck, Heart, Languages } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { registry, renderers, uploadTo } from "@/shared/formweave";
+import { cn } from "@/shared/lib";
 import { Button, LogoMark } from "@/shared/ui";
 
 /** Result of submitting, as returned by the server. */
@@ -21,12 +22,15 @@ export function HostedForm({
   initialLocale,
   defaultValues,
   submit,
+  embed = false,
 }: {
   slug: string;
   document: FormDocument;
   initialLocale: Locale;
   defaultValues?: Readonly<Values>;
   submit: (slug: string, values: Values, locale: string, honeypot: string) => Promise<SubmitResult>;
+  /** Shown in a frame on another site: no page chrome, and the height is sent to the parent. */
+  embed?: boolean;
 }) {
   const t = useTranslations("hosted");
   const tb = useTranslations("brand");
@@ -39,15 +43,48 @@ export function HostedForm({
   const [upload] = useState(() => uploadTo(slug));
   const next = supported[(supported.indexOf(locale) + 1) % supported.length] ?? locale;
   const dir = isRtl(locale) ? "rtl" : "ltr";
+  const root = useRef<HTMLDivElement>(null);
+
+  // Tell the embedding page how tall the form is, so its frame can fit.
+  useEffect(() => {
+    const el = root.current;
+    if (!embed || !el || window.parent === window) return;
+    const post = () => {
+      window.parent.postMessage(
+        { type: "formweave:height", slug, height: el.getBoundingClientRect().height },
+        "*",
+      );
+    };
+    const observer = new ResizeObserver(post);
+    observer.observe(el);
+    post();
+    return () => {
+      observer.disconnect();
+    };
+  }, [embed, slug]);
+  useEffect(() => {
+    if (embed && done && window.parent !== window)
+      window.parent.postMessage({ type: "formweave:submitted", slug }, "*");
+  }, [embed, done, slug]);
 
   return (
     <div
+      ref={root}
       dir={dir}
       lang={locale}
-      className="relative flex min-h-dvh flex-col overflow-hidden bg-[radial-gradient(40%_35%_at_85%_20%,color-mix(in_oklab,var(--amber)_16%,transparent),transparent),radial-gradient(35%_40%_at_10%_90%,color-mix(in_oklab,var(--plum)_12%,transparent),transparent)]"
+      data-embed={embed ? "" : undefined}
+      className={
+        embed
+          ? "relative flex flex-col"
+          : "relative flex min-h-dvh flex-col overflow-hidden bg-[radial-gradient(40%_35%_at_85%_20%,color-mix(in_oklab,var(--amber)_16%,transparent),transparent),radial-gradient(35%_40%_at_10%_90%,color-mix(in_oklab,var(--plum)_12%,transparent),transparent)]"
+      }
     >
-      <header className="flex items-center gap-3 px-6 py-5 sm:px-10">
-        <LogoMark size={34} />
+      <header
+        className={
+          embed ? "flex items-center gap-3 px-4 pt-4" : "flex items-center gap-3 px-6 py-5 sm:px-10"
+        }
+      >
+        {!embed && <LogoMark size={34} />}
         <h1 className="grow truncate text-base font-medium">
           {resolveText(document.title, locale, document.locales.default)}
         </h1>
@@ -62,7 +99,13 @@ export function HostedForm({
           </Button>
         )}
       </header>
-      <main className="mx-auto flex w-full max-w-[720px] grow flex-col justify-center px-6 py-8">
+      <main
+        className={
+          embed
+            ? "flex w-full flex-col px-4 py-4"
+            : "mx-auto flex w-full max-w-[720px] grow flex-col justify-center px-6 py-8"
+        }
+      >
         {done ? (
           <div className="grid justify-items-start gap-3" role="status">
             <CircleCheck size={40} className="text-primary-fg" aria-hidden />
@@ -114,7 +157,12 @@ export function HostedForm({
           </>
         )}
       </main>
-      <footer className="flex items-center justify-center gap-1.5 pb-6 text-xs text-ink-3">
+      <footer
+        className={cn(
+          "flex items-center justify-center gap-1.5 text-xs text-ink-3",
+          embed ? "pb-3" : "pb-6",
+        )}
+      >
         {tb.rich("credit", {
           heart: () => <Heart size={13} className="fill-carmine text-carmine" aria-label="love" />,
         })}

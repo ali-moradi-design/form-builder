@@ -28,7 +28,24 @@
     "confirmDelete": "Delete “{title}” with all its versions and responses?",
     "importText": "{count, plural, one {# draft is} other {# drafts are}} saved in this browser from before accounts. Move them into your account?",
     "importAction": "Import",
-    "importSkip": "Discard"
+    "importSkip": "Discard",
+    "newJson": "From sample JSON",
+    "newJsonHint": "Paste one record; we guess the fields.",
+    "jsonTitle": "Create a form from sample data",
+    "jsonText": "Paste one JSON record, such as a row from your API. Dates, colors, groups and repeaters are detected.",
+    "jsonSample": "Sample record",
+    "jsonExample": "Use an example",
+    "jsonRead": "Read fields",
+    "jsonError": "This is not a JSON object with values we can use.",
+    "jsonReview": "Review detected fields",
+    "jsonReviewText": "Change any type before the form is created. You can edit everything later in the builder.",
+    "jsonSummary": "{fields, plural, one {# field} other {# fields}} · {groups, plural, one {# group} other {# groups}} · {repeaters, plural, one {# repeater} other {# repeaters}}",
+    "jsonContainer": "{type}, {count, plural, one {# field} other {# fields}}",
+    "jsonTypeOf": "Type of {key}",
+    "jsonBack": "Back",
+    "jsonCreate": "Create form with {count, plural, one {# field} other {# fields}}",
+    "jsonFormTitle": "Form from sample data",
+    "close": "Close"
   },
   "preview": {
     "back": "All forms",
@@ -300,12 +317,12 @@
       "title": "React package",
       "text": "<Form formId /> in your own app."
     },
-    "soon": "Coming in version 0.7",
     "copy": "Copy link",
     "copied": "Copied",
     "versionNote": "Responses keep the version they were filled in. Edits from now on go into a draft of version {next}.",
     "open": "Open form",
-    "done": "Done"
+    "done": "Done",
+    "copyCode": "Copy code"
   },
   "hosted": {
     "thanks": "Thank you!",

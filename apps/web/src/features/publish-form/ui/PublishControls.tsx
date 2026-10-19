@@ -42,8 +42,16 @@ export function PublishControls({
   const [error, setError] = useState(false);
   const [pending, start] = useTransition();
   const [copied, setCopied] = useState(false);
-  const url =
-    live && typeof window !== "undefined" ? `${window.location.origin}/f/${live.slug}` : "";
+  const [mode, setMode] = useState<"hosted" | "embed" | "react">("hosted");
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const url = live ? `${origin}/f/${live.slug}` : "";
+  const snippet = !live
+    ? ""
+    : mode === "embed"
+      ? `<script src="${origin}/embed.js" data-form="${live.slug}" async></script>`
+      : mode === "react"
+        ? `npm install @formweave/react\n\nimport { Form } from "@formweave/react/remote";\nimport "@formweave/react/styles.css";\n\n<Form formId="${live.slug}" endpoint="${origin}" />`
+        : url;
 
   return (
     <>
@@ -108,31 +116,32 @@ export function PublishControls({
               <div className="grid gap-3 sm:grid-cols-3">
                 {(
                   [
-                    {
-                      key: "hosted",
-                      icon: Globe,
-                      tone: "bg-primary-soft text-primary-fg",
-                      on: true,
-                    },
+                    { key: "hosted", icon: Globe, tone: "bg-primary-soft text-primary-fg" },
                     {
                       key: "embed",
                       icon: Code,
                       tone: "bg-[color-mix(in_oklab,var(--amber)_18%,transparent)] text-accent-text",
-                      on: false,
                     },
                     {
                       key: "react",
                       icon: Package,
                       tone: "bg-[color-mix(in_oklab,var(--plum)_12%,transparent)] text-plum dark:text-[#e7a3c8]",
-                      on: false,
                     },
                   ] as const
                 ).map((c) => (
-                  <div
+                  <button
+                    type="button"
                     key={c.key}
+                    aria-pressed={mode === c.key}
+                    onClick={() => {
+                      setMode(c.key);
+                      setCopied(false);
+                    }}
                     className={cn(
-                      "grid gap-1.5 rounded-[12px] border p-4",
-                      c.on ? "border-primary outline-2 outline-primary-soft" : "border-line",
+                      "grid gap-1.5 rounded-[12px] border p-4 text-start focus-visible:outline-3 focus-visible:outline-primary-soft",
+                      mode === c.key
+                        ? "border-primary outline-2 outline-primary-soft"
+                        : "border-line hover:border-line-strong",
                     )}
                   >
                     <span className={cn("grid size-9 place-items-center rounded-[9px]", c.tone)}>
@@ -140,25 +149,32 @@ export function PublishControls({
                     </span>
                     <b className="text-sm font-semibold">{t(`${c.key}.title`)}</b>
                     <span className="text-[13px] text-ink-2">{t(`${c.key}.text`)}</span>
-                    {!c.on && (
-                      <span className="text-[11.5px] font-medium text-ink-3">{t("soon")}</span>
-                    )}
-                  </div>
+                  </button>
                 ))}
               </div>
-              <div className="flex items-center gap-2 rounded-[10px] border border-line bg-surface-2 py-1.5 ps-3.5 pe-1.5">
-                <span dir="ltr" className="grow truncate font-mono text-[13px]">
-                  {url}
-                </span>
+              <div className="flex items-start gap-2 rounded-[10px] border border-line bg-surface-2 py-1.5 ps-3.5 pe-1.5">
+                {mode === "hosted" ? (
+                  <span dir="ltr" className="grow self-center truncate font-mono text-[13px]">
+                    {url}
+                  </span>
+                ) : (
+                  <pre
+                    dir="ltr"
+                    aria-label={t(`${mode}.title`)}
+                    className="grow overflow-x-auto py-1.5 font-mono text-[12.5px] whitespace-pre"
+                  >
+                    {snippet}
+                  </pre>
+                )}
                 <Button
                   onClick={() => {
-                    void navigator.clipboard.writeText(url).then(() => {
+                    void navigator.clipboard.writeText(snippet).then(() => {
                       setCopied(true);
                     });
                   }}
                 >
                   {copied ? <Check size={15} aria-hidden /> : <Copy size={15} aria-hidden />}
-                  {t(copied ? "copied" : "copy")}
+                  {t(copied ? "copied" : mode === "hosted" ? "copy" : "copyCode")}
                 </Button>
               </div>
               <div className="flex items-center gap-3 rounded-[12px] bg-[color-mix(in_oklab,var(--plum)_8%,transparent)] p-3.5 text-[13px]">

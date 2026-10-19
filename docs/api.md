@@ -48,6 +48,31 @@ Issue codes are the engine's codes (`required`, `tooShort`, `invalidOption`,
   `{ "id": null, "version": null }` and nothing is stored. The hosted page
   has a hidden field for this that people never see.
 
+## Embed on any website
+
+```html
+<script src="https://YOUR-APP/embed.js" data-form="SLUG" async></script>
+```
+
+The script adds a frame with the hosted form (`/f/<slug>?embed=1`, without
+page chrome). The form sends its height to the page, so the frame grows
+with it. After a submission the script tag fires a bubbling
+`formweave:submitted` event. Only `/f/…` pages may be framed by other
+sites; the rest of the app sends `frame-ancestors 'self'`.
+
+## In a React app
+
+```tsx
+import { Form } from "@formweave/react/remote";
+import "@formweave/react/styles.css";
+
+<Form formId="SLUG" endpoint="https://YOUR-APP" onSubmitted={(r) => console.log(r.id)} />;
+```
+
+It loads the live version from `GET /api/forms/<slug>`, validates in the
+browser, posts to the responses API (validated again on the server) and
+uploads files to the upload API.
+
 ## Upload files
 
 File, photo and signature fields hold references to stored files. Upload

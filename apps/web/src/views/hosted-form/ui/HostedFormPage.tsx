@@ -50,6 +50,7 @@ export async function HostedFormPage({ slug, query = {} }: { slug: string; query
       slug={slug}
       document={document}
       initialLocale={supported.includes(appLocale) ? appLocale : document.locales.default}
+      embed={query.embed === "1"}
       defaultValues={hiddenValues(
         document.steps.flatMap((step) => step.fields),
         query,
