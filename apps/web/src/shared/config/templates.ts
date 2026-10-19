@@ -59,6 +59,24 @@ export const feedbackTemplate: FormDocument = {
       title: { en: "Your taste", fa: "سلیقهٔ شما" },
       fields: [
         {
+          type: "rating",
+          key: "satisfaction",
+          label: { en: "How happy are you with the product?", fa: "چقدر از محصول راضی هستید؟" },
+          required: true,
+        },
+        {
+          type: "nps",
+          key: "recommend",
+          label: {
+            en: "How likely are you to recommend us to a friend?",
+            fa: "چقدر احتمال دارد ما را به دوستانتان پیشنهاد کنید؟",
+          },
+          settings: {
+            lowLabel: { en: "Not likely", fa: "اصلاً" },
+            highLabel: { en: "Very likely", fa: "حتماً" },
+          },
+        },
+        {
           type: "checkboxes",
           key: "features",
           label: { en: "What do you use most?", fa: "از کدام بخش‌ها بیشتر استفاده می‌کنید؟" },

@@ -48,7 +48,7 @@ test("delivers signed events to a webhook", async ({ page }) => {
     await expect(page.getByText("Test delivered (HTTP 200).")).toBeVisible();
 
     const posted = await page.request.post(`/api/forms/${slug}/responses`, {
-      data: { values: { name: "Sara", plan: "free" }, locale: "en" },
+      data: { values: { name: "Sara", plan: "free", satisfaction: 5 }, locale: "en" },
     });
     expect(posted.status()).toBe(201);
     await expect.poll(() => received.length).toBe(2);
@@ -61,7 +61,7 @@ test("delivers signed events to a webhook", async ({ page }) => {
       response: { data: unknown };
     };
     expect(event.form.slug).toBe(slug);
-    expect(event.response.data).toEqual({ name: "Sara", plan: "free" });
+    expect(event.response.data).toEqual({ name: "Sara", plan: "free", satisfaction: 5 });
     const timestamp = String(created?.headers["x-formweave-timestamp"]);
     const expected = `sha256=${createHmac("sha256", secret)
       .update(`${timestamp}.${created?.body ?? ""}`)

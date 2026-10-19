@@ -153,6 +153,9 @@ interface FormweaveContextValue {
   readonly idPrefix: string;
 }
 
+/** Field types that have nothing to answer in the focus layout. */
+const NO_PAGE = new Set(["hidden", "divider"]);
+
 const Ctx = createContext<FormweaveContextValue | null>(null);
 
 const useFormweave = (): FormweaveContextValue => {
@@ -271,7 +274,10 @@ export function Form(props: FormProps): ReactNode {
         return false;
       });
     if (layout === "focus") {
-      return top.map((k) => ({ step: step.key, fields: [k], check: within(k) }));
+      // Hidden fields and dividers never get a page of their own.
+      return top
+        .filter((k) => !NO_PAGE.has(form.fields.get(k)?.node.type ?? ""))
+        .map((k) => ({ step: step.key, fields: [k], check: within(k) }));
     }
     return [
       { step: step.key, fields: top, check: step.fields.filter((k) => state.fields[k]?.visible) },

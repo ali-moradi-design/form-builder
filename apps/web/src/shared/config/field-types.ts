@@ -2,12 +2,23 @@ import type { FieldNode } from "@formweave/schema";
 import {
   AlignLeft,
   Calendar,
+  CalendarClock,
   ChevronDown,
   CircleDot,
+  Clock,
+  EyeOff,
+  Gauge,
   Group,
   Hash,
+  Heading,
+  Link,
   Mail,
+  Minus,
+  Phone,
+  Pilcrow,
+  SlidersHorizontal,
   SquareCheck,
+  Star,
   ToggleLeft,
   Type,
   type LucideIcon,
@@ -53,7 +64,23 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
   { type: "shortText", group: "text", icon: Type, keyBase: "text", create: simple("shortText") },
   { type: "longText", group: "text", icon: AlignLeft, keyBase: "text", create: simple("longText") },
   { type: "email", group: "text", icon: Mail, keyBase: "email", create: simple("email") },
+  { type: "url", group: "text", icon: Link, keyBase: "website", create: simple("url") },
+  { type: "phone", group: "text", icon: Phone, keyBase: "phone", create: simple("phone") },
   { type: "number", group: "numbers", icon: Hash, keyBase: "number", create: simple("number") },
+  { type: "rating", group: "numbers", icon: Star, keyBase: "rating", create: simple("rating") },
+  { type: "nps", group: "numbers", icon: Gauge, keyBase: "nps", create: simple("nps") },
+  {
+    type: "slider",
+    group: "numbers",
+    icon: SlidersHorizontal,
+    keyBase: "amount",
+    create: (key, label) => ({
+      type: "slider",
+      key,
+      label,
+      settings: { min: 0, max: 10, step: 1 },
+    }),
+  },
   {
     type: "select",
     group: "choice",
@@ -71,6 +98,14 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
   },
   { type: "switch", group: "choice", icon: ToggleLeft, keyBase: "yes", create: simple("switch") },
   { type: "date", group: "dateTime", icon: Calendar, keyBase: "date", create: simple("date") },
+  { type: "time", group: "dateTime", icon: Clock, keyBase: "time", create: simple("time") },
+  {
+    type: "dateTime",
+    group: "dateTime",
+    icon: CalendarClock,
+    keyBase: "when",
+    create: simple("dateTime"),
+  },
   {
     type: "group",
     group: "structure",
@@ -78,9 +113,42 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
     keyBase: "group",
     create: (key, label) => ({ type: "group", key, label, fields: [] }),
   },
+  {
+    type: "heading",
+    group: "structure",
+    icon: Heading,
+    keyBase: "heading",
+    create: simple("heading"),
+  },
+  {
+    type: "paragraph",
+    group: "structure",
+    icon: Pilcrow,
+    keyBase: "text_block",
+    create: simple("paragraph"),
+  },
+  {
+    type: "divider",
+    group: "structure",
+    icon: Minus,
+    keyBase: "divider",
+    create: (key) => ({ type: "divider", key }),
+  },
+  { type: "hidden", group: "structure", icon: EyeOff, keyBase: "source", create: simple("hidden") },
 ];
 
 /** Looks up a field type; `undefined` for types the builder does not know. */
 export function fieldType(type: string): FieldTypeInfo | undefined {
   return FIELD_TYPES.find((t) => t.type === type);
 }
+
+/** Field types that show something but hold no answer (no response column). */
+export const DISPLAY_TYPES: ReadonlySet<string> = new Set([
+  "group",
+  "heading",
+  "paragraph",
+  "divider",
+]);
+
+/** Field types whose answers are numbers (summarised with statistics). */
+export const NUMBER_TYPES: ReadonlySet<string> = new Set(["number", "rating", "nps", "slider"]);

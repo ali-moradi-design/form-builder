@@ -19,11 +19,13 @@ export function HostedForm({
   slug,
   document,
   initialLocale,
+  defaultValues,
   submit,
 }: {
   slug: string;
   document: FormDocument;
   initialLocale: Locale;
+  defaultValues?: Readonly<Values>;
   submit: (slug: string, values: Values, locale: string, honeypot: string) => Promise<SubmitResult>;
 }) {
   const t = useTranslations("hosted");
@@ -83,6 +85,7 @@ export function HostedForm({
               renderers={renderers}
               locale={locale}
               layout="focus"
+              defaultValues={defaultValues}
               className="fw-form fw-hosted"
               onSubmit={async (values) => {
                 setFailed(false);

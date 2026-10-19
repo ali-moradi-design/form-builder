@@ -2,6 +2,10 @@
 
 Short log of what the user agreed. Newest first.
 
+- 2026-10-19: The default stylesheet budget is 2.5 KB gzip (was 2 KB): the
+  0.6 fields (stars, NPS scale, slider, headings) need about 330 bytes more.
+  JavaScript budgets are unchanged; `allRenderers` has its own 4 KB budget.
+
 - 2026-10-19: Database: Postgres with Drizzle in production (`DATABASE_URL`).
   Without `DATABASE_URL` the app uses an embedded PGlite database, so local
   development and tests need no server. Migrations live in `apps/web/drizzle`

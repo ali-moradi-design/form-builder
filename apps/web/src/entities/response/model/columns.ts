@@ -1,5 +1,6 @@
 import { resolveText } from "@formweave/engine/i18n";
 import type { FieldNode, FormDocument, Locale } from "@formweave/schema";
+import { DISPLAY_TYPES } from "@/shared/config";
 
 /** One answer column of the responses table and exports. */
 export interface ResponseColumn {
@@ -16,13 +17,14 @@ export interface ResponseColumn {
 function* answerFields(fields: readonly FieldNode[]): Generator<FieldNode> {
   for (const f of fields) {
     if (f.fields) yield* answerFields(f.fields);
-    else yield f;
+    else if (!DISPLAY_TYPES.has(f.type)) yield f;
   }
 }
 
 /**
  * Answer columns for a form: fields of the newest version first, in form
- * order, then fields that only older versions had. Groups are flattened.
+ * order, then fields that only older versions had. Groups are flattened;
+ * display-only fields (headings, paragraphs, dividers) are left out.
  *
  * @param versions - Documents of the published versions, newest first.
  */

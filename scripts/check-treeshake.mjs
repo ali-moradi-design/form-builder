@@ -50,11 +50,11 @@ for (const c of cases) {
 }
 // size-limit cannot measure plain CSS, so the stylesheet budget is checked here.
 const css = gzipSync(readFileSync("packages/react/styles.css")).length;
-if (css > 2048) {
+if (css > 2560) {
   failed = true;
-  console.error(`✗ default stylesheet is ${String(css)} B gzip (budget 2048 B)`);
+  console.error(`✗ default stylesheet is ${String(css)} B gzip (budget 2560 B)`);
 } else {
-  console.log(`✓ default stylesheet ${String(css)} B gzip (budget 2048 B)`);
+  console.log(`✓ default stylesheet ${String(css)} B gzip (budget 2560 B)`);
 }
 
 if (failed) process.exit(1);
