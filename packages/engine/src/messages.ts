@@ -32,6 +32,10 @@ export const en: MessageCatalog = {
   invalidDate: "Enter a valid date.",
   tooEarly: "Choose a later date.",
   tooLate: "Choose an earlier date.",
+  invalidUrl: "Enter a full web address, such as https://example.com.",
+  invalidPhone: "Enter the number with its country code, such as +44 20 7946 0958.",
+  invalidTime: "Enter a valid time.",
+  invalidStep: "Choose one of the marked values.",
 };
 
 /**
@@ -56,6 +60,10 @@ export const fa: MessageCatalog = {
   invalidDate: "یک تاریخ درست وارد کنید.",
   tooEarly: "تاریخ دیرتری انتخاب کنید.",
   tooLate: "تاریخ زودتری انتخاب کنید.",
+  invalidUrl: "نشانی کامل وب را بنویسید؛ مثلاً https://example.com",
+  invalidPhone: "شماره را با کد کشور بنویسید؛ مثلاً ‎+98 912 123 4567‎",
+  invalidTime: "یک زمان درست وارد کنید.",
+  invalidStep: "یکی از مقدارهای مشخص‌شده را انتخاب کنید.",
 };
 
 /**

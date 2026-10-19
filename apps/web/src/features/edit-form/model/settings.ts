@@ -9,7 +9,19 @@ export type Translate = (key: string) => string;
 
 type Values = Readonly<Record<string, unknown>>;
 
-const PLACEHOLDER_TYPES = new Set(["shortText", "longText", "email", "number", "select"]);
+const PLACEHOLDER_TYPES = new Set([
+  "shortText",
+  "longText",
+  "email",
+  "number",
+  "select",
+  "url",
+  "phone",
+]);
+/** Types without an answer to require (display-only, groups, hidden values). */
+const NO_REQUIRED = new Set(["group", "heading", "paragraph", "divider", "hidden"]);
+const COUNTRY = /^[1-9]\d{0,3}$/;
+const PARAM = /^[\w.-]{1,64}$/;
 const CHOICE_TYPES = new Set(["select", "radio", "checkboxes"]);
 
 /** Locales the document is written in, default first. */
@@ -74,10 +86,16 @@ export function fieldSettingsDocument(
   languageName: Translate,
 ): { document: FormDocument; values: Record<string, unknown> } {
   const locales = docLocales(doc);
-  const fields: FieldNode[] = [...textFields("label", t("label"), locales, languageName)];
+  const fields: FieldNode[] = [];
+  if (node.type !== "divider") {
+    const labelType = node.type === "paragraph" ? "longText" : "shortText";
+    const labelTitle = node.type === "paragraph" ? t("text") : t("label");
+    fields.push(...textFields("label", labelTitle, locales, languageName, labelType));
+  }
   if (PLACEHOLDER_TYPES.has(node.type))
     fields.push(...textFields("placeholder", t("placeholder"), locales, languageName));
-  fields.push(...textFields("help", t("help"), locales, languageName));
+  if (node.type !== "divider" && node.type !== "paragraph")
+    fields.push(...textFields("help", t("help"), locales, languageName));
   fields.push({
     type: "shortText",
     key: "key",
@@ -85,9 +103,10 @@ export function fieldSettingsDocument(
     help: t("keyHelp"),
     required: true,
   });
-  if (node.type !== "group")
+  if (!NO_REQUIRED.has(node.type))
     fields.push({ type: "switch", key: "required", label: t("required"), width: "half" });
-  fields.push({ type: "switch", key: "half", label: t("halfWidth"), width: "half" });
+  if (!NO_REQUIRED.has(node.type) || node.type === "group")
+    fields.push({ type: "switch", key: "half", label: t("halfWidth"), width: "half" });
 
   const s = node.settings ?? {};
   const values: Record<string, unknown> = {
@@ -115,6 +134,47 @@ export function fieldSettingsDocument(
   } else if (node.type === "checkboxes") {
     addNumber("minSelected", t("minSelected"));
     addNumber("maxSelected", t("maxSelected"));
+  } else if (node.type === "rating") {
+    fields.push({
+      type: "number",
+      key: "max",
+      label: t("maxStars"),
+      settings: { min: 3, max: 10, integer: true },
+    });
+    values.max = num(s.max) ?? 5;
+  } else if (node.type === "nps") {
+    fields.push(...textFields("lowLabel", t("lowLabel"), locales, languageName));
+    fields.push(...textFields("highLabel", t("highLabel"), locales, languageName));
+    Object.assign(values, textValues("lowLabel", s.lowLabel as LocalizedText | undefined, locales));
+    Object.assign(
+      values,
+      textValues("highLabel", s.highLabel as LocalizedText | undefined, locales),
+    );
+  } else if (node.type === "slider") {
+    addNumber("min", t("min"), false);
+    addNumber("max", t("max"), false);
+    addNumber("step", t("step"), false);
+  } else if (node.type === "phone") {
+    fields.push({
+      type: "shortText",
+      key: "defaultCountry",
+      label: t("defaultCountry"),
+      help: t("defaultCountryHelp"),
+    });
+    values.defaultCountry = str(s.defaultCountry);
+  } else if (node.type === "hidden") {
+    fields.push({ type: "shortText", key: "fromUrl", label: t("fromUrl"), help: t("fromUrlHelp") });
+    values.fromUrl = str(s.fromUrl);
+  } else if (node.type === "time" || node.type === "dateTime") {
+    for (const key of ["min", "max"] as const) {
+      fields.push({
+        type: node.type,
+        key,
+        label: t(key === "min" ? "minTime" : "maxTime"),
+        width: "half",
+      });
+      values[key] = str(s[key]);
+    }
   } else if (node.type === "date") {
     for (const key of ["min", "max"] as const) {
       fields.push({
@@ -159,9 +219,30 @@ export function fieldPatch(
   } else if (node.type === "checkboxes") {
     set("minSelected", num(values.minSelected));
     set("maxSelected", num(values.maxSelected));
-  } else if (node.type === "date") {
+  } else if (node.type === "date" || node.type === "time" || node.type === "dateTime") {
     set("min", str(values.min));
     set("max", str(values.max));
+  } else if (node.type === "rating") {
+    const max = num(values.max);
+    set(
+      "max",
+      max !== undefined && Number.isInteger(max) && max >= 3 && max <= 10 ? max : undefined,
+    );
+  } else if (node.type === "nps") {
+    set("lowLabel", readText(values, "lowLabel", locales));
+    set("highLabel", readText(values, "highLabel", locales));
+  } else if (node.type === "slider") {
+    // min and max are required by the slider; keep the old ones while a box is empty.
+    set("min", num(values.min) ?? settings.get("min") ?? 0);
+    set("max", num(values.max) ?? settings.get("max") ?? 10);
+    const step = num(values.step);
+    set("step", step !== undefined && step > 0 ? step : undefined);
+  } else if (node.type === "phone") {
+    const code = str(values.defaultCountry);
+    set("defaultCountry", code && COUNTRY.test(code) ? code : undefined);
+  } else if (node.type === "hidden") {
+    const name = str(values.fromUrl);
+    set("fromUrl", name && PARAM.test(name) ? name : undefined);
   }
   return {
     label: readText(values, "label", locales),
@@ -169,7 +250,7 @@ export function fieldPatch(
       ? readText(values, "placeholder", locales)
       : undefined,
     help: readText(values, "help", locales),
-    required: values.required === true ? true : undefined,
+    required: values.required === true && !NO_REQUIRED.has(node.type) ? true : undefined,
     width: values.half === true ? "half" : undefined,
     settings: settings.size > 0 || node.settings ? Object.fromEntries(settings) : undefined,
   };

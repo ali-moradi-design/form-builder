@@ -204,6 +204,13 @@ function FieldCard({
         />
       </div>
     );
+  } else if (node.type === "hidden") {
+    body = (
+      <p className="rounded-lg border border-dashed border-line-strong px-3 py-2 text-[13px] text-ink-2">
+        {label && <b className="me-1.5 font-medium text-ink">{label}</b>}
+        {t("hiddenPreview")}
+      </p>
+    );
   } else {
     body = (
       <div inert className="fw-form pointer-events-none" data-layout="classic">

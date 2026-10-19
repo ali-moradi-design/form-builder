@@ -1,3 +1,4 @@
+import { NUMBER_TYPES } from "@/shared/config";
 import type { ResponseColumn } from "./columns";
 
 /** Count of one option or value. */
@@ -115,7 +116,7 @@ export function summarize(
       };
     }
     const numbers = values.filter((v): v is number => typeof v === "number" && Number.isFinite(v));
-    if (c.type === "number" && numbers.length > 0) {
+    if (NUMBER_TYPES.has(c.type) && numbers.length > 0) {
       const sorted = [...numbers].sort((a, b) => a - b);
       const min = sorted[0] ?? 0;
       const max = sorted[sorted.length - 1] ?? 0;

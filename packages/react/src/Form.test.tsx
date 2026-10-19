@@ -4,7 +4,7 @@ import type { FormDocument } from "@formweave/schema";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { basicRenderers, shortTextRenderer } from "./fields/index.js";
+import { allRenderers, basicRenderers, shortTextRenderer } from "./fields/index.js";
 import { Form } from "./Form.js";
 import { createRenderers, defineRenderer } from "./renderers.js";
 
@@ -178,5 +178,48 @@ describe("<Form>", () => {
     await user.type(screen.getByLabelText(/Name/), "Al{Enter}");
     expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ name: "Al" }), "name");
     expect(screen.queryByText("This field is required.")).toBeNull();
+  });
+
+  it("draws rating, NPS and hidden fields", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    const rich: FormDocument = {
+      ...doc,
+      steps: [
+        {
+          key: "main",
+          fields: [
+            { type: "hidden", key: "source" },
+            { type: "rating", key: "stars", label: "Stars", required: true },
+            {
+              type: "nps",
+              key: "nps",
+              label: "Recommend",
+              settings: { lowLabel: "No", highLabel: "Yes" },
+            },
+            { type: "divider", key: "line" },
+          ],
+        },
+      ],
+    };
+    render(
+      <Form
+        schema={rich}
+        registry={registry}
+        renderers={createRenderers(allRenderers)}
+        layout="focus"
+        defaultValues={{ source: "mail" }}
+        onSubmit={onSubmit}
+      />,
+    );
+    // Hidden fields and dividers get no page: two questions.
+    expect(screen.getByText("Question 1 of 2")).toBeTruthy();
+    await user.click(screen.getByLabelText("4 / 5"));
+    await user.click(screen.getByRole("button", { name: "OK" }));
+    await user.click(await screen.findByLabelText("9"));
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({ source: "mail", stars: 4, nps: 9 });
+    });
   });
 });

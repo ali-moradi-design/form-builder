@@ -110,7 +110,18 @@
     "synced": "Synced with canvas",
     "jsonSyntax": "Not valid JSON yet: {message}",
     "panel": "Side panel",
-    "responses": "Responses"
+    "responses": "Responses",
+    "maxStars": "Number of stars",
+    "lowLabel": "Text under 0",
+    "highLabel": "Text under 10",
+    "defaultCountry": "Default country code",
+    "defaultCountryHelp": "Digits only, for example 98 or 44. Numbers typed with a leading 0 get it.",
+    "fromUrl": "Fill from URL parameter",
+    "fromUrlHelp": "For example utm_source: /f/<slug>?utm_source=newsletter",
+    "minTime": "Earliest",
+    "maxTime": "Latest",
+    "text": "Text",
+    "hiddenPreview": "Hidden field: not shown to people."
   },
   "fieldTypes": {
     "shortText": "Short text",
@@ -122,7 +133,18 @@
     "checkboxes": "Checkboxes",
     "switch": "Switch",
     "date": "Date",
-    "group": "Group"
+    "group": "Group",
+    "url": "URL",
+    "phone": "Phone",
+    "time": "Time",
+    "dateTime": "Date and time",
+    "rating": "Rating",
+    "nps": "NPS 0–10",
+    "slider": "Slider",
+    "hidden": "Hidden",
+    "heading": "Heading",
+    "paragraph": "Paragraph",
+    "divider": "Divider"
   },
   "languages": {
     "en": "English",
