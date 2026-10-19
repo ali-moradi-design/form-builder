@@ -8,3 +8,5 @@ export type { SubmissionInput, SubmitResult } from "./model/submit";
 export { EXPORT_FORMATS, toCsv, toJson, toTable, toXlsx } from "./model/export";
 export type { ExportFormat, ExportLabels } from "./model/export";
 export { DAY_RANGES, parseFilter } from "./model/filter";
+export { perDay, summarize } from "./model/summary";
+export type { Bucket, FieldSummary } from "./model/summary";

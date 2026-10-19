@@ -5,8 +5,9 @@ import { deleteMyResponses, formatAnswer, parseFilter, responseColumns } from "@
 import { getUser } from "@/shared/auth";
 import { getDb, getForm, listResponses, listVersions } from "@/shared/db";
 import { AppShell } from "@/widgets/app-shell";
+import { ResponsesNav } from "@/widgets/responses-nav";
 import { ExportMenu } from "./ExportMenu";
-import { ResponseFilters } from "./ResponseFilters";
+import { ResponseFilters } from "@/features/filter-responses";
 import { ResponsesTable } from "./ResponsesTable";
 
 const PAGE = 25;
@@ -60,6 +61,7 @@ export async function ResponsesPage({ id, query }: { id: string; query: Response
             {filtered && ` ${t("matching", { count: total })}`}
           </p>
         </div>
+        <ResponsesNav formId={id} current="table" />
         {versions.length > 0 && <ExportMenu formId={id} count={total} />}
       </div>
       <ResponseFilters versions={versions.map((v) => v.version)} version={version} days={days} />

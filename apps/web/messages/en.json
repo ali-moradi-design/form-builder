@@ -215,5 +215,24 @@
     "onlyFilters": "Only current filters",
     "download": "Download {format}",
     "language": "Language"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Answers to {title}.",
+    "views": "Views",
+    "table": "Table",
+    "answers": "{count, plural, one {# answer} other {# answers}}",
+    "multiple": "Several choices per person, so the shares add up to more than 100%.",
+    "mean": "Average",
+    "median": "Median",
+    "min": "Lowest",
+    "max": "Highest",
+    "responsesSeries": "Responses",
+    "noAnswers": "No answers yet.",
+    "responses": "Responses",
+    "lastWeek": "Last 7 days",
+    "versions": "Published versions",
+    "perDay": "Responses per day",
+    "days": "{count} days"
   }
 }

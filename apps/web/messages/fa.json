@@ -215,5 +215,24 @@
     "onlyFilters": "فقط با فیلترهای فعلی",
     "download": "دانلود {format}",
     "language": "زبان"
+  },
+  "analytics": {
+    "title": "تحلیل",
+    "subtitle": "پاسخ‌های {title}.",
+    "views": "نماها",
+    "table": "جدول",
+    "answers": "{count, plural, one {# پاسخ} other {# پاسخ}}",
+    "multiple": "هر نفر چند گزینه می‌تواند انتخاب کند، پس جمع درصدها از ۱۰۰ بیشتر است.",
+    "mean": "میانگین",
+    "median": "میانه",
+    "min": "کمترین",
+    "max": "بیشترین",
+    "responsesSeries": "پاسخ‌ها",
+    "noAnswers": "هنوز پاسخی نیست.",
+    "responses": "پاسخ‌ها",
+    "lastWeek": "۷ روز گذشته",
+    "versions": "نسخه‌های منتشرشده",
+    "perDay": "پاسخ در هر روز",
+    "days": "{count} روز"
   }
 }
