@@ -124,7 +124,9 @@
     "text": "متن",
     "hiddenPreview": "فیلد پنهان: به افراد نشان داده نمی‌شود.",
     "minColors": "کمترین تعداد رنگ",
-    "maxColors": "بیشترین تعداد رنگ"
+    "maxColors": "بیشترین تعداد رنگ",
+    "currency": "کد واحد پول",
+    "currencyHelp": "سه حرف لاتین؛ مثلاً USD، EUR یا IRR."
   },
   "fieldTypes": {
     "shortText": "متن کوتاه",
@@ -149,7 +151,10 @@
     "paragraph": "متن توضیحی",
     "divider": "جداکننده",
     "color": "رنگ",
-    "colorSet": "مجموعهٔ رنگ"
+    "colorSet": "مجموعهٔ رنگ",
+    "currency": "مبلغ",
+    "rangeSlider": "اسلایدر بازه",
+    "dateRange": "بازهٔ تاریخ"
   },
   "languages": {
     "en": "English",

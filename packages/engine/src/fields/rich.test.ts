@@ -3,12 +3,16 @@ import type { FieldDefinition } from "../registry.js";
 import {
   color,
   colorSet,
+  currency,
+  currencyDigits,
+  dateRange,
   dateTime,
   hidden,
   normalizeHex,
   normalizePhone,
   nps,
   phone,
+  rangeSlider,
   rating,
   slider,
   time,
@@ -78,5 +82,38 @@ describe("rich fields", () => {
     expect(normalizeHex(" 0F4C5C ")).toBe("#0f4c5c");
     expect(normalizeHex("red")).toBeUndefined();
     expect(() => color.settings.parse({ swatches: ["blue"] })).toThrow();
+  });
+
+  it("date range wants both ends in order and inside the limits", () => {
+    const s = { min: "2026-01-01", max: "2026-12-31" };
+    expect(issues(dateRange, s, { from: "2026-03-01", to: "2026-03-05" })).toEqual([]);
+    expect(issues(dateRange, s, { from: "2026-03-01" })).toEqual(["incompleteRange"]);
+    expect(issues(dateRange, s, { from: "2026-03-05", to: "2026-03-01" })).toEqual([
+      "invalidRange",
+    ]);
+    expect(issues(dateRange, s, { from: "2025-12-31", to: "2026-01-02" })).toEqual(["tooEarly"]);
+    expect(issues(dateRange, s, { from: "2026-12-01", to: "2027-01-02" })).toEqual(["tooLate"]);
+    expect(issues(dateRange, s, { from: "2026-02-30", to: "2026-03-02" })).toEqual(["invalidDate"]);
+    expect(dateRange.isEmpty?.({})).toBe(true);
+    expect(dateRange.isEmpty?.({ from: "2026-03-01" })).toBe(false);
+  });
+
+  it("range slider checks order, limits and step", () => {
+    const s = { min: 0, max: 100, step: 10 };
+    expect(issues(rangeSlider, s, { from: 10, to: 40 })).toEqual([]);
+    expect(issues(rangeSlider, s, { from: 40, to: 10 })).toEqual(["invalidRange"]);
+    expect(issues(rangeSlider, s, { from: -10, to: 10 })).toEqual(["tooSmall"]);
+    expect(issues(rangeSlider, s, { from: 10, to: 110 })).toEqual(["tooBig"]);
+    expect(issues(rangeSlider, s, { from: 15, to: 20 })).toEqual(["invalidStep"]);
+  });
+
+  it("currency follows the currency's minor unit", () => {
+    expect(currencyDigits("USD")).toBe(2);
+    expect(currencyDigits("JPY")).toBe(0);
+    expect(issues(currency, { currency: "EUR" }, 12.5)).toEqual([]);
+    expect(issues(currency, { currency: "EUR" }, 12.345)).toEqual(["tooManyDecimals"]);
+    expect(issues(currency, { currency: "JPY" }, 12.5)).toEqual(["tooManyDecimals"]);
+    expect(issues(currency, { min: 1 }, 0.5)).toEqual(["tooSmall"]);
+    expect(() => currency.settings.parse({ currency: "usd" })).toThrow();
   });
 });

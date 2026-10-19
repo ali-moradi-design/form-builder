@@ -37,6 +37,9 @@ export const en: MessageCatalog = {
   invalidTime: "Enter a valid time.",
   invalidStep: "Choose one of the marked values.",
   invalidColor: "Choose a colour or type a hex code such as #0f4c5c.",
+  incompleteRange: "Fill in both ends of the range.",
+  invalidRange: "The end must not come before the start.",
+  tooManyDecimals: "Use fewer digits after the decimal point.",
 };
 
 /**
@@ -66,6 +69,9 @@ export const fa: MessageCatalog = {
   invalidTime: "یک زمان درست وارد کنید.",
   invalidStep: "یکی از مقدارهای مشخص‌شده را انتخاب کنید.",
   invalidColor: "یک رنگ انتخاب کنید یا کد آن را بنویسید؛ مثلاً ‎#0f4c5c‎",
+  incompleteRange: "هر دو سر بازه را پر کنید.",
+  invalidRange: "پایان بازه نباید پیش از آغاز آن باشد.",
+  tooManyDecimals: "رقم‌های کمتری بعد از ممیز بنویسید.",
 };
 
 /**

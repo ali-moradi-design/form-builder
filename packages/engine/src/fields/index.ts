@@ -22,3 +22,7 @@ export type { TimeSettings } from "./time.js";
 export { url } from "./url.js";
 export { color, colorSet, DEFAULT_SWATCHES, normalizeHex } from "./color.js";
 export type { ColorSetSettings, ColorSettings } from "./color.js";
+export { currency, currencyDigits } from "./currency.js";
+export type { CurrencySettings } from "./currency.js";
+export { dateRange, rangeSlider } from "./range.js";
+export type { Range } from "./range.js";

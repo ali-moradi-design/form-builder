@@ -75,5 +75,10 @@ export function formatAnswer(
   };
   if (typeof value === "boolean") return value ? yesNo[0] : yesNo[1];
   if (Array.isArray(value)) return value.map(label).join(", ");
+  if (typeof value === "object" && ("from" in value || "to" in value)) {
+    // A range: "start – end", with an empty end left blank.
+    const r = value as { from?: unknown; to?: unknown };
+    return `${r.from === undefined ? "" : label(r.from)} – ${r.to === undefined ? "" : label(r.to)}`;
+  }
   return label(value);
 }

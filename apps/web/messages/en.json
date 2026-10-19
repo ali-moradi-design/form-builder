@@ -124,7 +124,9 @@
     "text": "Text",
     "hiddenPreview": "Hidden field: not shown to people.",
     "minColors": "Fewest colours",
-    "maxColors": "Most colours"
+    "maxColors": "Most colours",
+    "currency": "Currency code",
+    "currencyHelp": "Three letters, such as USD, EUR or IRR."
   },
   "fieldTypes": {
     "shortText": "Short text",
@@ -149,7 +151,10 @@
     "paragraph": "Paragraph",
     "divider": "Divider",
     "color": "Colour",
-    "colorSet": "Colour set"
+    "colorSet": "Colour set",
+    "currency": "Currency",
+    "rangeSlider": "Range slider",
+    "dateRange": "Date range"
   },
   "languages": {
     "en": "English",

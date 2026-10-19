@@ -153,7 +153,17 @@ export function fieldSettingsDocument(
       values,
       textValues("highLabel", s.highLabel as LocalizedText | undefined, locales),
     );
-  } else if (node.type === "slider") {
+  } else if (node.type === "currency") {
+    fields.push({
+      type: "shortText",
+      key: "currency",
+      label: t("currency"),
+      help: t("currencyHelp"),
+    });
+    values.currency = str(s.currency);
+    addNumber("min", t("min"), false);
+    addNumber("max", t("max"), false);
+  } else if (node.type === "slider" || node.type === "rangeSlider") {
     addNumber("min", t("min"), false);
     addNumber("max", t("max"), false);
     addNumber("step", t("step"), false);
@@ -178,7 +188,7 @@ export function fieldSettingsDocument(
       });
       values[key] = str(s[key]);
     }
-  } else if (node.type === "date") {
+  } else if (node.type === "date" || node.type === "dateRange") {
     for (const key of ["min", "max"] as const) {
       fields.push({
         type: "date",
@@ -222,7 +232,12 @@ export function fieldPatch(
   } else if (node.type === "checkboxes") {
     set("minSelected", num(values.minSelected));
     set("maxSelected", num(values.maxSelected));
-  } else if (node.type === "date" || node.type === "time" || node.type === "dateTime") {
+  } else if (
+    node.type === "date" ||
+    node.type === "dateRange" ||
+    node.type === "time" ||
+    node.type === "dateTime"
+  ) {
     set("min", str(values.min));
     set("max", str(values.max));
   } else if (node.type === "colorSet") {
@@ -241,7 +256,12 @@ export function fieldPatch(
   } else if (node.type === "nps") {
     set("lowLabel", readText(values, "lowLabel", locales));
     set("highLabel", readText(values, "highLabel", locales));
-  } else if (node.type === "slider") {
+  } else if (node.type === "currency") {
+    const code = str(values.currency)?.toUpperCase();
+    set("currency", code && /^[A-Z]{3}$/.test(code) ? code : undefined);
+    set("min", num(values.min));
+    set("max", num(values.max));
+  } else if (node.type === "slider" || node.type === "rangeSlider") {
     // min and max are required by the slider; keep the old ones while a box is empty.
     set("min", num(values.min) ?? settings.get("min") ?? 0);
     set("max", num(values.max) ?? settings.get("max") ?? 10);

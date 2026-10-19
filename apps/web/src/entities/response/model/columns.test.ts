@@ -59,5 +59,9 @@ describe("response columns", () => {
     expect(formatAnswer(undefined, 0)).toBe("0");
     expect(formatAnswer(undefined, null)).toBe("");
     expect(formatAnswer(undefined, { a: 1 })).toBe('{"a":1}');
+    expect(formatAnswer(undefined, { from: "2026-03-01", to: "2026-03-04" })).toBe(
+      "2026-03-01 – 2026-03-04",
+    );
+    expect(formatAnswer(undefined, { from: 20 })).toBe("20 – ");
   });
 });

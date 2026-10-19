@@ -2,6 +2,10 @@
 
 Short log of what the user agreed. Newest first.
 
+- 2026-10-19: The `allRenderers` budget is 6 KB brotli (was 4 KB). It grows
+  with every field type in 0.6; apps that care about size import single
+  renderers, whose budgets stay as they are.
+
 - 2026-10-19: The default stylesheet budget is 2.5 KB gzip (was 2 KB): the
   0.6 fields (stars, NPS scale, slider, headings) need about 330 bytes more.
   JavaScript budgets are unchanged; `allRenderers` has its own 4 KB budget.
