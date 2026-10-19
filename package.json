@@ -10,7 +10,7 @@
     "build": "turbo run build",
     "typecheck": "turbo run typecheck && tsc -p tsconfig.json",
     "test": "turbo run test",
-    "lint": "eslint .",
+    "lint": "eslint . && pnpm --filter @formweave/web lint:fsd",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check:package": "turbo run check:package",

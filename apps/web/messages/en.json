@@ -1,0 +1,34 @@
+{
+  "brand": {
+    "credit": "Made with <heart></heart> by Ali Moradi"
+  },
+  "nav": {
+    "mainMenu": "Main menu",
+    "forms": "Forms",
+    "templates": "Templates",
+    "support": "Support",
+    "docs": "Docs",
+    "language": "Language"
+  },
+  "forms": {
+    "title": "Forms",
+    "subtitle": "Build a form, publish it, and use it anywhere.",
+    "newBlank": "Blank form",
+    "newBlankHint": "Start with an empty canvas.",
+    "newTemplate": "From a template",
+    "newTemplateHint": "Start from the product feedback example.",
+    "yourForms": "Your forms",
+    "empty": "No forms yet. Create one to get started.",
+    "fields": "{count, plural, one {# field} other {# fields}}",
+    "edited": "Edited {date}",
+    "open": "Open",
+    "delete": "Delete",
+    "localNote": "Drafts are saved in this browser until accounts arrive in version 0.4."
+  },
+  "preview": {
+    "back": "All forms",
+    "submitted": "Submitted data",
+    "notFound": "This form does not exist in this browser.",
+    "title": "Preview"
+  }
+}

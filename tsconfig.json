@@ -7,5 +7,13 @@
     "allowJs": true,
     "checkJs": false
   },
-  "include": ["*.js", "*.ts", "packages/*/*.ts", "scripts/*.mjs"]
+  "include": [
+    "*.js",
+    "*.ts",
+    "packages/*/*.ts",
+    "apps/*/*.ts",
+    "apps/*/*.js",
+    "apps/*/*.mjs",
+    "scripts/*.mjs"
+  ]
 }
