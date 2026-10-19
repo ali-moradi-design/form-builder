@@ -17,6 +17,15 @@ export type ValueReader = (key: string) => unknown;
 export const MAX_EXPRESSION_DEPTH = 64;
 
 /**
+ * Longest text an expression can build (`concat`). Calculated fields can read
+ * each other, so without a cap a chain of them could double a text at every
+ * step and exhaust memory.
+ *
+ * @since 0.7.0
+ */
+export const MAX_TEXT_LENGTH = 10_000;
+
+/**
  * Truthiness used by `and`, `or`, `not`, `if` and conditions such as
  * `visibleWhen`: `null`, `undefined`, `false`, `0`, `NaN`, `""` and `[]` are
  * false; everything else is true.
@@ -70,7 +79,7 @@ const arith = (vals: unknown[], f: (a: number, b: number) => number): number | n
 };
 
 const text = (v: unknown): string => {
-  if (Array.isArray(v)) return v.map(text).join(", ");
+  if (Array.isArray(v)) return v.map(text).join(", ").slice(0, MAX_TEXT_LENGTH);
   if (typeof v === "string") return v;
   if (typeof v === "number" || typeof v === "boolean") return String(v);
   return "";
@@ -134,7 +143,11 @@ const OPS: Readonly<Record<Operator, (arg: Lazy, n: number) => unknown>> = {
     const f = 10 ** digits;
     return Math.round(x * f) / f;
   },
-  concat: (arg, n) => all(arg, n).map(text).join(""),
+  concat: (arg, n) => {
+    let out = "";
+    for (let i = 0; i < n && out.length < MAX_TEXT_LENGTH; i++) out += text(arg(i));
+    return out.slice(0, MAX_TEXT_LENGTH);
+  },
   len: (arg) => {
     const v = arg(0);
     return typeof v === "string" || Array.isArray(v) ? v.length : 0;
