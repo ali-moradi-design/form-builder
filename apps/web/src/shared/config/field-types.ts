@@ -1,7 +1,9 @@
 import type { FieldNode } from "@formweave/schema";
 import {
   AlignLeft,
+  Banknote,
   Calendar,
+  CalendarRange,
   CalendarClock,
   ChevronDown,
   CircleDot,
@@ -18,6 +20,7 @@ import {
   Phone,
   Pilcrow,
   SlidersHorizontal,
+  SlidersVertical,
   SquareCheck,
   SwatchBook,
   Star,
@@ -76,6 +79,13 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
   { type: "url", group: "text", icon: Link, keyBase: "website", create: simple("url") },
   { type: "phone", group: "text", icon: Phone, keyBase: "phone", create: simple("phone") },
   { type: "number", group: "numbers", icon: Hash, keyBase: "number", create: simple("number") },
+  {
+    type: "currency",
+    group: "numbers",
+    icon: Banknote,
+    keyBase: "amount",
+    create: (key, label) => ({ type: "currency", key, label, settings: { currency: "USD" } }),
+  },
   { type: "rating", group: "numbers", icon: Star, keyBase: "rating", create: simple("rating") },
   { type: "nps", group: "numbers", icon: Gauge, keyBase: "nps", create: simple("nps") },
   {
@@ -90,6 +100,19 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
       settings: { min: 0, max: 10, step: 1 },
     }),
   },
+  {
+    type: "rangeSlider",
+    group: "numbers",
+    icon: SlidersVertical,
+    keyBase: "between",
+    create: (key, label) => ({
+      type: "rangeSlider",
+      key,
+      label,
+      settings: { min: 0, max: 100, step: 1 },
+    }),
+  },
+
   {
     type: "select",
     group: "choice",
@@ -115,6 +138,13 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
     create: simple("colorSet"),
   },
   { type: "date", group: "dateTime", icon: Calendar, keyBase: "date", create: simple("date") },
+  {
+    type: "dateRange",
+    group: "dateTime",
+    icon: CalendarRange,
+    keyBase: "dates",
+    create: simple("dateRange"),
+  },
   { type: "time", group: "dateTime", icon: Clock, keyBase: "time", create: simple("time") },
   {
     type: "dateTime",
@@ -168,7 +198,13 @@ export const DISPLAY_TYPES: ReadonlySet<string> = new Set([
 ]);
 
 /** Field types whose answers are numbers (summarised with statistics). */
-export const NUMBER_TYPES: ReadonlySet<string> = new Set(["number", "rating", "nps", "slider"]);
+export const NUMBER_TYPES: ReadonlySet<string> = new Set([
+  "number",
+  "currency",
+  "rating",
+  "nps",
+  "slider",
+]);
 
 /** Field types whose answers are colours (summarised with swatches). */
 export const COLOR_TYPES: ReadonlySet<string> = new Set(["color", "colorSet"]);

@@ -3,7 +3,8 @@ import { checkboxesRenderer, radioRenderer, selectRenderer } from "./choice.js";
 import { colorRenderer, colorSetRenderer } from "./color.js";
 import { dateRenderer } from "./date.js";
 import { groupRenderer } from "./group.js";
-import { numberRenderer } from "./number.js";
+import { currencyRenderer, numberRenderer } from "./number.js";
+import { dateRangeRenderer, rangeSliderRenderer } from "./range.js";
 import { npsRenderer, ratingRenderer, sliderRenderer } from "./scale.js";
 import { dividerRenderer, headingRenderer, hiddenRenderer, paragraphRenderer } from "./static.js";
 import { switchRenderer } from "./switch.js";
@@ -15,7 +16,8 @@ export { checkboxesRenderer, radioRenderer, selectRenderer } from "./choice.js";
 export { colorRenderer, colorSetRenderer } from "./color.js";
 export { dateRenderer } from "./date.js";
 export { groupRenderer } from "./group.js";
-export { numberRenderer } from "./number.js";
+export { currencyRenderer, numberRenderer } from "./number.js";
+export { dateRangeRenderer, rangeSliderRenderer } from "./range.js";
 export { npsRenderer, ratingRenderer, sliderRenderer } from "./scale.js";
 export { controlProps, FieldShell } from "./shell.js";
 export type { FieldShellProps } from "./shell.js";
@@ -46,7 +48,7 @@ export const basicRenderers: readonly FieldRenderer[] = [
 /**
  * Renderers for the field types added in version 0.6: URL, phone, time,
  * date-time, rating, NPS, slider, hidden, heading, paragraph, divider,
- * colour and colour set.
+ * colour, colour set, currency, range slider and date range.
  *
  * @since 0.6.0
  */
@@ -64,6 +66,9 @@ export const richRenderers: readonly FieldRenderer[] = [
   dividerRenderer,
   colorRenderer,
   colorSetRenderer,
+  currencyRenderer,
+  rangeSliderRenderer,
+  dateRangeRenderer,
 ];
 
 /**
@@ -96,4 +101,7 @@ export const allRenderers: readonly FieldRenderer[] = [
   dividerRenderer,
   colorRenderer,
   colorSetRenderer,
+  currencyRenderer,
+  rangeSliderRenderer,
+  dateRangeRenderer,
 ];

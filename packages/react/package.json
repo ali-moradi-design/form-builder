@@ -79,7 +79,7 @@
       "name": "all renderers",
       "path": "dist/fields/index.js",
       "import": "{ allRenderers }",
-      "limit": "4 kB"
+      "limit": "6 kB"
     }
   ]
 }

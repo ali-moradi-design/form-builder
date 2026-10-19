@@ -255,4 +255,44 @@ describe("<Form>", () => {
       expect(onSubmit).toHaveBeenCalledWith({ palette: ["#0f4c5c"] });
     });
   });
+
+  it("collects a date range, a price and a range slider", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    const ranges: FormDocument = {
+      ...doc,
+      steps: [
+        {
+          key: "main",
+          fields: [
+            { type: "dateRange", key: "stay", label: "Stay", required: true },
+            { type: "currency", key: "budget", label: "Budget", settings: { currency: "EUR" } },
+            { type: "rangeSlider", key: "age", label: "Age", settings: { min: 18, max: 60 } },
+          ],
+        },
+      ],
+    };
+    render(
+      <Form
+        schema={ranges}
+        registry={registry}
+        renderers={createRenderers(allRenderers)}
+        onSubmit={onSubmit}
+      />,
+    );
+    const from = screen.getByLabelText("Stay: From");
+    await user.type(from, "2026-03-01");
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    expect(await screen.findByText("Fill in both ends of the range.")).toBeTruthy();
+    await user.type(screen.getByLabelText("Stay: To"), "2026-03-04");
+    expect(screen.getByText("€")).toBeTruthy();
+    await user.type(screen.getByLabelText("Budget"), "1200.5");
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        stay: { from: "2026-03-01", to: "2026-03-04" },
+        budget: 1200.5,
+      });
+    });
+  });
 });

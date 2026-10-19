@@ -46,6 +46,23 @@ describe("validate", () => {
     expect(r).toEqual({ success: true, data: { name: "Sara", plan: "free", terms: true } });
   });
 
+  it("passes the limits of refinements on to the message", () => {
+    const ranged = compile(
+      {
+        ...doc,
+        steps: [
+          {
+            key: "a",
+            fields: [{ type: "rangeSlider", key: "r", settings: { min: 5, max: 50 } }],
+          },
+        ],
+      },
+      { registry: createRegistry(allFields) },
+    );
+    const r = validate(ranged, { r: { from: 1, to: 10 } });
+    expect(r.success ? [] : r.issues).toEqual([{ key: "r", code: "tooSmall", params: { min: 5 } }]);
+  });
+
   it("reports required, type rules and limits once per field", () => {
     const r = validate(form, { name: "S", email: "x", plan: "team", seats: 1, terms: false });
     expect(r.success).toBe(false);

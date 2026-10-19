@@ -65,6 +65,12 @@ const toIssue = (key: string, raw: z.core.$ZodIssue | undefined): ValidationIssu
   const params: { min?: number; max?: number } = {};
   if (raw.code === "too_small" && typeof raw.minimum === "number") params.min = raw.minimum;
   if (raw.code === "too_big" && typeof raw.maximum === "number") params.max = raw.maximum;
+  if (raw.code === "custom") {
+    // Refinements pass their limits as `params: { min, max }`.
+    const extra = raw.params as { min?: unknown; max?: unknown } | undefined;
+    if (typeof extra?.min === "number") params.min = extra.min;
+    if (typeof extra?.max === "number") params.max = extra.max;
+  }
   return { key, code: raw.message, params };
 };
 

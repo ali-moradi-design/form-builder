@@ -1,5 +1,5 @@
 import { COLOR_TYPES, NUMBER_TYPES } from "@/shared/config";
-import type { ResponseColumn } from "./columns";
+import { formatAnswer, type ResponseColumn } from "./columns";
 
 /** Count of one option or value. */
 export interface Bucket {
@@ -162,7 +162,7 @@ export function summarize(
       key: c.key,
       label: c.label,
       answered: values.length,
-      latest: values.slice(0, 5).map((v) => (typeof v === "string" ? v : JSON.stringify(v))),
+      latest: values.slice(0, 5).map((v) => formatAnswer(c, v, yesNo)),
     };
   });
 }
