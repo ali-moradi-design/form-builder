@@ -16,7 +16,7 @@ Where the build stands, for a new working session. Read `CLAUDE.md`,
 
 ## Open
 
-- PR #34 holds the 0.7 work above. Merge it with a squash when CI is green.
+- Nothing open.
 
 ## Next
 
