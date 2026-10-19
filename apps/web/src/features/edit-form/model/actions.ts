@@ -88,3 +88,37 @@ export function nudgeField(store: Store, key: string, by: -1 | 1): void {
     return moveField(doc, key, { ...found.place, index });
   });
 }
+
+/** What is being dragged: a new field from the palette or an existing field. */
+export type DragSource =
+  | { readonly kind: "new"; readonly type: string }
+  | { readonly kind: "field"; readonly key: string };
+
+/**
+ * Moves an existing field to a drop slot. `slot.index` counts the fields
+ * before the slot with the dragged field still in place, so it is shifted
+ * when the field moves down within the same list.
+ */
+export function dropField(doc: FormDocument, key: string, slot: FieldPlace): FormDocument {
+  const found = findField(doc, key);
+  if (!found) return doc;
+  const sameList = found.place.step === slot.step && found.place.parent === slot.parent;
+  const index = sameList && found.place.index < slot.index ? slot.index - 1 : slot.index;
+  if (sameList && index === found.place.index) return doc;
+  return moveField(doc, key, { ...slot, index });
+}
+
+/** Adds a new field of `info`'s type at a drop slot and selects it. */
+export function dropNewField(
+  store: Store,
+  info: FieldTypeInfo,
+  label: string,
+  slot: FieldPlace,
+): void {
+  let key = "";
+  store.getState().edit((doc) => {
+    key = uniqueKey(doc, info.keyBase);
+    return insertField(doc, info.create(key, label), slot);
+  });
+  store.getState().select({ kind: "field", key });
+}

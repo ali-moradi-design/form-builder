@@ -11,6 +11,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@dnd-kit/collision": "0.5.1",
+    "@dnd-kit/react": "0.5.1",
     "@formweave/engine": "workspace:^",
     "@formweave/react": "workspace:^",
     "@formweave/schema": "workspace:^",
