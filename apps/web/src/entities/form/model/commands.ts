@@ -85,8 +85,8 @@ export function insertField(doc: FormDocument, field: FieldNode, at: FieldPlace)
   return editList(doc, at.step, at.parent, (list) => insertAt(list, at.index, field));
 }
 
-/** Expression props that may name other fields. */
-const CONDITIONS = ["visibleWhen", "requiredWhen", "disabledWhen"] as const;
+/** Expression props that may name other fields (conditions and formulas). */
+const CONDITIONS = ["visibleWhen", "requiredWhen", "disabledWhen", "calculate"] as const;
 
 /** Maps over every expression slot of every step and field. */
 function mapConditions(

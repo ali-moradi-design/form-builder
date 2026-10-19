@@ -1,5 +1,6 @@
 import type { FieldDefinition } from "../registry.js";
 import {
+  calculated,
   checkboxes,
   color,
   colorSet,
@@ -64,4 +65,5 @@ export const allFields: readonly FieldDefinition<never>[] = [
   rangeSlider,
   dateRange,
   repeater,
+  calculated,
 ] as unknown as readonly FieldDefinition<never>[];

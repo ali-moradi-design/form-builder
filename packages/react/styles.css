@@ -531,4 +531,10 @@
     opacity: 0.4;
     cursor: default;
   }
+  .fw-calculated {
+    display: flex;
+    align-items: center;
+    background: var(--fw-surface-2);
+    font-weight: 600;
+  }
 }

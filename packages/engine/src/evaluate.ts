@@ -1,4 +1,5 @@
 import type { Expression } from "@formweave/schema";
+import { calculateValues } from "./calculate.js";
 import type { CompiledForm } from "./compile.js";
 import { evalExpression, truthy } from "./expr.js";
 
@@ -12,7 +13,7 @@ export interface FieldState {
   readonly visible: boolean;
   /** Whether an answer is needed (only ever `true` while visible). */
   readonly required: boolean;
-  /** Whether the field is read-only. */
+  /** Whether the field is read-only (always `true` for calculated fields). */
   readonly disabled: boolean;
 }
 
@@ -91,13 +92,20 @@ export function evaluate(
   values: Readonly<Record<string, unknown>>,
   options?: EvaluateOptions,
 ): FormState {
-  const read = (k: string): unknown => values[k];
+  const all = calculateValues(form, values);
+  const read = (k: string): unknown => all[k];
   const previous = options?.previous;
   let affected: Set<string> | undefined;
   if (previous) {
     affected = new Set();
-    for (const key of options.changed) {
-      for (const target of form.dependents.get(key) ?? []) affected.add(target);
+    // A calculated field changes with its inputs, so what reads it is affected too.
+    const queue = [...options.changed];
+    for (let key = queue.pop(); key !== undefined; key = queue.pop()) {
+      for (const target of form.dependents.get(key) ?? []) {
+        if (affected.has(target)) continue;
+        affected.add(target);
+        if (form.fields.get(target)?.node.calculate !== undefined) queue.push(target);
+      }
     }
     if (affected.size === 0) return previous;
   }
@@ -138,7 +146,10 @@ export function evaluate(
           required:
             !field.definition.container &&
             (node.required === true || holds(node.requiredWhen, read)),
-          disabled: (parent?.disabled ?? false) || holds(node.disabledWhen, read),
+          disabled:
+            node.calculate !== undefined ||
+            (parent?.disabled ?? false) ||
+            holds(node.disabledWhen, read),
         };
       }
       if (sameState(old, next)) {

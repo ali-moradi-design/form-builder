@@ -131,7 +131,19 @@
     "maxRows": "Most rows",
     "rowLabel": "Name of one row",
     "repeaterHint": "Each answer has rows of these questions.",
-    "emptyRepeater": "Drop the questions of one row here"
+    "emptyRepeater": "Drop the questions of one row here",
+    "formula": "Formula",
+    "formulaHelp": "Use field keys, numbers and + - * / ( ), for example quantity * price. Functions: min, max, round.",
+    "formulaFields": "Fields you can use",
+    "formulaSyntax": "This formula is not complete.",
+    "formulaUnknownField": "There is no field “{name}” here.",
+    "formulaUnknownFunction": "There is no function “{name}”.",
+    "formulaCycle": "A field cannot be calculated from itself.",
+    "format": "Show as",
+    "format_number": "Number",
+    "format_currency": "Amount of money",
+    "format_percent": "Percentage",
+    "decimals": "Digits after the decimal point"
   },
   "fieldTypes": {
     "shortText": "Short text",
@@ -160,7 +172,8 @@
     "currency": "Currency",
     "rangeSlider": "Range slider",
     "dateRange": "Date range",
-    "repeater": "Repeater"
+    "repeater": "Repeater",
+    "calculated": "Calculated"
   },
   "languages": {
     "en": "English",

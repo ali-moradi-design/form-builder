@@ -358,4 +358,68 @@ describe("<Form>", () => {
       });
     });
   });
+
+  it("shows calculated results, in rows too, and submits them", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    const shop: FormDocument = {
+      ...doc,
+      steps: [
+        {
+          key: "main",
+          fields: [
+            {
+              type: "repeater",
+              key: "items",
+              label: "Items",
+              settings: { minRows: 1 },
+              fields: [
+                { type: "number", key: "qty", label: "Qty" },
+                { type: "number", key: "price", label: "Price" },
+                {
+                  type: "calculated",
+                  key: "line",
+                  label: "Line total",
+                  calculate: { op: "mul", args: [{ var: "qty" }, { var: "price" }] },
+                },
+              ],
+            },
+            { type: "number", key: "shipping", label: "Shipping" },
+            {
+              type: "calculated",
+              key: "extra",
+              label: "Shipping with tax",
+              settings: { format: "currency", currency: "EUR" },
+              calculate: { op: "mul", args: [{ var: "shipping" }, 1.2] },
+            },
+          ],
+        },
+      ],
+    };
+    render(
+      <Form
+        schema={shop}
+        registry={registry}
+        renderers={createRenderers(allRenderers)}
+        onSubmit={onSubmit}
+      />,
+    );
+    await user.type(screen.getByLabelText("Qty"), "3");
+    await user.type(screen.getByLabelText("Price"), "2.5");
+    await waitFor(() => {
+      expect(screen.getByLabelText("Line total").textContent).toBe("7.5");
+    });
+    await user.type(screen.getByLabelText("Shipping"), "10");
+    await waitFor(() => {
+      expect(screen.getByLabelText("Shipping with tax").textContent).toBe("€12.00");
+    });
+    await user.click(screen.getByRole("button", { name: "Submit" }));
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith({
+        items: [{ qty: 3, price: 2.5, line: 7.5 }],
+        shipping: 10,
+        extra: 12,
+      });
+    });
+  });
 });

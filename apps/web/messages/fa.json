@@ -131,7 +131,19 @@
     "maxRows": "بیشترین تعداد ردیف",
     "rowLabel": "نام هر ردیف",
     "repeaterHint": "هر پاسخ چند ردیف از این پرسش‌ها دارد.",
-    "emptyRepeater": "پرسش‌های هر ردیف را اینجا رها کنید"
+    "emptyRepeater": "پرسش‌های هر ردیف را اینجا رها کنید",
+    "formula": "فرمول",
+    "formulaHelp": "از کلید فیلدها، عددها و ‎+ - * / ( )‎ استفاده کنید؛ مثلاً ‎quantity * price‎. تابع‌ها: ‎min‎، ‎max‎ و ‎round‎.",
+    "formulaFields": "فیلدهایی که می‌توانید به کار ببرید",
+    "formulaSyntax": "این فرمول کامل نیست.",
+    "formulaUnknownField": "اینجا فیلدی به نام «{name}» نیست.",
+    "formulaUnknownFunction": "تابعی به نام «{name}» نیست.",
+    "formulaCycle": "یک فیلد نمی‌تواند از خودش محاسبه شود.",
+    "format": "نمایش به صورت",
+    "format_number": "عدد",
+    "format_currency": "مبلغ",
+    "format_percent": "درصد",
+    "decimals": "رقم‌های بعد از ممیز"
   },
   "fieldTypes": {
     "shortText": "متن کوتاه",
@@ -160,7 +172,8 @@
     "currency": "مبلغ",
     "rangeSlider": "اسلایدر بازه",
     "dateRange": "بازهٔ تاریخ",
-    "repeater": "تکرارشونده"
+    "repeater": "تکرارشونده",
+    "calculated": "محاسبه‌شده"
   },
   "languages": {
     "en": "English",

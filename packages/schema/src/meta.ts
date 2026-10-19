@@ -62,6 +62,7 @@ export const fieldNodeSchema: z.ZodMiniType<FieldNode> = z.lazy(() =>
     visibleWhen: z.optional(expressionSchema),
     requiredWhen: z.optional(expressionSchema),
     disabledWhen: z.optional(expressionSchema),
+    calculate: z.optional(expressionSchema),
     width: z.optional(z.enum(["full", "half"])),
     settings: z.optional(z.record(z.string(), z.unknown())),
     fields: z.optional(z.array(fieldNodeSchema)),
@@ -156,6 +157,7 @@ export const formDocumentSchema: z.ZodMiniType<FormDocument> = z
       checkRefs(field.visibleWhen, [...path, "visibleWhen"]);
       checkRefs(field.requiredWhen, [...path, "requiredWhen"]);
       checkRefs(field.disabledWhen, [...path, "disabledWhen"]);
+      checkRefs(field.calculate, [...path, "calculate"]);
     }
   });
 

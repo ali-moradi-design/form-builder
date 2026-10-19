@@ -153,6 +153,15 @@ export interface FieldNode {
   /** Makes the field read-only while this expression is true. */
   readonly disabledWhen?: Expression | undefined;
   /**
+   * Computes the field's value from other fields, for example
+   * `{ "op": "mul", "args": [{ "var": "quantity" }, { "var": "price" }] }`.
+   * The field becomes read-only; a value sent by the browser is ignored and
+   * the server computes it again.
+   *
+   * @since 0.6.0
+   */
+  readonly calculate?: Expression | undefined;
+  /**
    * Width on wide screens.
    *
    * @defaultValue `"full"`

@@ -18,8 +18,8 @@ const PLACEHOLDER_TYPES = new Set([
   "url",
   "phone",
 ]);
-/** Types without an answer to require (display-only, groups, hidden values). */
-const NO_REQUIRED = new Set(["group", "heading", "paragraph", "divider", "hidden"]);
+/** Types without an answer to require (display-only, groups, hidden and calculated values). */
+const NO_REQUIRED = new Set(["group", "heading", "paragraph", "divider", "hidden", "calculated"]);
 const COUNTRY = /^[1-9]\d{0,3}$/;
 const PARAM = /^[\w.-]{1,64}$/;
 const CHOICE_TYPES = new Set(["select", "radio", "checkboxes"]);
@@ -105,7 +105,7 @@ export function fieldSettingsDocument(
   });
   if (!NO_REQUIRED.has(node.type))
     fields.push({ type: "switch", key: "required", label: t("required"), width: "half" });
-  if (!NO_REQUIRED.has(node.type) || node.type === "group")
+  if (!NO_REQUIRED.has(node.type) || node.type === "group" || node.type === "calculated")
     fields.push({ type: "switch", key: "half", label: t("halfWidth"), width: "half" });
 
   const s = node.settings ?? {};
@@ -168,6 +168,28 @@ export function fieldSettingsDocument(
     values.currency = str(s.currency);
     addNumber("min", t("min"), false);
     addNumber("max", t("max"), false);
+  } else if (node.type === "calculated") {
+    fields.push({
+      type: "select",
+      key: "format",
+      label: t("format"),
+      settings: {
+        options: (["number", "currency", "percent"] as const).map((value) => ({
+          value,
+          label: t(`format_${value}`),
+        })),
+      },
+    });
+    values.format = str(s.format) ?? "number";
+    fields.push({
+      type: "shortText",
+      key: "currency",
+      label: t("currency"),
+      help: t("currencyHelp"),
+      visibleWhen: { op: "eq", args: [{ var: "format" }, "currency"] },
+    });
+    values.currency = str(s.currency);
+    addNumber("decimals", t("decimals"));
   } else if (node.type === "slider" || node.type === "rangeSlider") {
     addNumber("min", t("min"), false);
     addNumber("max", t("max"), false);
@@ -274,6 +296,18 @@ export function fieldPatch(
     set("currency", code && /^[A-Z]{3}$/.test(code) ? code : undefined);
     set("min", num(values.min));
     set("max", num(values.max));
+  } else if (node.type === "calculated") {
+    const format = str(values.format);
+    set("format", format === "currency" || format === "percent" ? format : undefined);
+    const code = str(values.currency)?.toUpperCase();
+    set("currency", format === "currency" && code && /^[A-Z]{3}$/.test(code) ? code : undefined);
+    const decimals = num(values.decimals);
+    set(
+      "decimals",
+      decimals !== undefined && Number.isInteger(decimals) && decimals >= 0 && decimals <= 6
+        ? decimals
+        : undefined,
+    );
   } else if (node.type === "slider" || node.type === "rangeSlider") {
     // min and max are required by the slider; keep the old ones while a box is empty.
     set("min", num(values.min) ?? settings.get("min") ?? 0);

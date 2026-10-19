@@ -2,6 +2,7 @@ import type { FieldNode } from "@formweave/schema";
 import {
   AlignLeft,
   Banknote,
+  Calculator,
   Calendar,
   CalendarRange,
   CalendarClock,
@@ -100,6 +101,13 @@ export const FIELD_TYPES: readonly FieldTypeInfo[] = [
       label,
       settings: { min: 0, max: 10, step: 1 },
     }),
+  },
+  {
+    type: "calculated",
+    group: "numbers",
+    icon: Calculator,
+    keyBase: "total",
+    create: simple("calculated"),
   },
   {
     type: "rangeSlider",
@@ -218,6 +226,7 @@ export const DISPLAY_TYPES: ReadonlySet<string> = new Set([
 export const NUMBER_TYPES: ReadonlySet<string> = new Set([
   "number",
   "currency",
+  "calculated",
   "rating",
   "nps",
   "slider",
