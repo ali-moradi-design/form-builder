@@ -57,7 +57,8 @@ describe("builder store", () => {
 
   it("autosaves valid documents after a pause", () => {
     const save = vi.fn();
-    const { store } = createBuilder(doc, { save, delay: 100 });
+    const { store, start } = createBuilder(doc, { save, delay: 100 });
+    start();
     store.getState().edit(retitle("A"));
     store.getState().edit(retitle("B"));
     expect(store.getState().saveState).toBe("pending");
@@ -69,18 +70,24 @@ describe("builder store", () => {
 
   it("does not save an invalid document", () => {
     const save = vi.fn();
-    const { store } = createBuilder(doc, { save, delay: 100 });
+    const { store, start } = createBuilder(doc, { save, delay: 100 });
+    start();
     store.getState().replace({ ...doc, steps: [] });
     vi.advanceTimersByTime(100);
     expect(save).not.toHaveBeenCalled();
     expect(store.getState().saveState).toBe("invalid");
   });
 
-  it("saves pending changes on dispose", () => {
+  it("saves pending changes on stop and can restart", () => {
     const save = vi.fn();
-    const { store, dispose } = createBuilder(doc, { save });
+    const { store, start } = createBuilder(doc, { save, delay: 100 });
+    start()();
+    const stop = start();
     store.getState().edit(retitle("A"));
-    dispose();
+    stop();
+    expect(save).toHaveBeenCalledTimes(1);
+    store.getState().edit(retitle("B"));
+    vi.advanceTimersByTime(100);
     expect(save).toHaveBeenCalledTimes(1);
   });
 });

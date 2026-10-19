@@ -10,6 +10,7 @@ export type { Draft } from "./model/drafts";
 export {
   addStep,
   allFields,
+  duplicateField,
   findField,
   insertField,
   moveField,
