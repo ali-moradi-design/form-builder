@@ -9,7 +9,7 @@
     --fw-font: inherit;
     --fw-text: #141a1c;
     --fw-muted: #5a6366;
-    --fw-faint: #8b9396;
+    --fw-faint: #666f72;
     --fw-surface: #ffffff;
     --fw-surface-2: #f3f4f3;
     --fw-line: #d5d8d5;
@@ -17,6 +17,8 @@
     --fw-primary-text: #ffffff;
     --fw-primary-soft: #e4eff1;
     --fw-accent: #e36414;
+    /* Darker accent for small text, to keep 4.5:1 contrast. */
+    --fw-accent-text: #c44f0d;
     --fw-danger: #9a031e;
     --fw-danger-soft: #fbe6e9;
     --fw-radius: 10px;
@@ -34,7 +36,7 @@
     .fw-form:where(:not([data-theme="light"])) {
       --fw-text: #eaf0f0;
       --fw-muted: #a2afb1;
-      --fw-faint: #6e7d80;
+      --fw-faint: #93a2a5;
       --fw-surface: #151e20;
       --fw-surface-2: #1b2628;
       --fw-line: #314246;
@@ -42,12 +44,13 @@
       --fw-primary-soft: #16343b;
       --fw-danger: #e2566b;
       --fw-danger-soft: #3a1820;
+      --fw-accent-text: #fb8b24;
     }
   }
   .fw-form[data-theme="dark"] {
     --fw-text: #eaf0f0;
     --fw-muted: #a2afb1;
-    --fw-faint: #6e7d80;
+    --fw-faint: #93a2a5;
     --fw-surface: #151e20;
     --fw-surface-2: #1b2628;
     --fw-line: #314246;
@@ -55,6 +58,7 @@
     --fw-primary-soft: #16343b;
     --fw-danger: #e2566b;
     --fw-danger-soft: #3a1820;
+    --fw-accent-text: #fb8b24;
   }
 
   .fw-fields {
@@ -280,7 +284,7 @@
   .fw-counter {
     font-size: 13px;
     font-weight: 600;
-    color: var(--fw-accent);
+    color: var(--fw-accent-text);
   }
   .fw-form[data-layout="focus"] {
     --fw-gap: 28px;

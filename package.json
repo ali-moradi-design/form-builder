@@ -17,7 +17,8 @@
     "size": "turbo run size",
     "changeset": "changeset",
     "check:treeshake": "node scripts/check-treeshake.mjs",
-    "docs:api": "typedoc"
+    "docs:api": "typedoc",
+    "e2e": "turbo run e2e"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
