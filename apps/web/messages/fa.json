@@ -208,6 +208,12 @@
     "pageOf": "صفحهٔ {page} از {pages}",
     "previous": "قبلی",
     "next": "بعدی",
-    "dateRange": "بازهٔ زمانی"
+    "dateRange": "بازهٔ زمانی",
+    "export": "خروجی",
+    "exportTitle": "خروجی {count, plural, one {# پاسخ} other {# پاسخ}}",
+    "format": "قالب",
+    "onlyFilters": "فقط با فیلترهای فعلی",
+    "download": "دانلود {format}",
+    "language": "زبان"
   }
 }

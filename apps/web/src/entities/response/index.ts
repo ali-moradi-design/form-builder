@@ -5,3 +5,6 @@ export { acceptResponse } from "./model/accept";
 export type { AcceptResult } from "./model/accept";
 export { clientIp, HONEYPOT, submit } from "./model/submit";
 export type { SubmissionInput, SubmitResult } from "./model/submit";
+export { EXPORT_FORMATS, toCsv, toJson, toTable, toXlsx } from "./model/export";
+export type { ExportFormat, ExportLabels } from "./model/export";
+export { DAY_RANGES, parseFilter } from "./model/filter";

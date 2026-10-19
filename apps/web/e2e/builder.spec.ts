@@ -62,15 +62,15 @@ test("renaming a key updates the conditions that read it", async ({ page }) => {
   await page.reload();
   await page.getByRole("tab", { name: "JSON" }).click();
   await expect(page.getByText("Valid schema")).toBeVisible({ timeout: 30_000 });
-  await page.waitForFunction(() => "monaco" in window);
-  const json = await page.evaluate(() => {
-    const monaco = (
-      window as unknown as { monaco: { editor: { getModels: () => { getValue: () => string }[] } } }
-    ).monaco;
-    return monaco.editor.getModels()[0]?.getValue() ?? "";
-  });
-  expect(json).toContain('"var": "tier"');
-  expect(json).not.toContain('"plan"');
+  const editorText = () =>
+    page.evaluate(() => {
+      const w = window as unknown as {
+        monaco?: { editor: { getModels: () => { getValue: () => string }[] } };
+      };
+      return w.monaco?.editor.getModels()[0]?.getValue() ?? "";
+    });
+  await expect.poll(editorText).toContain('"var": "tier"');
+  expect(await editorText()).not.toContain('"plan"');
 });
 
 test("drags a field from the palette onto the canvas", async ({ page }) => {
