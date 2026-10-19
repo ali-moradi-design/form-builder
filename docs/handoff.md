@@ -14,7 +14,8 @@ Where the build stands, for a new working session. Read `CLAUDE.md`,
   and the template gallery (`/templates`: five templates with filter,
   search and a live preview; data in `apps/web/src/shared/config/gallery.ts`).
 
-- 1.0 so far: the accessibility audit (see `docs/decisions.md`).
+- 1.0 so far: the accessibility audit and page weight budgets (see
+  `docs/decisions.md`).
 
 ## Open
 
@@ -24,7 +25,7 @@ Where the build stands, for a new working session. Read `CLAUDE.md`,
 
 1. 0.7: npm publishing with Changesets. Needs an npm account and token from
    the user (`NPM_TOKEN` secret); ask before publishing.
-2. 1.0: performance against budgets, docs site
+2. 1.0: docs site
    (TypeDoc), nightly demo reset, deploy pipeline (ask the user where it
    will be hosted).
 
