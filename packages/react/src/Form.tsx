@@ -144,8 +144,20 @@ export interface FormProps {
    * @defaultValue `"classic"`
    */
   readonly layout?: "classic" | "focus" | undefined;
-  /** Class name of the `<form>` element. */
+  /**
+   * Extra class names for the `<form>` element. They are added to `fw-form`,
+   * which the default stylesheet needs.
+   */
   readonly className?: string | undefined;
+  /**
+   * Colour theme of the default stylesheet. `"system"` follows the operating
+   * system. Without it the form follows an ancestor's `data-theme` of
+   * `"light"` or `"dark"` (for example `<html data-theme>`), and otherwise
+   * the operating system. Set it when the page nests both themes.
+   *
+   * @since 0.7.0
+   */
+  readonly theme?: "light" | "dark" | "system" | undefined;
   /**
    * Stores files for file, image and signature fields. Without it those
    * fields say that uploads are not available.
@@ -374,7 +386,8 @@ export function Form(props: FormProps): ReactNode {
     <Ctx.Provider value={ctx}>
       <FormProvider {...methods}>
         <form
-          className={props.className ?? "fw-form"}
+          className={props.className ? `fw-form ${props.className}` : "fw-form"}
+          data-theme={props.theme}
           data-layout={layout}
           dir={isRtl(locale) ? "rtl" : "ltr"}
           lang={locale}

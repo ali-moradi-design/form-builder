@@ -7,7 +7,7 @@ import type {
 import { formatNumber, normalizeDigits, resolveText } from "@formweave/engine/i18n";
 import { useId, useState, type KeyboardEvent, type ReactNode, type Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
-import { useChoiceOptions } from "./options.js";
+import { choiceList, choiceText, useChoiceOptions } from "./options.js";
 import { controlProps, FieldShell } from "./shell.js";
 
 const WORDS = {
@@ -37,9 +37,6 @@ const optionsOf = (p: FieldRendererProps): readonly ChoiceOption[] =>
 const labelOf = (o: ChoiceOption, p: FieldRendererProps): string =>
   resolveText(o.label, p.locale, p.fallbackLocale) || o.value;
 
-const asList = (v: unknown): string[] =>
-  Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
-
 /** Lower-case text with Persian/Arabic digits and letters folded, for search. */
 const fold = (s: string): string =>
   normalizeDigits(s).toLowerCase().replaceAll("ي", "ی").replaceAll("ك", "ک");
@@ -49,7 +46,7 @@ function Combo(p: FieldRendererProps & { multiple: boolean }): ReactNode {
   const w = words(p.locale);
   const listId = useId();
   const { options: all } = useChoiceOptions(p);
-  const chosen = p.multiple ? asList(p.value) : typeof p.value === "string" ? [p.value] : [];
+  const chosen = p.multiple ? choiceList(p.value) : [choiceText(p.value)].filter(Boolean);
   const current = all.find((o) => o.value === chosen[0]);
   const [query, setQuery] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -197,7 +194,7 @@ function Tags(p: FieldRendererProps): ReactNode {
   const w = words(p.locale);
   const listId = useId();
   const settings = p.field.settings as TagsSettings;
-  const chosen = asList(p.value);
+  const chosen = choiceList(p.value);
   const [text, setText] = useState("");
   const add = (raw: string) => {
     const tag = raw.trim().slice(0, settings.maxLength ?? 40);
@@ -273,7 +270,7 @@ export const tagsRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("tags", 
 function Ranking(p: FieldRendererProps): ReactNode {
   const w = words(p.locale);
   const all = optionsOf(p);
-  const saved = asList(p.value);
+  const saved = choiceList(p.value);
   const order = saved.length === all.length ? saved : all.map((o) => o.value);
   const move = (from: number, to: number) => {
     if (to < 0 || to >= order.length) return;
@@ -348,7 +345,7 @@ export const rankingRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("rank
 function ImageChoice(p: FieldRendererProps): ReactNode {
   const settings = p.field.settings as ImageChoiceSettings;
   const multiple = settings.multiple === true;
-  const chosen = multiple ? asList(p.value) : typeof p.value === "string" ? [p.value] : [];
+  const chosen = multiple ? choiceList(p.value) : [choiceText(p.value)].filter(Boolean);
   return (
     <FieldShell props={p} asFieldset>
       <div className="fw-pictures" role={multiple ? "group" : "radiogroup"}>

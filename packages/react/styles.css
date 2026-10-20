@@ -32,8 +32,28 @@
     font-size: 15px;
     line-height: 1.5;
   }
+  /*
+   * Theme, first match wins: the form's own data-theme (the `theme` prop),
+   * then an ancestor's data-theme (for example <html data-theme>), then the
+   * operating system. data-theme="system" always follows the OS.
+   */
+  .fw-form[data-theme="dark"],
+  :where([data-theme="dark"]) .fw-form:where(:not([data-theme])) {
+    --fw-text: #eaf0f0;
+    --fw-muted: #a2afb1;
+    --fw-faint: #93a2a5;
+    --fw-surface: #151e20;
+    --fw-surface-2: #1b2628;
+    --fw-line: #314246;
+    --fw-primary: #13617a;
+    --fw-primary-soft: #16343b;
+    --fw-danger: #e2566b;
+    --fw-danger-soft: #3a1820;
+    --fw-accent-text: #fb8b24;
+  }
   @media (prefers-color-scheme: dark) {
-    .fw-form:where(:not([data-theme="light"])) {
+    .fw-form[data-theme="system"],
+    .fw-form:where(:not([data-theme])):where(:not([data-theme] *)) {
       --fw-text: #eaf0f0;
       --fw-muted: #a2afb1;
       --fw-faint: #93a2a5;
@@ -46,19 +66,6 @@
       --fw-danger-soft: #3a1820;
       --fw-accent-text: #fb8b24;
     }
-  }
-  .fw-form[data-theme="dark"] {
-    --fw-text: #eaf0f0;
-    --fw-muted: #a2afb1;
-    --fw-faint: #93a2a5;
-    --fw-surface: #151e20;
-    --fw-surface-2: #1b2628;
-    --fw-line: #314246;
-    --fw-primary: #13617a;
-    --fw-primary-soft: #16343b;
-    --fw-danger: #e2566b;
-    --fw-danger-soft: #3a1820;
-    --fw-accent-text: #fb8b24;
   }
 
   .fw-fields {

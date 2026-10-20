@@ -151,6 +151,16 @@ export function currentOptions(
 }
 
 /**
+ * Option values are text. A number or `true`/`false` (for example from
+ * `defaultValues` or stored settings) counts as its text form, so `2`
+ * selects the option `"2"`.
+ */
+const choiceText = /*#__PURE__*/ z.pipe(
+  z.union([z.string(), z.number(), z.boolean()], "invalidType"),
+  z.transform((v: string | number | boolean) => String(v)),
+);
+
+/**
  * Validator that accepts one of the configured option values.
  *
  * @param settings - Settings with the options.
@@ -160,10 +170,11 @@ export const oneOf = (settings: ChoiceSettings): z.ZodMiniType<string> => {
   // Remote lists can't be known here; dependent lists are checked against the
   // other answer by `validate`, so this accepts any of their options.
   if (settings.optionsUrl)
-    return z
-      .string("invalidType")
-      .check(z.minLength(1, "invalidOption"), z.maxLength(200, "invalidOption"));
+    return z.pipe(
+      choiceText,
+      z.string().check(z.minLength(1, "invalidOption"), z.maxLength(200, "invalidOption")),
+    );
   const all = [...settings.options, ...Object.values(settings.optionsBy?.options ?? {}).flat()];
   const allowed = new Set(all.map((o) => o.value));
-  return z.string("invalidType").check(z.refine((v) => allowed.has(v), "invalidOption"));
+  return z.pipe(choiceText, z.string().check(z.refine((v) => allowed.has(v), "invalidOption")));
 };

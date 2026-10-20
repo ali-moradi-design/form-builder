@@ -74,12 +74,37 @@ export function useChoiceOptions(p: FieldRendererProps): {
   useEffect(() => {
     if (loading || value === undefined) return;
     const allowed = new Set(options.map((o) => o.value));
+    // Values are compared as option text, so a number such as 2 keeps "2".
     if (Array.isArray(value)) {
-      const kept = value.filter((v) => typeof v === "string" && allowed.has(v));
+      const kept = value.filter((v) => allowed.has(choiceText(v)));
       if (kept.length !== value.length) onChange(kept.length ? kept : undefined);
-    } else if (typeof value === "string" && !allowed.has(value)) {
+    } else if (!allowed.has(choiceText(value))) {
       onChange(undefined);
     }
   }, [options, loading, value, onChange]);
   return { options, loading };
+}
+
+/**
+ * A choice value as option text: numbers and `true`/`false` (for example from
+ * `defaultValues`) match the option with the same text, as the engine does.
+ *
+ * @param value - A field value.
+ * @returns The option text, or `""` when the value can't be one.
+ */
+export function choiceText(value: unknown): string {
+  if (typeof value === "string") return value;
+  if ((typeof value === "number" && Number.isFinite(value)) || typeof value === "boolean")
+    return String(value);
+  return "";
+}
+
+/**
+ * A multiple-choice value as a list of option texts.
+ *
+ * @param value - A field value.
+ * @returns The option texts it holds.
+ */
+export function choiceList(value: unknown): string[] {
+  return Array.isArray(value) ? value.map(choiceText).filter(Boolean) : [];
 }
