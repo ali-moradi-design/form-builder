@@ -73,6 +73,18 @@ It loads the live version from `GET /api/forms/<slug>`, validates in the
 browser, posts to the responses API (validated again on the server) and
 uploads files to the upload API.
 
+### Styling, theme and values
+
+- `className` adds classes to the `<form>`; the `fw-form` class the
+  stylesheet needs always stays.
+- `theme="light" | "dark" | "system"` picks the colours. Without it the form
+  follows an ancestor's `data-theme` (for example `<html data-theme="dark">`)
+  and otherwise the operating system. Override any `--fw-*` variable to
+  match your app.
+- Choice values are text. A number or `true`/`false` in `defaultValues`
+  selects the option with the same text (`2` selects `"2"`), and submitted
+  data holds the text.
+
 ## Upload files
 
 File, photo and signature fields hold references to stored files. Upload

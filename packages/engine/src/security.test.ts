@@ -91,3 +91,24 @@ describe("hostile documents and values", () => {
     expect(({} as Record<string, unknown>).polluted).toBeUndefined();
   });
 });
+
+describe("choice values", () => {
+  it("accepts numbers and booleans as their option text", () => {
+    const f = form([
+      {
+        type: "select",
+        key: "c",
+        settings: {
+          options: [
+            { value: "2", label: "Two" },
+            { value: "true", label: "Yes" },
+          ],
+        },
+      },
+    ]);
+    expect(validate(f, { c: 2 })).toEqual({ success: true, data: { c: "2" } });
+    expect(validate(f, { c: true })).toEqual({ success: true, data: { c: "true" } });
+    expect(validate(f, { c: 3 }).success).toBe(false);
+    expect(validate(f, { c: { toString: "2" } }).success).toBe(false);
+  });
+});

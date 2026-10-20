@@ -2,7 +2,7 @@ import type { ChoiceOption } from "@formweave/engine/fields";
 import { resolveText } from "@formweave/engine/i18n";
 import type { ReactNode, Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
-import { useChoiceOptions } from "./options.js";
+import { choiceList, choiceText, useChoiceOptions } from "./options.js";
 import { controlProps, FieldShell } from "./shell.js";
 
 const optionLabel = (o: ChoiceOption, p: FieldRendererProps): string =>
@@ -17,6 +17,7 @@ export const selectRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("selec
 
 function Select(p: FieldRendererProps): ReactNode {
   const { options, loading } = useChoiceOptions(p);
+  const value = choiceText(p.value);
   return (
     <FieldShell props={p}>
       <select
@@ -24,12 +25,13 @@ function Select(p: FieldRendererProps): ReactNode {
         ref={p.inputRef as Ref<HTMLSelectElement>}
         className="fw-input fw-select"
         aria-busy={loading}
-        value={typeof p.value === "string" ? p.value : ""}
+        value={value}
         onChange={(e) => {
           p.onChange(e.target.value || undefined);
         }}
       >
-        <option value="">{p.placeholder}</option>
+        {/* The empty choice only while it is a valid answer or nothing is chosen. */}
+        {(!p.state.required || !value) && <option value="">{p.placeholder}</option>}
         {options.map((o) => (
           <option key={o.value} value={o.value}>
             {optionLabel(o, p)}
@@ -43,8 +45,8 @@ function Select(p: FieldRendererProps): ReactNode {
 function Choices(p: FieldRendererProps & { multiple: boolean }): ReactNode {
   const { options } = useChoiceOptions(p);
   const selected = p.multiple
-    ? new Set(Array.isArray(p.value) ? (p.value as string[]) : [])
-    : new Set(typeof p.value === "string" ? [p.value] : []);
+    ? new Set(choiceList(p.value))
+    : new Set([choiceText(p.value)].filter(Boolean));
   return (
     <FieldShell props={p} asFieldset>
       <div className="fw-choices" role={p.multiple ? "group" : "radiogroup"}>
