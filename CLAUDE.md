@@ -15,7 +15,7 @@ decisions are in `docs/brief.md`; read it before starting new work.
 
 ## Commands
 
-Node 24, pnpm 10. From the repo root: `pnpm install`, `pnpm build`,
+Node 24, pnpm 12. From the repo root: `pnpm install`, `pnpm build`,
 `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm check:package`, `pnpm size`,
 `pnpm format`. CI runs all of them (`.github/workflows/ci.yml`). Add a
 changeset (`pnpm changeset`) for changes to published packages.

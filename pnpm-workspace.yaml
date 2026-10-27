@@ -4,6 +4,11 @@ packages:
 
 # Patched versions of transitive dependencies with security advisories
 # (see docs/security.md). Remove an entry once its parent ships the fix.
+allowBuilds:
+  "@parcel/watcher": false
+  "@swc/core": false
+  esbuild: false
+
 overrides:
   dompurify: ">=3.4.16"
   uuid: ">=11.1.1"
