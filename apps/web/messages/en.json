@@ -136,7 +136,7 @@
     "defaultCountry": "Default country code",
     "defaultCountryHelp": "Digits only, for example 98 or 44. Numbers typed with a leading 0 get it.",
     "fromUrl": "Fill from URL parameter",
-    "fromUrlHelp": "For example utm_source: /f/<slug>?utm_source=newsletter",
+    "fromUrlHelp": "For example utm_source: /f/'<slug>'?utm_source=newsletter",
     "minTime": "Earliest",
     "maxTime": "Latest",
     "text": "Text",
@@ -315,7 +315,7 @@
     },
     "react": {
       "title": "React package",
-      "text": "<Form formId /> in your own app."
+      "text": "'<Form formId />' in your own app."
     },
     "copy": "Copy link",
     "copied": "Copied",

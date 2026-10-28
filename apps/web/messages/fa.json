@@ -136,7 +136,7 @@
     "defaultCountry": "کد پیش‌فرض کشور",
     "defaultCountryHelp": "فقط رقم، مثلاً 98 یا 44. شماره‌هایی که با ۰ شروع شوند این کد را می‌گیرند.",
     "fromUrl": "پر شدن از پارامتر آدرس",
-    "fromUrlHelp": "مثلاً utm_source در ‎/f/<slug>?utm_source=newsletter‎",
+    "fromUrlHelp": "مثلاً utm_source در ‎/f/'<slug>'?utm_source=newsletter‎",
     "minTime": "زودترین",
     "maxTime": "دیرترین",
     "text": "متن",
@@ -315,7 +315,7 @@
     },
     "react": {
       "title": "پکیج ری‌اکت",
-      "text": "‎<Form formId />‎ در اپ خودتان."
+      "text": "‎'<Form formId />'‎ در اپ خودتان."
     },
     "copy": "کپی لینک",
     "copied": "کپی شد",
