@@ -4,6 +4,7 @@ import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
 import { migrate as migratePglite } from "drizzle-orm/pglite/migrator";
 import { drizzle as drizzlePostgres } from "drizzle-orm/postgres-js";
 import { migrate as migratePostgres } from "drizzle-orm/postgres-js/migrator";
+import { mkdirSync } from "node:fs";
 import path from "node:path";
 import postgres from "postgres";
 import * as schema from "./schema";
@@ -30,6 +31,8 @@ export async function openDb(
     await migratePostgres(db, { migrationsFolder });
     return db;
   }
+  // PGlite creates its own folder but not the parents (`.data` on a fresh clone).
+  if (!pgliteDir.includes("://")) mkdirSync(pgliteDir, { recursive: true });
   const client = new PGlite(pgliteDir);
   const db = drizzlePglite(client, { schema });
   await migratePglite(db, { migrationsFolder });
