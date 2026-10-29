@@ -2,7 +2,21 @@
   "name": "@formcanvas/schema",
   "version": "0.0.0",
   "description": "Types and the meta-schema of formcanvas form documents.",
+  "keywords": [
+    "form",
+    "forms",
+    "form-builder",
+    "json-schema",
+    "schema",
+    "zod",
+    "typescript"
+  ],
   "license": "MIT",
+  "author": "Ali Moradi",
+  "homepage": "https://github.com/ali-moradi-design/formcanvas/tree/main/packages/schema#readme",
+  "bugs": {
+    "url": "https://github.com/ali-moradi-design/formcanvas/issues"
+  },
   "type": "module",
   "sideEffects": false,
   "repository": {
@@ -54,5 +68,9 @@
     "zod": {
       "optional": true
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

@@ -115,6 +115,16 @@ export function defineField<S, V>(definition: FieldDefinition<S, V>): FieldDefin
 }
 
 /**
+ * A {@link FieldDefinition} with any settings and value types. Definitions
+ * are invariant in their settings, so this is the type that every
+ * definition, built-in or custom, can be passed as.
+ *
+ * @since 0.7.0
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the only type every definition is assignable to
+export type AnyFieldDefinition = FieldDefinition<any, any>;
+
+/**
  * Field definitions available to {@link compile}, looked up by `type`.
  *
  * @since 0.1.0
@@ -134,8 +144,10 @@ export type FieldRegistry = ReadonlyMap<string, FieldDefinition>;
  * ```
  * @since 0.1.0
  */
-export function createRegistry(definitions: Iterable<FieldDefinition<never>>): FieldRegistry {
+export function createRegistry(
+  definitions: Iterable<AnyFieldDefinition | FieldDefinition<never>>,
+): FieldRegistry {
   const map = new Map<string, FieldDefinition>();
-  for (const d of definitions) map.set(d.type, d as unknown as FieldDefinition);
+  for (const d of definitions) map.set(d.type, d as FieldDefinition);
   return map;
 }
