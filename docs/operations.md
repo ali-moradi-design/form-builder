@@ -1,6 +1,27 @@
 # Operations
 
-How the web app is run on a server. Deployment itself is still to be set up.
+How the web app is run on a server.
+
+## Deployment
+
+Live at https://formcanvas.ali-moradi-develop.com (one VPS, Nginx on the host).
+
+- `next build` makes a standalone server (`output: "standalone"`);
+  `apps/web/scripts/standalone.mjs` adds `public/`, `.next/static` and the
+  migrations (`drizzle/`). The image (`apps/web/Dockerfile`) holds only that
+  folder and runs as `node`.
+- `.github/workflows/docker.yml` runs after CI passed on `main`: it builds
+  `ghcr.io/ali-moradi-design/formcanvas-web:<sha>`, then deploy-kit's
+  `deploy-app.yml` makes the server pull it and restart
+  (`docker compose up --wait`, rolled back when not healthy), and checks a few
+  paths through Nginx.
+- On the server: `/srv/apps/formcanvas/compose.yaml` (from `deploy/`) runs the
+  web container on `127.0.0.1:3112` and its own Postgres (no published port,
+  internal network). Uploaded files live in Postgres, so the database volume
+  is the only state. Secrets are in `.env` next to it (`deploy/.env.example`).
+- Nginx: `deploy/nginx.conf`, with a certificate from certbot.
+- `GET /api/health` answers 200 when the database is reachable and migrated;
+  the container healthcheck uses it.
 
 ## Environment variables
 
@@ -46,7 +67,7 @@ The app has no scheduler of its own. The server calls the route once a
 night, for example from cron (03:17 UTC):
 
 ```cron
-17 3 * * * curl -fsS -X POST -H "Authorization: Bearer $DEMO_RESET_TOKEN" https://formcanvas.ali-moradi-develop.com/api/demo/reset
+17 3 * * * cd /srv/apps/formcanvas && curl -fsS -X POST -H "Authorization: Bearer $(sed -n 's/^DEMO_RESET_TOKEN=//p' .env)" https://formcanvas.ali-moradi-develop.com/api/demo/reset 2>&1 | logger -t formcanvas-reset
 ```
 
 The answer is `{ "reset": true }`, or `{ "reset": false }` when nobody has

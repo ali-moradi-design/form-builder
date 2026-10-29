@@ -1,0 +1,62 @@
+# /srv/apps/formcanvas/compose.yaml: the web app (Next.js standalone server:
+# builder, hosted forms, API) and its own Postgres. Uploaded files are stored
+# in Postgres, so the database volume is the only state.
+# The image is built in CI (.github/workflows/docker.yml) and only pulled here.
+# .env next to this file holds IMAGE_TAG (the commit SHA to run) and the
+# secrets (names in .env.example). deploy-app changes only the IMAGE_TAG line.
+name: formcanvas
+
+services:
+  db:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is not set}
+      POSTGRES_DB: formcanvas
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks: [backend]
+    # no published ports: only the web app reaches the database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d formcanvas"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    security_opt: [no-new-privileges:true]
+    mem_limit: 256m
+    restart: unless-stopped
+
+  web:
+    image: ghcr.io/ali-moradi-design/formcanvas-web:${IMAGE_TAG:?IMAGE_TAG is not set}
+    environment:
+      DATABASE_URL: postgresql://app:${DB_PASSWORD}@db:5432/formcanvas
+      BETTER_AUTH_URL: https://formcanvas.ali-moradi-develop.com
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?BETTER_AUTH_SECRET is not set}
+      # enables POST /api/demo/reset (nightly cron on the server)
+      DEMO_RESET_TOKEN: ${DEMO_RESET_TOKEN:?DEMO_RESET_TOKEN is not set}
+      # PUBLIC_SIGN_UP stays unset: only the demo account can sign in
+    # Nginx on the host proxies to this; Docker bypasses ufw, so loopback only
+    ports:
+      - "127.0.0.1:3112:3000"
+    # backend: the database; frontend: internet for webhooks and option URLs
+    networks: [backend, frontend]
+    depends_on:
+      db:
+        condition: service_healthy
+    # the image's HEALTHCHECK calls /api/health (database reachable, migrated)
+    read_only: true
+    tmpfs:
+      - /tmp
+      # Next.js may write its cache here; uid/gid of the image's node user
+      - "/app/apps/web/.next/cache:uid=1000,gid=1000"
+    security_opt: [no-new-privileges:true]
+    mem_limit: 384m
+    restart: unless-stopped
+
+networks:
+  backend:
+    internal: true # the database has no internet and nothing outside reaches it
+  frontend: {}
+
+volumes:
+  db-data:

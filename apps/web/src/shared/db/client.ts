@@ -39,10 +39,14 @@ export async function openDb(
   return db;
 }
 
-const globalDb = globalThis as unknown as { formcanvasDb?: Promise<Db> };
+const globalDb = globalThis as unknown as { formcanvasDb?: Promise<Db> | undefined };
 
 /** The app's shared database (one per server process, kept across hot reloads). */
 export function getDb(): Promise<Db> {
-  globalDb.formcanvasDb ??= openDb();
+  // A failed start (database not reachable yet) is not kept: the next call tries again.
+  globalDb.formcanvasDb ??= openDb().catch((error: unknown) => {
+    globalDb.formcanvasDb = undefined;
+    throw error;
+  });
   return globalDb.formcanvasDb;
 }
