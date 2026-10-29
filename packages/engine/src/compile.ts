@@ -1,4 +1,4 @@
-import type { Expression, FieldNode, FormDocument } from "@formweave/schema";
+import type { Expression, FieldNode, FormDocument } from "@formcanvas/schema";
 import { readsFields } from "./expr.js";
 import type { FieldDefinition, FieldRegistry } from "./registry.js";
 
@@ -114,7 +114,7 @@ export interface CompileOptions {
  * dependency graph used by {@link evaluate}.
  *
  * The document's shape is trusted here. Check untrusted input first with
- * `parseFormDocument` from `@formweave/schema/meta`.
+ * `parseFormDocument` from `@formcanvas/schema/meta`.
  *
  * @param document - A form document.
  * @param options - See {@link CompileOptions}.

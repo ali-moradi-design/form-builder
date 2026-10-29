@@ -1,6 +1,6 @@
 "use client";
 
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import { Braces, FilePlus2, LayoutTemplate } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";

@@ -1,7 +1,7 @@
 {
-  "name": "@formweave/engine",
+  "name": "@formcanvas/engine",
   "version": "0.0.0",
-  "description": "Framework-free formweave engine: compile, evaluate, validate.",
+  "description": "Framework-free formcanvas engine: compile, evaluate, validate.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -53,7 +53,7 @@
     "bench": "vitest bench --run"
   },
   "dependencies": {
-    "@formweave/schema": "workspace:^"
+    "@formcanvas/schema": "workspace:^"
   },
   "devDependencies": {
     "fast-check": "4.10.2",

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="formweave"><g transform="translate(0 0) scale(1)">
-  <rect width="64" height="64" rx="16" fill="#5f0f40"/>
-  <path d="M22 50.5 V27 Q22 18.5 30.5 18.5 H47.5" fill="none" stroke-linecap="round" stroke="#fb8b24" stroke-width="9.5"/>
-  <path d="M13.5 35 H39" fill="none" stroke-linecap="round" stroke="#5f0f40" stroke-width="16"/>
-  <path d="M13.5 35 H39" fill="none" stroke-linecap="round" stroke="#fff4e8" stroke-width="9.5"/>
-  <circle cx="45.5" cy="47" r="5" fill="#e36414"/>
-</g></svg>

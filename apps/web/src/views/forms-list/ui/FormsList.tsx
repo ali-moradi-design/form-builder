@@ -1,7 +1,7 @@
 "use client";
 
-import { resolveText } from "@formweave/engine/i18n";
-import type { FormDocument } from "@formweave/schema";
+import { resolveText } from "@formcanvas/engine/i18n";
+import type { FormDocument } from "@formcanvas/schema";
 import { FileText } from "lucide-react";
 import { useFormatter, useLocale, useNow, useTranslations } from "next-intl";
 import Link from "next/link";

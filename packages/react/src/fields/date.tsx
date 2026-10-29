@@ -1,4 +1,4 @@
-import type { DateSettings } from "@formweave/engine/fields";
+import type { DateSettings } from "@formcanvas/engine/fields";
 import type { Ref } from "react";
 import { defineRenderer, type FieldRenderer } from "../renderers.js";
 import { controlProps, FieldShell } from "./shell.js";
@@ -16,7 +16,7 @@ export const dateRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("date", 
       <input
         {...controlProps(p)}
         ref={p.inputRef as Ref<HTMLInputElement>}
-        className="fw-input"
+        className="fc-input"
         type="date"
         min={settings.min}
         max={settings.max}

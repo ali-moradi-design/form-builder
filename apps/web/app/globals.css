@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "@formweave/react/styles.css";
+@import "@formcanvas/react/styles.css";
 
 /* Tokens from docs/mockups (with the contrast fixes in docs/decisions.md). */
 :root {
@@ -39,18 +39,18 @@
     --accent-text: #fb8b24;
     --chart: #1aa3c2;
   }
-  .fw-form {
-    --fw-text: #eaf0f0;
-    --fw-muted: #a2afb1;
-    --fw-faint: #93a2a5;
-    --fw-surface: #151e20;
-    --fw-surface-2: #1b2628;
-    --fw-line: #314246;
-    --fw-primary: #13617a;
-    --fw-primary-soft: #16343b;
-    --fw-danger: #e2566b;
-    --fw-danger-soft: #3a1820;
-    --fw-accent-text: #fb8b24;
+  .fc-form {
+    --fc-text: #eaf0f0;
+    --fc-muted: #a2afb1;
+    --fc-faint: #93a2a5;
+    --fc-surface: #151e20;
+    --fc-surface-2: #1b2628;
+    --fc-line: #314246;
+    --fc-primary: #13617a;
+    --fc-primary-soft: #16343b;
+    --fc-danger: #e2566b;
+    --fc-danger-soft: #3a1820;
+    --fc-accent-text: #fb8b24;
   }
 }
 

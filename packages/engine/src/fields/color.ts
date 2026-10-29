@@ -5,7 +5,7 @@ const HEX = /^#[0-9a-f]{6}$/;
 const hex = /*#__PURE__*/ z.string("invalidType").check(z.regex(HEX, "invalidColor"));
 
 /**
- * Colours offered when a field has no `swatches`: the formweave palette and
+ * Colours offered when a field has no `swatches`: the formcanvas palette and
  * a few neutrals.
  *
  * @since 0.6.0

@@ -37,7 +37,7 @@ test("embeds a published form on another page with one script tag", async ({ pag
     route.fulfill({
       contentType: "text/html",
       body: `<!doctype html><title>Shop</title><h1>Shop</h1>${code}<p id="after">After</p>
-        <script>document.addEventListener("formweave:submitted", () => { document.title = "sent"; });</script>`,
+        <script>document.addEventListener("formcanvas:submitted", () => { document.title = "sent"; });</script>`,
     }),
   );
   await site.goto("/__shop", { waitUntil: "domcontentloaded" });

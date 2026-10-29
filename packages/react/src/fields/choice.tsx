@@ -1,5 +1,5 @@
-import type { ChoiceOption } from "@formweave/engine/fields";
-import { resolveText } from "@formweave/engine/i18n";
+import type { ChoiceOption } from "@formcanvas/engine/fields";
+import { resolveText } from "@formcanvas/engine/i18n";
 import type { ReactNode, Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
 import { choiceList, choiceText, useChoiceOptions } from "./options.js";
@@ -23,7 +23,7 @@ function Select(p: FieldRendererProps): ReactNode {
       <select
         {...controlProps(p)}
         ref={p.inputRef as Ref<HTMLSelectElement>}
-        className="fw-input fw-select"
+        className="fc-input fc-select"
         aria-busy={loading}
         value={value}
         onChange={(e) => {
@@ -49,11 +49,11 @@ function Choices(p: FieldRendererProps & { multiple: boolean }): ReactNode {
     : new Set([choiceText(p.value)].filter(Boolean));
   return (
     <FieldShell props={p} asFieldset>
-      <div className="fw-choices" role={p.multiple ? "group" : "radiogroup"}>
+      <div className="fc-choices" role={p.multiple ? "group" : "radiogroup"}>
         {options.map((o, i) => {
           const id = `${p.id}-${String(i)}`;
           return (
-            <label key={o.value} className="fw-choice" htmlFor={id}>
+            <label key={o.value} className="fc-choice" htmlFor={id}>
               <input
                 id={id}
                 ref={i === 0 ? (p.inputRef as Ref<HTMLInputElement>) : undefined}

@@ -1,6 +1,6 @@
 "use client";
 
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import {
   createContext,
   useContext,

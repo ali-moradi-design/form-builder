@@ -1,6 +1,6 @@
 "use client";
 
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import {
   Check,
   Code,
@@ -50,7 +50,7 @@ export function PublishControls({
     : mode === "embed"
       ? `<script src="${origin}/embed.js" data-form="${live.slug}" async></script>`
       : mode === "react"
-        ? `npm install @formweave/react\n\nimport { Form } from "@formweave/react/remote";\nimport "@formweave/react/styles.css";\n\n<Form formId="${live.slug}" endpoint="${origin}" />`
+        ? `npm install @formcanvas/react\n\nimport { Form } from "@formcanvas/react/remote";\nimport "@formcanvas/react/styles.css";\n\n<Form formId="${live.slug}" endpoint="${origin}" />`
         : url;
 
   return (

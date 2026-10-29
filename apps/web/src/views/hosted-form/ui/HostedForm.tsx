@@ -1,12 +1,12 @@
 "use client";
 
-import { isRtl, resolveText } from "@formweave/engine/i18n";
-import { Form, type Values } from "@formweave/react";
-import type { FormDocument, Locale } from "@formweave/schema";
+import { isRtl, resolveText } from "@formcanvas/engine/i18n";
+import { Form, type Values } from "@formcanvas/react";
+import type { FormDocument, Locale } from "@formcanvas/schema";
 import { CircleCheck, Heart, Languages, TriangleAlert } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { registry, renderers, uploadTo } from "@/shared/formweave";
+import { registry, renderers, uploadTo } from "@/shared/formcanvas";
 import { cn } from "@/shared/lib";
 import { Button, LogoMark } from "@/shared/ui";
 
@@ -54,7 +54,7 @@ export function HostedForm({
     if (!embed || !el || window.parent === window) return;
     const post = () => {
       window.parent.postMessage(
-        { type: "formweave:height", slug, height: el.getBoundingClientRect().height },
+        { type: "formcanvas:height", slug, height: el.getBoundingClientRect().height },
         "*",
       );
     };
@@ -67,7 +67,7 @@ export function HostedForm({
   }, [embed, slug]);
   useEffect(() => {
     if (embed && done && window.parent !== window)
-      window.parent.postMessage({ type: "formweave:submitted", slug }, "*");
+      window.parent.postMessage({ type: "formcanvas:submitted", slug }, "*");
   }, [embed, done, slug]);
 
   return (
@@ -142,7 +142,7 @@ export function HostedForm({
               locale={locale}
               layout="focus"
               defaultValues={defaultValues}
-              className="fw-form fw-hosted"
+              className="fc-form fc-hosted"
               upload={upload}
               onSubmit={async (values) => {
                 setFailed(false);

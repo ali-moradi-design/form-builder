@@ -136,7 +136,7 @@ export function WebhookList({ formId, hooks }: { formId: string; hooks: readonly
             type="url"
             required
             value={url}
-            placeholder="https://example.com/hooks/formweave"
+            placeholder="https://example.com/hooks/formcanvas"
             onChange={(e) => {
               setUrl(e.target.value);
             }}

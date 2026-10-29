@@ -1,4 +1,4 @@
-import type { LocalizedText } from "@formweave/schema";
+import type { LocalizedText } from "@formcanvas/schema";
 import * as z from "zod/mini";
 
 // Issue codes are used as Zod messages; the renderer maps them to text.

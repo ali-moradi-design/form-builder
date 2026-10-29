@@ -1,7 +1,7 @@
-import { resolveText } from "@formweave/engine/i18n";
+import { resolveText } from "@formcanvas/engine/i18n";
 import type { Metadata } from "next";
 import { getLocale } from "next-intl/server";
-import type { FieldNode } from "@formweave/schema";
+import type { FieldNode } from "@formcanvas/schema";
 import { notFound } from "next/navigation";
 import { submitResponse } from "@/entities/response";
 import { isDemoForm } from "@/features/session";

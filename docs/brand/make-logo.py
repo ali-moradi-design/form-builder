@@ -19,21 +19,23 @@ def word(text, size, x0, baseline, tracking=-0.02):
     return " ".join(d), x - tracking * size
 
 BG, A, O, C = "#5f0f40", "#fb8b24", "#e36414", "#fff4e8"
+# Pointer drawn at the origin; the plum outline separates it from the "F".
+ARROW = "M0 0 L0 19 L4.6 14.6 L8.2 22.4 L12 20.6 L8.4 13 L14.6 13 Z"
+
 def mark(tx=0, ty=0, scale=1):
-    r = 'fill="none" stroke-linecap="round"'
     return f'''<g transform="translate({tx} {ty}) scale({scale})">
   <rect width="64" height="64" rx="16" fill="{BG}"/>
-  <path d="M22 50.5 V27 Q22 18.5 30.5 18.5 H47.5" {r} stroke="{A}" stroke-width="9.5"/>
-  <path d="M13.5 35 H39" {r} stroke="{BG}" stroke-width="16"/>
-  <path d="M13.5 35 H39" {r} stroke="{C}" stroke-width="9.5"/>
-  <circle cx="45.5" cy="47" r="5" fill="{O}"/>
+  <rect x="13" y="13" width="34" height="9.5" rx="4.75" fill="{A}"/>
+  <rect x="13" y="13" width="9.5" height="38" rx="4.75" fill="{A}"/>
+  <rect x="13" y="28.5" width="25" height="9.5" rx="4.75" fill="{C}"/>
+  <path transform="translate(39.5 38) scale(0.92)" d="{ARROW}" fill="{O}" stroke="{BG}" stroke-width="3.2" stroke-linejoin="round" paint-order="stroke"/>
 </g>'''
 
-open(f"{out}/formweave-mark.svg", "w").write(
-    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="formweave">{mark()}</svg>\n')
-d, w = word("formweave", 38, 78, 45, tracking=-0.005)
+open(f"{out}/formcanvas-mark.svg", "w").write(
+    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="formcanvas">{mark()}</svg>\n')
+d, w = word("formcanvas", 38, 78, 45, tracking=-0.005)
 W = int(w + 4)
-for name, ink in (("formweave-logo", "#141a1c"), ("formweave-logo-dark", "#f4f1ec")):
+for name, ink in (("formcanvas-logo", "#141a1c"), ("formcanvas-logo-dark", "#f4f1ec")):
     open(f"{out}/{name}.svg", "w").write(
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} 64" role="img" aria-label="formweave">{mark()}<path d="{d}" fill="{ink}"/></svg>\n')
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} 64" role="img" aria-label="formcanvas">{mark()}<path d="{d}" fill="{ink}"/></svg>\n')
 print("width", W)

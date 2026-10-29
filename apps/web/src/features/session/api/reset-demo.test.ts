@@ -1,5 +1,5 @@
-import { compile, createRegistry, validate } from "@formweave/engine";
-import { allFields } from "@formweave/engine/fields/all";
+import { compile, createRegistry, validate } from "@formcanvas/engine";
+import { allFields } from "@formcanvas/engine/fields/all";
 import { beforeAll, describe, expect, it } from "vitest";
 import { feedbackTemplate } from "@/shared/config";
 import { createForm, listForms, openDb, tables, type Db } from "@/shared/db";

@@ -20,7 +20,7 @@ test("opens the demo account with a sample form, and signs out", async ({ page }
   await page.goto("/sign-in");
   await page.getByRole("button", { name: "Try the demo account" }).click();
   await page.waitForURL(/\/forms$/);
-  await expect(page.getByText("demo@formweave.dev")).toBeVisible();
+  await expect(page.getByText("demo@formcanvas.dev")).toBeVisible();
   await expect(page.getByRole("link", { name: /Product feedback/ }).first()).toBeVisible();
   await page.getByRole("button", { name: "Sign out" }).click();
   await page.waitForURL(/\/sign-in$/);

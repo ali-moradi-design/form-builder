@@ -1,4 +1,4 @@
-import type { Locale } from "@formweave/schema";
+import type { Locale } from "@formcanvas/schema";
 import { formatNumber, type DigitStyle } from "./i18n.js";
 import type { ValidationIssue } from "./validate.js";
 

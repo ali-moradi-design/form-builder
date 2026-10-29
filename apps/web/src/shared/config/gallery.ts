@@ -1,4 +1,4 @@
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import {
   BriefcaseBusiness,
   Building2,

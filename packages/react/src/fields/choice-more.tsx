@@ -3,8 +3,8 @@ import type {
   ImageChoiceSettings,
   MatrixSettings,
   TagsSettings,
-} from "@formweave/engine/fields";
-import { formatNumber, normalizeDigits, resolveText } from "@formweave/engine/i18n";
+} from "@formcanvas/engine/fields";
+import { formatNumber, normalizeDigits, resolveText } from "@formcanvas/engine/i18n";
 import { useId, useState, type KeyboardEvent, type ReactNode, type Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
 import { choiceList, choiceText, useChoiceOptions } from "./options.js";
@@ -86,14 +86,14 @@ function Combo(p: FieldRendererProps & { multiple: boolean }): ReactNode {
   const optionId = (i: number) => `${listId}-${String(i)}`;
   return (
     <FieldShell props={p}>
-      <div className="fw-combo">
+      <div className="fc-combo">
         {p.multiple && chosen.length > 0 && (
-          <div className="fw-tags">
+          <div className="fc-tags">
             {chosen.map((v) => {
               const o = all.find((x) => x.value === v);
               const label = o ? labelOf(o, p) : v;
               return (
-                <span key={v} className="fw-tag">
+                <span key={v} className="fc-tag">
                   {label}
                   <button
                     type="button"
@@ -113,7 +113,7 @@ function Combo(p: FieldRendererProps & { multiple: boolean }): ReactNode {
         <input
           {...controlProps(p)}
           ref={p.inputRef as Ref<HTMLInputElement>}
-          className="fw-input"
+          className="fc-input"
           role="combobox"
           aria-expanded={open}
           aria-controls={listId}
@@ -138,7 +138,7 @@ function Combo(p: FieldRendererProps & { multiple: boolean }): ReactNode {
           onKeyDown={onKey}
         />
         {open && (
-          <div className="fw-listbox" id={listId} role="listbox" aria-multiselectable={p.multiple}>
+          <div className="fc-listbox" id={listId} role="listbox" aria-multiselectable={p.multiple}>
             {shown.map((o, i) => (
               <div
                 key={o.value}
@@ -155,7 +155,7 @@ function Combo(p: FieldRendererProps & { multiple: boolean }): ReactNode {
                 {labelOf(o, p)}
               </div>
             ))}
-            <p className="fw-help" aria-live="polite">
+            <p className="fc-help" aria-live="polite">
               {shown.length === 0
                 ? w.none
                 : w.found
@@ -205,9 +205,9 @@ function Tags(p: FieldRendererProps): ReactNode {
   };
   return (
     <FieldShell props={p}>
-      <div className="fw-tags fw-input">
+      <div className="fc-tags fc-input">
         {chosen.map((t) => (
-          <span key={t} className="fw-tag">
+          <span key={t} className="fc-tag">
             {t}
             <button
               type="button"
@@ -281,19 +281,19 @@ function Ranking(p: FieldRendererProps): ReactNode {
   };
   return (
     <FieldShell props={p} asFieldset>
-      <ol className="fw-rank">
+      <ol className="fc-rank">
         {order.map((v, i) => {
           const o = all.find((x) => x.value === v);
           const label = o ? labelOf(o, p) : v;
           return (
             <li key={v}>
-              <span className="fw-row-n" aria-hidden>
+              <span className="fc-row-n" aria-hidden>
                 {formatNumber(i + 1, p.locale)}
               </span>
-              <span className="fw-rank-label">{label}</span>
+              <span className="fc-rank-label">{label}</span>
               <button
                 type="button"
-                className="fw-row-tool"
+                className="fc-row-tool"
                 ref={i === 0 ? (p.inputRef as Ref<HTMLButtonElement>) : undefined}
                 aria-label={`${w.up}: ${label}`}
                 disabled={p.state.disabled || i === 0}
@@ -305,7 +305,7 @@ function Ranking(p: FieldRendererProps): ReactNode {
               </button>
               <button
                 type="button"
-                className="fw-row-tool"
+                className="fc-row-tool"
                 aria-label={`${w.down}: ${label}`}
                 disabled={p.state.disabled || i === order.length - 1}
                 onClick={() => {
@@ -321,7 +321,7 @@ function Ranking(p: FieldRendererProps): ReactNode {
       {saved.length !== all.length && (
         <button
           type="button"
-          className="fw-button"
+          className="fc-button"
           disabled={p.state.disabled}
           onClick={() => {
             p.onChange(order);
@@ -348,14 +348,14 @@ function ImageChoice(p: FieldRendererProps): ReactNode {
   const chosen = multiple ? choiceList(p.value) : [choiceText(p.value)].filter(Boolean);
   return (
     <FieldShell props={p} asFieldset>
-      <div className="fw-pictures" role={multiple ? "group" : "radiogroup"}>
+      <div className="fc-pictures" role={multiple ? "group" : "radiogroup"}>
         {settings.options.map((o, i) => {
           const label = resolveText(o.label, p.locale, p.fallbackLocale) || o.value;
           const alt = resolveText(o.alt, p.locale, p.fallbackLocale);
           return (
-            <label key={o.value} className="fw-picture">
+            <label key={o.value} className="fc-picture">
               <img src={o.image} alt={alt} loading="lazy" />
-              <span className="fw-choice">
+              <span className="fc-choice">
                 <input
                   ref={i === 0 ? (p.inputRef as Ref<HTMLInputElement>) : undefined}
                   type={multiple ? "checkbox" : "radio"}
@@ -399,8 +399,8 @@ function Matrix(p: FieldRendererProps): ReactNode {
   const col = (c: ChoiceOption) => resolveText(c.label, p.locale, p.fallbackLocale) || c.value;
   return (
     <FieldShell props={p} asFieldset>
-      <div className="fw-matrix-wrap">
-        <table className="fw-matrix">
+      <div className="fc-matrix-wrap">
+        <table className="fc-matrix">
           <thead>
             <tr>
               <td />

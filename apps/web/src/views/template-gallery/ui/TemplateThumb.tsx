@@ -1,4 +1,4 @@
-import type { FieldNode, FormDocument } from "@formweave/schema";
+import type { FieldNode, FormDocument } from "@formcanvas/schema";
 
 const CHOICE = new Set(["radio", "checkboxes", "select", "rating", "nps"]);
 const SWATCHES = ["bg-primary", "bg-orange", "bg-amber"];

@@ -1,7 +1,7 @@
 {
-  "name": "@formweave/react",
+  "name": "@formcanvas/react",
   "version": "0.0.0",
-  "description": "React renderer for formweave forms, built on React Hook Form.",
+  "description": "React renderer for formcanvas forms, built on React Hook Form.",
   "license": "MIT",
   "type": "module",
   "sideEffects": [
@@ -40,8 +40,8 @@
     "size": "size-limit"
   },
   "dependencies": {
-    "@formweave/engine": "workspace:^",
-    "@formweave/schema": "workspace:^"
+    "@formcanvas/engine": "workspace:^",
+    "@formcanvas/schema": "workspace:^"
   },
   "peerDependencies": {
     "react": "^19.0.0",

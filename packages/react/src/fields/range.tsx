@@ -1,5 +1,5 @@
-import type { DateSettings, SliderSettings } from "@formweave/engine/fields";
-import { formatNumber } from "@formweave/engine/i18n";
+import type { DateSettings, SliderSettings } from "@formcanvas/engine/fields";
+import { formatNumber } from "@formcanvas/engine/i18n";
 import type { ReactNode, Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
 import { controlProps, FieldShell } from "./shell.js";
@@ -45,11 +45,11 @@ export const dateRangeRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("da
   const shared = controlProps(p);
   return (
     <FieldShell props={p}>
-      <div className="fw-slider">
+      <div className="fc-slider">
         <input
           {...shared}
           ref={p.inputRef as Ref<HTMLInputElement>}
-          className="fw-input"
+          className="fc-input"
           type="date"
           aria-label={`${p.label}: ${fromName}`}
           min={min}
@@ -62,7 +62,7 @@ export const dateRangeRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("da
         <input
           {...shared}
           id={`${p.id}-to`}
-          className="fw-input"
+          className="fc-input"
           type="date"
           aria-label={`${p.label}: ${toName}`}
           min={value.from ?? min}
@@ -88,12 +88,12 @@ function RangeSlider(p: FieldRendererProps): ReactNode {
       {ends.map((end, i) => {
         const current = value[end];
         return (
-          <div key={end} className="fw-slider" dir="ltr">
+          <div key={end} className="fc-slider" dir="ltr">
             <input
               {...shared}
               id={i === 0 ? p.id : `${p.id}-to`}
               ref={i === 0 ? (p.inputRef as Ref<HTMLInputElement>) : undefined}
-              className="fw-range"
+              className="fc-range"
               type="range"
               aria-label={`${p.label}: ${names[i] ?? end}`}
               min={min}
@@ -110,7 +110,7 @@ function RangeSlider(p: FieldRendererProps): ReactNode {
                 p.onChange(next);
               }}
             />
-            <output htmlFor={i === 0 ? p.id : `${p.id}-to`} className="fw-slider-value">
+            <output htmlFor={i === 0 ? p.id : `${p.id}-to`} className="fc-slider-value">
               {current === undefined ? "—" : formatNumber(current, p.locale)}
             </output>
           </div>

@@ -417,7 +417,7 @@
     "failed": "Failed",
     "attempt": "try {n}",
     "verifyTitle": "Checking the signature",
-    "verifyText": "Every request has X-Formweave-Event, X-Formweave-Timestamp and X-Formweave-Signature headers. Compute the HMAC of \"timestamp.body\" with your secret and compare:"
+    "verifyText": "Every request has X-Formcanvas-Event, X-Formcanvas-Timestamp and X-Formcanvas-Signature headers. Compute the HMAC of \"timestamp.body\" with your secret and compare:"
   },
   "templates": {
     "title": "Templates",

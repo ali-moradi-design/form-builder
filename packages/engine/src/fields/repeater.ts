@@ -1,4 +1,4 @@
-import type { LocalizedText } from "@formweave/schema";
+import type { LocalizedText } from "@formcanvas/schema";
 import * as z from "zod/mini";
 import { defineField, type FieldDefinition } from "../registry.js";
 

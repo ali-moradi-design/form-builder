@@ -1,6 +1,6 @@
-import { createRegistry } from "@formweave/engine";
-import { allFields } from "@formweave/engine/fields/all";
-import type { FormDocument } from "@formweave/schema";
+import { createRegistry } from "@formcanvas/engine";
+import { allFields } from "@formcanvas/engine/fields/all";
+import type { FormDocument } from "@formcanvas/schema";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -42,11 +42,11 @@ const doc: FormDocument = {
 };
 
 describe("Form in a host app", () => {
-  it("keeps fw-form next to the host's class names (#44)", () => {
+  it("keeps fc-form next to the host's class names (#44)", () => {
     const { container } = render(
       <Form schema={doc} registry={registry} renderers={renderers} className="settings-form" />,
     );
-    expect(container.querySelector("form")?.className).toBe("fw-form settings-form");
+    expect(container.querySelector("form")?.className).toBe("fc-form settings-form");
   });
 
   it("writes the theme prop as data-theme (#45)", () => {

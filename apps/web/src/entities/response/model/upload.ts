@@ -1,6 +1,6 @@
-import { compile, createRegistry, type CompiledField, type CompiledForm } from "@formweave/engine";
-import { acceptsFile, type FileSettings } from "@formweave/engine/fields";
-import { allFields } from "@formweave/engine/fields/all";
+import { compile, createRegistry, type CompiledField, type CompiledForm } from "@formcanvas/engine";
+import { acceptsFile, type FileSettings } from "@formcanvas/engine/fields";
+import { allFields } from "@formcanvas/engine/fields/all";
 import { addUpload, getLiveForm, uploadBytes, type Db, type StoredFile } from "@/shared/db";
 import { createRateLimiter } from "@/shared/lib";
 import { FILE_TYPES } from "./accept";

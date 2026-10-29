@@ -1,5 +1,5 @@
 {
-  "name": "@formweave/playground",
+  "name": "@formcanvas/playground",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,9 +10,9 @@
     "e2e": "playwright test"
   },
   "dependencies": {
-    "@formweave/engine": "workspace:^",
-    "@formweave/react": "workspace:^",
-    "@formweave/schema": "workspace:^",
+    "@formcanvas/engine": "workspace:^",
+    "@formcanvas/react": "workspace:^",
+    "@formcanvas/schema": "workspace:^",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "react-hook-form": "7.90.0",

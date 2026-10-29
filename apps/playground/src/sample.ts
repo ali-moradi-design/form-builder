@@ -1,4 +1,4 @@
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 
 const team = { op: "in", args: [{ var: "plan" }, "team", "enterprise"] } as const;
 

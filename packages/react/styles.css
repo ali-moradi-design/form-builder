@@ -1,34 +1,34 @@
 /*
- * Default look of @formweave/react. Everything sits in the `formweave` cascade
+ * Default look of @formcanvas/react. Everything sits in the `formcanvas` cascade
  * layer, so any style of the host page wins without !important. Change the
- * look by overriding the --fw-* variables. Logical properties only: the same
+ * look by overriding the --fc-* variables. Logical properties only: the same
  * rules work for left-to-right and right-to-left forms.
  */
-@layer formweave {
-  .fw-form {
-    --fw-font: inherit;
-    --fw-text: #141a1c;
-    --fw-muted: #5a6366;
-    --fw-faint: #666f72;
-    --fw-surface: #ffffff;
-    --fw-surface-2: #f3f4f3;
-    --fw-line: #d5d8d5;
-    --fw-primary: #0f4c5c;
-    --fw-primary-text: #ffffff;
-    --fw-primary-soft: #e4eff1;
-    --fw-accent: #e36414;
+@layer formcanvas {
+  .fc-form {
+    --fc-font: inherit;
+    --fc-text: #141a1c;
+    --fc-muted: #5a6366;
+    --fc-faint: #666f72;
+    --fc-surface: #ffffff;
+    --fc-surface-2: #f3f4f3;
+    --fc-line: #d5d8d5;
+    --fc-primary: #0f4c5c;
+    --fc-primary-text: #ffffff;
+    --fc-primary-soft: #e4eff1;
+    --fc-accent: #e36414;
     /* Darker accent for small text, to keep 4.5:1 contrast. */
-    --fw-accent-text: #b9490a;
-    --fw-danger: #9a031e;
-    --fw-danger-soft: #fbe6e9;
-    --fw-radius: 10px;
-    --fw-gap: 20px;
-    --fw-control-height: 42px;
+    --fc-accent-text: #b9490a;
+    --fc-danger: #9a031e;
+    --fc-danger-soft: #fbe6e9;
+    --fc-radius: 10px;
+    --fc-gap: 20px;
+    --fc-control-height: 42px;
 
     display: grid;
-    gap: var(--fw-gap);
-    font-family: var(--fw-font);
-    color: var(--fw-text);
+    gap: var(--fc-gap);
+    font-family: var(--fc-font);
+    color: var(--fc-text);
     font-size: 15px;
     line-height: 1.5;
   }
@@ -37,44 +37,44 @@
    * then an ancestor's data-theme (for example <html data-theme>), then the
    * operating system. data-theme="system" always follows the OS.
    */
-  .fw-form[data-theme="dark"],
-  :where([data-theme="dark"]) .fw-form:where(:not([data-theme])) {
-    --fw-text: #eaf0f0;
-    --fw-muted: #a2afb1;
-    --fw-faint: #93a2a5;
-    --fw-surface: #151e20;
-    --fw-surface-2: #1b2628;
-    --fw-line: #314246;
-    --fw-primary: #13617a;
-    --fw-primary-soft: #16343b;
-    --fw-danger: #e2566b;
-    --fw-danger-soft: #3a1820;
-    --fw-accent-text: #fb8b24;
+  .fc-form[data-theme="dark"],
+  :where([data-theme="dark"]) .fc-form:where(:not([data-theme])) {
+    --fc-text: #eaf0f0;
+    --fc-muted: #a2afb1;
+    --fc-faint: #93a2a5;
+    --fc-surface: #151e20;
+    --fc-surface-2: #1b2628;
+    --fc-line: #314246;
+    --fc-primary: #13617a;
+    --fc-primary-soft: #16343b;
+    --fc-danger: #e2566b;
+    --fc-danger-soft: #3a1820;
+    --fc-accent-text: #fb8b24;
   }
   @media (prefers-color-scheme: dark) {
-    .fw-form[data-theme="system"],
-    .fw-form:where(:not([data-theme])):where(:not([data-theme] *)) {
-      --fw-text: #eaf0f0;
-      --fw-muted: #a2afb1;
-      --fw-faint: #93a2a5;
-      --fw-surface: #151e20;
-      --fw-surface-2: #1b2628;
-      --fw-line: #314246;
-      --fw-primary: #13617a;
-      --fw-primary-soft: #16343b;
-      --fw-danger: #e2566b;
-      --fw-danger-soft: #3a1820;
-      --fw-accent-text: #fb8b24;
+    .fc-form[data-theme="system"],
+    .fc-form:where(:not([data-theme])):where(:not([data-theme] *)) {
+      --fc-text: #eaf0f0;
+      --fc-muted: #a2afb1;
+      --fc-faint: #93a2a5;
+      --fc-surface: #151e20;
+      --fc-surface-2: #1b2628;
+      --fc-line: #314246;
+      --fc-primary: #13617a;
+      --fc-primary-soft: #16343b;
+      --fc-danger: #e2566b;
+      --fc-danger-soft: #3a1820;
+      --fc-accent-text: #fb8b24;
     }
   }
 
-  .fw-fields {
+  .fc-fields {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--fw-gap) 16px;
+    gap: var(--fc-gap) 16px;
   }
-  .fw-field,
-  .fw-group {
+  .fc-field,
+  .fc-group {
     grid-column: 1 / -1;
     min-inline-size: 0;
     margin: 0;
@@ -83,111 +83,111 @@
     display: grid;
     gap: 6px;
   }
-  .fw-field[data-width="half"] {
+  .fc-field[data-width="half"] {
     grid-column: auto / span 1;
   }
   @media (max-width: 560px) {
-    .fw-field[data-width="half"] {
+    .fc-field[data-width="half"] {
       grid-column: 1 / -1;
     }
   }
 
-  .fw-label {
+  .fc-label {
     font-weight: 600;
     font-size: 14px;
     padding: 0;
   }
-  .fw-required {
-    color: var(--fw-danger);
+  .fc-required {
+    color: var(--fc-danger);
     margin-inline-start: 3px;
   }
-  .fw-help {
+  .fc-help {
     margin: 0;
     font-size: 13px;
-    color: var(--fw-faint);
+    color: var(--fc-faint);
   }
-  .fw-error {
+  .fc-error {
     margin: 0;
     font-size: 13px;
-    color: var(--fw-danger);
+    color: var(--fc-danger);
   }
 
-  .fw-input {
+  .fc-input {
     box-sizing: border-box;
     inline-size: 100%;
-    min-block-size: var(--fw-control-height);
+    min-block-size: var(--fc-control-height);
     padding-block: 8px;
     padding-inline: 12px;
-    border: 1px solid var(--fw-line);
-    border-radius: var(--fw-radius);
-    background: var(--fw-surface);
+    border: 1px solid var(--fc-line);
+    border-radius: var(--fc-radius);
+    background: var(--fc-surface);
     color: inherit;
     font: inherit;
   }
-  .fw-textarea {
+  .fc-textarea {
     resize: vertical;
   }
-  .fw-input:focus-visible,
-  .fw-choice input:focus-visible,
-  .fw-switch input:focus-visible,
-  .fw-button:focus-visible {
-    outline: 3px solid var(--fw-primary-soft);
+  .fc-input:focus-visible,
+  .fc-choice input:focus-visible,
+  .fc-switch input:focus-visible,
+  .fc-button:focus-visible {
+    outline: 3px solid var(--fc-primary-soft);
     outline-offset: 1px;
-    border-color: var(--fw-primary);
+    border-color: var(--fc-primary);
   }
-  .fw-field[data-invalid] .fw-input {
-    border-color: var(--fw-danger);
-    box-shadow: 0 0 0 3px var(--fw-danger-soft);
+  .fc-field[data-invalid] .fc-input {
+    border-color: var(--fc-danger);
+    box-shadow: 0 0 0 3px var(--fc-danger-soft);
   }
-  .fw-input:disabled {
-    background: var(--fw-surface-2);
-    color: var(--fw-muted);
+  .fc-input:disabled {
+    background: var(--fc-surface-2);
+    color: var(--fc-muted);
   }
 
-  .fw-choices {
+  .fc-choices {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
   }
-  .fw-choice {
+  .fc-choice {
     display: inline-flex;
     align-items: center;
     gap: 9px;
-    min-block-size: var(--fw-control-height);
+    min-block-size: var(--fc-control-height);
     padding-inline: 12px;
-    border: 1px solid var(--fw-line);
-    border-radius: var(--fw-radius);
-    background: var(--fw-surface);
+    border: 1px solid var(--fc-line);
+    border-radius: var(--fc-radius);
+    background: var(--fc-surface);
     cursor: pointer;
   }
-  .fw-choice:has(input:checked) {
-    border-color: var(--fw-primary);
-    background: var(--fw-primary-soft);
+  .fc-choice:has(input:checked) {
+    border-color: var(--fc-primary);
+    background: var(--fc-primary-soft);
     font-weight: 600;
   }
-  .fw-choice input {
-    accent-color: var(--fw-primary);
+  .fc-choice input {
+    accent-color: var(--fc-primary);
     margin: 0;
   }
 
-  .fw-switch {
+  .fc-switch {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     cursor: pointer;
   }
-  .fw-switch input {
+  .fc-switch input {
     appearance: none;
     inline-size: 38px;
     block-size: 22px;
     margin: 0;
     border-radius: 999px;
-    background: var(--fw-line);
+    background: var(--fc-line);
     position: relative;
     cursor: pointer;
     transition: background 120ms;
   }
-  .fw-switch input::after {
+  .fc-switch input::after {
     content: "";
     position: absolute;
     inset-block-start: 3px;
@@ -198,132 +198,132 @@
     background: #fff;
     transition: inset-inline-start 120ms;
   }
-  .fw-switch input:checked {
-    background: var(--fw-primary);
+  .fc-switch input:checked {
+    background: var(--fc-primary);
   }
-  .fw-switch input:checked::after {
+  .fc-switch input:checked::after {
     inset-inline-start: 19px;
   }
 
-  .fw-group {
+  .fc-group {
     gap: 12px;
     padding-block: 4px;
   }
-  .fw-group-title {
+  .fc-group-title {
     font-weight: 700;
     font-size: 16px;
     padding: 0;
   }
 
-  .fw-steps {
+  .fc-steps {
     display: flex;
     gap: 6px;
     margin: 0;
     padding: 0;
     list-style: none;
     font-size: 13px;
-    color: var(--fw-faint);
+    color: var(--fc-faint);
   }
-  .fw-steps li {
+  .fc-steps li {
     flex: 1;
     padding-block-start: 8px;
-    border-block-start: 4px solid var(--fw-line);
+    border-block-start: 4px solid var(--fc-line);
   }
-  .fw-steps li[data-state="done"] {
-    border-color: var(--fw-primary);
-    color: var(--fw-muted);
+  .fc-steps li[data-state="done"] {
+    border-color: var(--fc-primary);
+    color: var(--fc-muted);
   }
-  .fw-steps li[data-state="current"] {
-    border-color: var(--fw-accent);
-    color: var(--fw-text);
+  .fc-steps li[data-state="current"] {
+    border-color: var(--fc-accent);
+    color: var(--fc-text);
     font-weight: 600;
   }
-  .fw-step-title {
+  .fc-step-title {
     margin: 0;
     font-size: 22px;
   }
-  .fw-step-description {
+  .fc-step-description {
     margin: 0;
-    color: var(--fw-muted);
+    color: var(--fc-muted);
   }
 
-  .fw-actions {
+  .fc-actions {
     display: flex;
     gap: 10px;
     justify-content: space-between;
   }
-  .fw-button {
-    min-block-size: var(--fw-control-height);
+  .fc-button {
+    min-block-size: var(--fc-control-height);
     padding-inline: 20px;
-    border: 1px solid var(--fw-line);
-    border-radius: var(--fw-radius);
-    background: var(--fw-surface);
+    border: 1px solid var(--fc-line);
+    border-radius: var(--fc-radius);
+    background: var(--fc-surface);
     color: inherit;
     font: inherit;
     font-weight: 600;
     cursor: pointer;
   }
-  .fw-button-primary {
+  .fc-button-primary {
     margin-inline-start: auto;
-    border-color: var(--fw-primary);
-    background: var(--fw-primary);
-    color: var(--fw-primary-text);
+    border-color: var(--fc-primary);
+    background: var(--fc-primary);
+    color: var(--fc-primary-text);
   }
 
-  .fw-progress {
+  .fc-progress {
     display: grid;
     gap: 14px;
     justify-items: start;
   }
-  .fw-progress-bar {
+  .fc-progress-bar {
     inline-size: 100%;
     block-size: 4px;
     border-radius: 4px;
-    background: var(--fw-line);
+    background: var(--fc-line);
     overflow: hidden;
   }
-  .fw-progress-bar span {
+  .fc-progress-bar span {
     display: block;
     block-size: 100%;
-    background: var(--fw-accent);
+    background: var(--fc-accent);
     transition: inline-size 200ms;
   }
-  .fw-counter {
+  .fc-counter {
     font-size: 13px;
     font-weight: 600;
-    color: var(--fw-accent-text);
+    color: var(--fc-accent-text);
   }
-  .fw-form[data-layout="focus"] {
-    --fw-gap: 28px;
+  .fc-form[data-layout="focus"] {
+    --fc-gap: 28px;
   }
   /* One question per page: the question always uses the full width. */
-  .fw-form[data-layout="focus"] .fw-fields > .fw-field {
+  .fc-form[data-layout="focus"] .fc-fields > .fc-field {
     grid-column: 1 / -1;
   }
-  .fw-form[data-layout="focus"] .fw-fields > .fw-field > .fw-label {
+  .fc-form[data-layout="focus"] .fc-fields > .fc-field > .fc-label {
     font-size: clamp(22px, 4vw, 34px);
     line-height: 1.35;
     font-weight: 700;
   }
-  .fw-form[data-layout="focus"] .fw-step-title {
+  .fc-form[data-layout="focus"] .fc-step-title {
     font-size: 14px;
-    color: var(--fw-muted);
+    color: var(--fc-muted);
   }
-  .fw-form[data-layout="focus"] .fw-actions {
+  .fc-form[data-layout="focus"] .fc-actions {
     justify-content: flex-start;
   }
-  .fw-form[data-layout="focus"] .fw-button-primary {
+  .fc-form[data-layout="focus"] .fc-button-primary {
     margin-inline-start: 0;
     order: -1;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .fw-form * {
+    .fc-form * {
       transition: none !important;
     }
   }
 
-  .fw-visually-hidden {
+  .fc-visually-hidden {
     position: absolute;
     inline-size: 1px;
     block-size: 1px;
@@ -331,134 +331,134 @@
     clip-path: inset(50%);
     white-space: nowrap;
   }
-  .fw-scale-wrap {
+  .fc-scale-wrap {
     display: inline-grid;
     gap: 6px;
     justify-self: start;
   }
-  .fw-scale {
+  .fc-scale {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
   }
-  .fw-scale-item {
+  .fc-scale-item {
     display: grid;
     place-items: center;
     cursor: pointer;
   }
-  .fw-scale-item:has(input:focus-visible) {
-    outline: 3px solid var(--fw-primary-soft);
-    border-radius: var(--fw-radius);
+  .fc-scale-item:has(input:focus-visible) {
+    outline: 3px solid var(--fc-primary-soft);
+    border-radius: var(--fc-radius);
   }
-  .fw-star {
+  .fc-star {
     inline-size: 32px;
     block-size: 32px;
     fill: none;
-    stroke: var(--fw-faint);
+    stroke: var(--fc-faint);
     stroke-width: 1.5;
     stroke-linejoin: round;
   }
-  .fw-scale-item[data-checked] .fw-star {
+  .fc-scale-item[data-checked] .fc-star {
     fill: #e36414;
     stroke: #e36414;
   }
-  .fw-scale-num {
+  .fc-scale-num {
     display: grid;
     place-items: center;
     inline-size: 44px;
     block-size: 44px;
-    border: 1px solid var(--fw-line);
-    border-radius: var(--fw-radius);
-    background: var(--fw-surface);
+    border: 1px solid var(--fc-line);
+    border-radius: var(--fc-radius);
+    background: var(--fc-surface);
     font-weight: 600;
   }
-  .fw-scale-item[data-checked] .fw-scale-num {
-    border-color: var(--fw-text);
-    background: var(--fw-text);
-    color: var(--fw-surface);
+  .fc-scale-item[data-checked] .fc-scale-num {
+    border-color: var(--fc-text);
+    background: var(--fc-text);
+    color: var(--fc-surface);
   }
-  .fw-scale-ends {
+  .fc-scale-ends {
     display: flex;
     justify-content: space-between;
-    color: var(--fw-faint);
+    color: var(--fc-faint);
     font-size: 13px;
   }
-  .fw-slider {
+  .fc-slider {
     display: flex;
     align-items: center;
     gap: 12px;
   }
-  .fw-range {
+  .fc-range {
     flex: 1;
-    accent-color: var(--fw-primary);
+    accent-color: var(--fc-primary);
   }
-  .fw-slider-value {
+  .fc-slider-value {
     min-inline-size: 3ch;
     font-weight: 600;
   }
-  .fw-static {
+  .fc-static {
     grid-column: 1 / -1;
     margin: 0;
   }
-  .fw-heading {
+  .fc-heading {
     margin: 8px 0 0;
     font-size: 17px;
   }
-  .fw-divider {
+  .fc-divider {
     border: 0;
-    border-block-start: 1px solid var(--fw-line);
+    border-block-start: 1px solid var(--fc-line);
   }
 
-  .fw-mono {
+  .fc-mono {
     font-family: ui-monospace, monospace;
   }
-  .fw-color {
+  .fc-color {
     display: flex;
     gap: 8px;
   }
-  .fw-color-native {
+  .fc-color-native {
     inline-size: 44px;
-    block-size: var(--fw-control-height);
-    border: 1px solid var(--fw-line);
-    border-radius: var(--fw-radius);
+    block-size: var(--fc-control-height);
+    border: 1px solid var(--fc-line);
+    border-radius: var(--fc-radius);
   }
-  .fw-swatches {
+  .fc-swatches {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
   }
-  .fw-swatch {
+  .fc-swatch {
     inline-size: 32px;
     block-size: 32px;
     padding: 0;
-    border: 1px solid var(--fw-line);
+    border: 1px solid var(--fc-line);
     border-radius: 8px;
     cursor: pointer;
   }
-  .fw-swatch[aria-pressed="true"] {
-    outline: 2px solid var(--fw-text);
+  .fc-swatch[aria-pressed="true"] {
+    outline: 2px solid var(--fc-text);
     outline-offset: 2px;
   }
-  .fw-eyedropper {
+  .fc-eyedropper {
     display: grid;
     place-items: center;
-    background: var(--fw-surface);
+    background: var(--fc-surface);
     border-style: dashed;
   }
-  .fw-eyedropper svg {
+  .fc-eyedropper svg {
     inline-size: 16px;
     fill: none;
     stroke: currentColor;
   }
-  .fw-colorset {
+  .fc-colorset {
     display: flex;
     min-block-size: 88px;
     overflow: hidden;
-    border: 1px solid var(--fw-line);
+    border: 1px solid var(--fc-line);
     border-radius: 14px;
   }
-  .fw-colorset-item,
-  .fw-colorset-add {
+  .fc-colorset-item,
+  .fc-colorset-add {
     position: relative;
     display: flex;
     flex: 1;
@@ -466,17 +466,17 @@
     justify-content: flex-end;
     padding: 10px 12px;
   }
-  .fw-colorset-add {
+  .fc-colorset-add {
     align-items: center;
     justify-content: center;
-    color: var(--fw-muted);
-    background: repeating-linear-gradient(135deg, transparent 0 8px, var(--fw-surface-2) 8px 16px);
+    color: var(--fc-muted);
+    background: repeating-linear-gradient(135deg, transparent 0 8px, var(--fc-surface-2) 8px 16px);
     cursor: pointer;
   }
-  .fw-colorset-add:focus-within {
-    outline: 3px solid var(--fw-primary-soft);
+  .fc-colorset-add:focus-within {
+    outline: 3px solid var(--fc-primary-soft);
   }
-  .fw-colorset-remove {
+  .fc-colorset-remove {
     position: absolute;
     top: 8px;
     left: 8px;
@@ -489,32 +489,32 @@
     cursor: pointer;
   }
 
-  .fw-row {
+  .fc-row {
     padding: 12px 16px 16px;
-    border: 1px solid var(--fw-line);
+    border: 1px solid var(--fc-line);
     border-radius: 14px;
-    background: var(--fw-surface);
+    background: var(--fc-surface);
   }
-  .fw-row-head {
+  .fc-row-head {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-block-end: 12px;
   }
-  .fw-row-head b {
+  .fc-row-head b {
     flex: 1;
   }
-  .fw-row-n {
+  .fc-row-n {
     display: grid;
     place-items: center;
     inline-size: 24px;
     block-size: 24px;
     border-radius: 50%;
-    background: var(--fw-primary-soft);
+    background: var(--fc-primary-soft);
     font-size: 12px;
   }
-  .fw-row-tool,
-  .fw-row-add {
+  .fc-row-tool,
+  .fc-row-add {
     border: 0;
     border-radius: 8px;
     background: none;
@@ -522,32 +522,32 @@
     font: inherit;
     cursor: pointer;
   }
-  .fw-row-tool {
+  .fc-row-tool {
     inline-size: 32px;
     block-size: 32px;
   }
-  .fw-row-add {
+  .fc-row-add {
     block-size: 48px;
-    border: 1.5px dashed var(--fw-line);
+    border: 1.5px dashed var(--fc-line);
     border-radius: 14px;
-    color: var(--fw-primary);
+    color: var(--fc-primary);
     font-weight: 600;
   }
-  .fw-row-tool:disabled,
-  .fw-row-add:disabled {
+  .fc-row-tool:disabled,
+  .fc-row-add:disabled {
     opacity: 0.4;
     cursor: default;
   }
-  .fw-calculated {
+  .fc-calculated {
     display: flex;
     align-items: center;
-    background: var(--fw-surface-2);
+    background: var(--fc-surface-2);
     font-weight: 600;
   }
-  .fw-combo {
+  .fc-combo {
     position: relative;
   }
-  .fw-listbox {
+  .fc-listbox {
     position: absolute;
     z-index: 10;
     inset-inline: 0;
@@ -555,36 +555,36 @@
     overflow-y: auto;
     margin-block-start: 4px;
     padding: 4px;
-    border: 1px solid var(--fw-line);
-    border-radius: var(--fw-radius);
-    background: var(--fw-surface);
+    border: 1px solid var(--fc-line);
+    border-radius: var(--fc-radius);
+    background: var(--fc-surface);
     box-shadow: 0 16px 32px -16px rgb(0 0 0 / 0.3);
   }
-  .fw-listbox [role="option"] {
+  .fc-listbox [role="option"] {
     padding: 8px 10px;
     border-radius: 8px;
     cursor: pointer;
   }
-  .fw-listbox [data-active] {
-    background: var(--fw-surface-2);
+  .fc-listbox [data-active] {
+    background: var(--fc-surface-2);
   }
-  .fw-listbox [aria-selected="true"] {
+  .fc-listbox [aria-selected="true"] {
     font-weight: 600;
   }
-  .fw-listbox .fw-help {
+  .fc-listbox .fc-help {
     margin: 0;
     padding: 6px 10px;
   }
-  .fw-tags {
+  .fc-tags {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 6px;
   }
-  .fw-combo .fw-tags {
+  .fc-combo .fc-tags {
     margin-block-end: 6px;
   }
-  .fw-tags input {
+  .fc-tags input {
     flex: 1;
     min-inline-size: 8ch;
     border: 0;
@@ -593,16 +593,16 @@
     font: inherit;
     color: inherit;
   }
-  .fw-tag {
+  .fc-tag {
     display: inline-flex;
     align-items: center;
     gap: 2px;
     padding-inline: 10px 4px;
     border-radius: 8px;
-    background: var(--fw-primary-soft);
+    background: var(--fc-primary-soft);
     font-size: 14px;
   }
-  .fw-tag button {
+  .fc-tag button {
     border: 0;
     background: none;
     color: inherit;
@@ -610,177 +610,177 @@
     cursor: pointer;
     padding-inline: 4px;
   }
-  .fw-rank {
+  .fc-rank {
     display: grid;
     gap: 6px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .fw-rank li {
+  .fc-rank li {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 6px 8px;
-    border: 1px solid var(--fw-line);
-    border-radius: var(--fw-radius);
-    background: var(--fw-surface);
+    border: 1px solid var(--fc-line);
+    border-radius: var(--fc-radius);
+    background: var(--fc-surface);
   }
-  .fw-rank-label {
+  .fc-rank-label {
     flex: 1;
   }
-  .fw-pictures {
+  .fc-pictures {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 10px;
   }
-  .fw-picture {
+  .fc-picture {
     overflow: hidden;
-    border: 1px solid var(--fw-line);
-    border-radius: var(--fw-radius);
+    border: 1px solid var(--fc-line);
+    border-radius: var(--fc-radius);
     cursor: pointer;
   }
-  .fw-picture:has(:checked) {
-    border-color: var(--fw-primary);
-    box-shadow: 0 0 0 3px var(--fw-primary-soft);
+  .fc-picture:has(:checked) {
+    border-color: var(--fc-primary);
+    box-shadow: 0 0 0 3px var(--fc-primary-soft);
   }
-  .fw-picture img {
+  .fc-picture img {
     display: block;
     inline-size: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
   }
-  .fw-picture .fw-choice {
+  .fc-picture .fc-choice {
     border: 0;
   }
-  .fw-matrix-wrap {
+  .fc-matrix-wrap {
     overflow-x: auto;
   }
-  .fw-matrix {
+  .fc-matrix {
     inline-size: 100%;
     border-collapse: collapse;
   }
-  .fw-matrix th,
-  .fw-matrix td {
+  .fc-matrix th,
+  .fc-matrix td {
     padding: 10px 8px;
-    border-block-end: 1px solid var(--fw-line);
+    border-block-end: 1px solid var(--fc-line);
     text-align: center;
   }
-  .fw-matrix thead th {
-    color: var(--fw-muted);
+  .fc-matrix thead th {
+    color: var(--fc-muted);
     font-size: 13px;
     font-weight: 500;
   }
-  .fw-matrix tbody th {
+  .fc-matrix tbody th {
     text-align: start;
     font-weight: 500;
   }
-  .fw-rank + .fw-button {
+  .fc-rank + .fc-button {
     justify-self: start;
   }
-  .fw-matrix input,
-  .fw-picture input {
-    accent-color: var(--fw-primary);
+  .fc-matrix input,
+  .fc-picture input {
+    accent-color: var(--fc-primary);
   }
-  .fw-drop {
+  .fc-drop {
     display: grid;
     justify-items: center;
     gap: 4px;
     padding: 24px 16px;
-    border: 1.5px dashed var(--fw-line);
-    border-radius: var(--fw-radius);
-    background: var(--fw-surface-2);
+    border: 1.5px dashed var(--fc-line);
+    border-radius: var(--fc-radius);
+    background: var(--fc-surface-2);
     text-align: center;
     cursor: pointer;
   }
-  .fw-drop u {
-    color: var(--fw-primary);
+  .fc-drop u {
+    color: var(--fc-primary);
   }
-  .fw-drop[data-over],
-  .fw-drop:focus-within {
-    border-color: var(--fw-primary);
+  .fc-drop[data-over],
+  .fc-drop:focus-within {
+    border-color: var(--fc-primary);
   }
-  .fw-drop[data-disabled] {
+  .fc-drop[data-disabled] {
     opacity: 0.5;
     cursor: default;
   }
-  .fw-files {
+  .fc-files {
     display: grid;
     gap: 6px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .fw-files li {
+  .fc-files li {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 8px 10px;
-    border: 1px solid var(--fw-line);
-    border-radius: var(--fw-radius);
+    border: 1px solid var(--fc-line);
+    border-radius: var(--fc-radius);
   }
-  .fw-file-name {
+  .fc-file-name {
     display: grid;
     flex: 1;
     gap: 2px;
     overflow-wrap: anywhere;
   }
-  .fw-files progress {
+  .fc-files progress {
     inline-size: 100%;
-    accent-color: var(--fw-primary);
+    accent-color: var(--fc-primary);
   }
-  .fw-crop {
+  .fc-crop {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
   }
-  .fw-crop canvas {
-    border-radius: var(--fw-radius);
+  .fc-crop canvas {
+    border-radius: var(--fc-radius);
     touch-action: none;
     cursor: grab;
   }
-  .fw-crop canvas[data-round],
-  .fw-photo[data-round] {
+  .fc-crop canvas[data-round],
+  .fc-photo[data-round] {
     border-radius: 50%;
   }
-  .fw-crop-tools {
+  .fc-crop-tools {
     display: grid;
     flex: 1;
     align-content: start;
     gap: 10px;
     min-inline-size: 200px;
   }
-  .fw-photo {
+  .fc-photo {
     inline-size: 64px;
     block-size: 64px;
     object-fit: cover;
-    border-radius: var(--fw-radius);
+    border-radius: var(--fc-radius);
   }
-  .fw-signature {
+  .fc-signature {
     inline-size: 100%;
     block-size: auto;
-    border: 1px solid var(--fw-line);
-    border-radius: var(--fw-radius);
-    background: var(--fw-surface);
+    border: 1px solid var(--fc-line);
+    border-radius: var(--fc-radius);
+    background: var(--fc-surface);
     touch-action: none;
   }
-  .fw-tags .fw-help {
+  .fc-tags .fc-help {
     flex: 1;
   }
-  label.fw-button {
+  label.fc-button {
     display: inline-flex;
     align-items: center;
   }
-  .fw-address {
+  .fc-address {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 10px;
   }
-  .fw-address-part {
+  .fc-address-part {
     display: grid;
     gap: 4px;
   }
-  .fw-address-part:is([data-part="line1"], [data-part="line2"]) {
+  .fc-address-part:is([data-part="line1"], [data-part="line2"]) {
     grid-column: 1 / -1;
   }
 }

@@ -417,7 +417,7 @@
     "failed": "نرسید",
     "attempt": "تلاش {n}",
     "verifyTitle": "بررسی امضا",
-    "verifyText": "هر درخواست سرآیندهای X-Formweave-Event و X-Formweave-Timestamp و X-Formweave-Signature دارد. HMAC رشتهٔ «timestamp.body» را با کلیدتان حساب و مقایسه کنید:"
+    "verifyText": "هر درخواست سرآیندهای X-Formcanvas-Event و X-Formcanvas-Timestamp و X-Formcanvas-Signature دارد. HMAC رشتهٔ «timestamp.body» را با کلیدتان حساب و مقایسه کنید:"
   },
   "templates": {
     "title": "قالب‌ها",

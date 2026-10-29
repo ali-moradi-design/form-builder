@@ -1,6 +1,6 @@
-import type { CompiledField, FieldState } from "@formweave/engine";
-import type { FileRef } from "@formweave/engine/fields";
-import type { Locale } from "@formweave/schema";
+import type { CompiledField, FieldState } from "@formcanvas/engine";
+import type { FileRef } from "@formcanvas/engine/fields";
+import type { Locale } from "@formcanvas/schema";
 import type { ComponentType, ReactNode, Ref } from "react";
 
 /**

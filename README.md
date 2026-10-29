@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/brand/formweave-logo.svg" alt="formweave" height="56"></p>
+<p align="center"><img src="docs/brand/formcanvas-logo.svg" alt="formcanvas" height="56"></p>
 
 A schema-driven form engine with a visual builder. Forms are saved, served
 through an API, rendered anywhere (hosted link, embed, or the npm package), and
@@ -10,14 +10,14 @@ Work in progress.
 
 A pnpm monorepo:
 
-| Path              | What it is                                                                   |
-| ----------------- | ---------------------------------------------------------------------------- |
-| `packages/schema` | `@formweave/schema`: form document types and their validation (Zod).         |
-| `packages/engine` | `@formweave/engine`: the framework-free form engine (values, rules, checks). |
-| `packages/react`  | `@formweave/react`: React components that render a form.                     |
-| `apps/web`        | The app (Next.js): builder, hosted forms, responses, REST API.               |
-| `apps/playground` | A small Vite app for trying the packages.                                    |
-| `docs/mockups`    | UI mockups (`pnpm render` there).                                            |
+| Path              | What it is                                                                    |
+| ----------------- | ----------------------------------------------------------------------------- |
+| `packages/schema` | `@formcanvas/schema`: form document types and their validation (Zod).         |
+| `packages/engine` | `@formcanvas/engine`: the framework-free form engine (values, rules, checks). |
+| `packages/react`  | `@formcanvas/react`: React components that render a form.                     |
+| `apps/web`        | The app (Next.js): builder, hosted forms, responses, REST API.                |
+| `apps/playground` | A small Vite app for trying the packages.                                     |
+| `docs/mockups`    | UI mockups (`pnpm render` there).                                             |
 
 ## Setup
 
@@ -42,7 +42,7 @@ them.
 ### Run the app
 
 ```bash
-pnpm --filter @formweave/web dev
+pnpm --filter @formcanvas/web dev
 ```
 
 Open http://localhost:3000 and choose "Try the demo account" on the sign-in page. The
@@ -66,7 +66,7 @@ All environment variables are listed in `docs/operations.md`.
 ### Run the playground
 
 ```bash
-pnpm --filter @formweave/playground dev
+pnpm --filter @formcanvas/playground dev
 ```
 
 ## Checks

@@ -1,5 +1,5 @@
 {
-  "name": "formweave-monorepo",
+  "name": "formcanvas-monorepo",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@12.15.0",
@@ -10,7 +10,7 @@
     "build": "turbo run build",
     "typecheck": "turbo run typecheck && tsc -p tsconfig.json",
     "test": "turbo run test",
-    "lint": "eslint . && pnpm --filter @formweave/web lint:fsd",
+    "lint": "eslint . && pnpm --filter @formcanvas/web lint:fsd",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check:package": "turbo run check:package",

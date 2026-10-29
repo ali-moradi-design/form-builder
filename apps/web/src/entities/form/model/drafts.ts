@@ -1,12 +1,12 @@
 "use client";
 
-import type { FormDocument } from "@formweave/schema";
-import { parseFormDocument } from "@formweave/schema/meta";
+import type { FormDocument } from "@formcanvas/schema";
+import { parseFormDocument } from "@formcanvas/schema/meta";
 
 // Before version 0.4, drafts lived in localStorage. These helpers let the
 // forms list offer to import them into the account.
 
-const KEY = "formweave:drafts";
+const KEY = "formcanvas:drafts";
 
 /** Valid drafts left in this browser by version 0.3. */
 export function readLocalDrafts(): FormDocument[] {

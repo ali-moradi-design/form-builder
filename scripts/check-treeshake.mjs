@@ -7,23 +7,23 @@ import { build } from "esbuild";
 const cases = [
   {
     name: "one field type",
-    code: 'import { shortText } from "@formweave/engine/fields"; console.log(shortText);',
+    code: 'import { shortText } from "@formcanvas/engine/fields"; console.log(shortText);',
     mustNotContain: ["checkboxes", "invalidEmail", "tooEarly", "notInteger"],
   },
   {
     name: "schema types only",
-    code: 'import { SCHEMA_VERSION } from "@formweave/schema"; console.log(SCHEMA_VERSION);',
+    code: 'import { SCHEMA_VERSION } from "@formcanvas/schema"; console.log(SCHEMA_VERSION);',
     mustNotContain: ["zod", "Duplicate field key"],
   },
   {
     name: "engine core without fields, messages or i18n",
-    code: 'import { compile, evaluate } from "@formweave/engine"; console.log(compile, evaluate);',
+    code: 'import { compile, evaluate } from "@formcanvas/engine"; console.log(compile, evaluate);',
     mustNotContain: ["invalidEmail", "Intl.NumberFormat", "This field is required."],
   },
   {
     name: "one React renderer",
-    code: 'import { shortTextRenderer } from "@formweave/react/fields"; console.log(shortTextRenderer);',
-    mustNotContain: ["fw-choices", "fw-switch", "normalizeDigits"],
+    code: 'import { shortTextRenderer } from "@formcanvas/react/fields"; console.log(shortTextRenderer);',
+    mustNotContain: ["fc-choices", "fc-switch", "normalizeDigits"],
     resolveDir: "packages/react",
   },
 ];

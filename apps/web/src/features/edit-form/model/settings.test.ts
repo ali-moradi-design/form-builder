@@ -1,4 +1,4 @@
-import type { FieldNode, FormDocument } from "@formweave/schema";
+import type { FieldNode, FormDocument } from "@formcanvas/schema";
 import { describe, expect, it } from "vitest";
 import { dropField, placeForNew } from "./actions";
 import { fieldPatch, fieldSettingsDocument, formPatch, readText } from "./settings";

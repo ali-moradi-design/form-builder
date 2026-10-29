@@ -1,28 +1,30 @@
-/** The formweave mark: two strands weaving an "F", with the input cursor dot. */
+/** The formcanvas mark: an "F" built from two form fields, with the pointer that places them. */
 export function LogoMark({ size = 30 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
       <rect width="64" height="64" rx="16" fill="#5f0f40" />
+      <rect x="13" y="13" width="34" height="9.5" rx="4.75" fill="#fb8b24" />
+      <rect x="13" y="13" width="9.5" height="38" rx="4.75" fill="#fb8b24" />
+      <rect x="13" y="28.5" width="25" height="9.5" rx="4.75" fill="#fff4e8" />
       <path
-        d="M22 50.5 V27 Q22 18.5 30.5 18.5 H47.5"
-        fill="none"
-        stroke="#fb8b24"
-        strokeWidth="9.5"
-        strokeLinecap="round"
+        transform="translate(39.5 38) scale(0.92)"
+        d="M0 0 L0 19 L4.6 14.6 L8.2 22.4 L12 20.6 L8.4 13 L14.6 13 Z"
+        fill="#e36414"
+        stroke="#5f0f40"
+        strokeWidth="3.2"
+        strokeLinejoin="round"
+        paintOrder="stroke"
       />
-      <path d="M13.5 35 H39" fill="none" stroke="#5f0f40" strokeWidth="16" strokeLinecap="round" />
-      <path d="M13.5 35 H39" fill="none" stroke="#fff4e8" strokeWidth="9.5" strokeLinecap="round" />
-      <circle cx="45.5" cy="47" r="5" fill="#e36414" />
     </svg>
   );
 }
 
-/** Mark plus the "formweave" wordmark in Comic Neue. */
+/** Mark plus the "formcanvas" wordmark in Comic Neue. */
 export function Logo() {
   return (
     <span className="inline-flex items-center gap-2.5">
       <LogoMark />
-      <span className="font-wordmark text-lg font-bold">formweave</span>
+      <span className="font-wordmark text-lg font-bold">formcanvas</span>
     </span>
   );
 }

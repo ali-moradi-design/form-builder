@@ -1,5 +1,5 @@
-import type { FormDocument } from "@formweave/schema";
-import { parseFormDocument, type DocumentIssue } from "@formweave/schema/meta";
+import type { FormDocument } from "@formcanvas/schema";
+import { parseFormDocument, type DocumentIssue } from "@formcanvas/schema/meta";
 
 /** Result of reading the JSON editor's text. */
 export type JsonRead =

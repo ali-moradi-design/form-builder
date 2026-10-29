@@ -69,10 +69,10 @@ export async function deliver(
         signal: AbortSignal.timeout(timeoutMs),
         headers: {
           "Content-Type": "application/json",
-          "User-Agent": "formweave-webhooks/1",
-          "X-Formweave-Event": event,
-          "X-Formweave-Timestamp": String(timestamp),
-          "X-Formweave-Signature": sign(target.secret, timestamp, body),
+          "User-Agent": "formcanvas-webhooks/1",
+          "X-Formcanvas-Event": event,
+          "X-Formcanvas-Timestamp": String(timestamp),
+          "X-Formcanvas-Signature": sign(target.secret, timestamp, body),
         },
         body,
       });

@@ -1,4 +1,4 @@
-import type { TimeSettings } from "@formweave/engine/fields";
+import type { TimeSettings } from "@formcanvas/engine/fields";
 import type { Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
 import { controlProps, FieldShell } from "./shell.js";
@@ -10,7 +10,7 @@ const NativeInput = (p: FieldRendererProps & { type: "time" | "datetime-local" }
       <input
         {...controlProps(p)}
         ref={p.inputRef as Ref<HTMLInputElement>}
-        className="fw-input"
+        className="fc-input"
         type={p.type}
         dir="ltr"
         min={min}

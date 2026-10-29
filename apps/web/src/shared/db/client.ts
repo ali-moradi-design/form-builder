@@ -39,10 +39,10 @@ export async function openDb(
   return db;
 }
 
-const globalDb = globalThis as unknown as { formweaveDb?: Promise<Db> };
+const globalDb = globalThis as unknown as { formcanvasDb?: Promise<Db> };
 
 /** The app's shared database (one per server process, kept across hot reloads). */
 export function getDb(): Promise<Db> {
-  globalDb.formweaveDb ??= openDb();
-  return globalDb.formweaveDb;
+  globalDb.formcanvasDb ??= openDb();
+  return globalDb.formcanvasDb;
 }

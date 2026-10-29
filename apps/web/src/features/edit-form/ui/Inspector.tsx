@@ -1,10 +1,10 @@
 "use client";
 
-import { Form, type Values } from "@formweave/react";
-import type { FieldNode, FormDocument, Locale } from "@formweave/schema";
+import { Form, type Values } from "@formcanvas/react";
+import type { FieldNode, FormDocument, Locale } from "@formcanvas/schema";
 import { ArrowDown, ArrowUp, Plus, Trash2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { readsFields } from "@formweave/engine";
+import { readsFields } from "@formcanvas/engine";
 import { useId, useRef, useState } from "react";
 import {
   findField,
@@ -17,7 +17,7 @@ import {
   updateStep,
 } from "@/entities/form";
 import { fieldType } from "@/shared/config";
-import { registry, renderers } from "@/shared/formweave";
+import { registry, renderers } from "@/shared/formcanvas";
 import { Button } from "@/shared/ui";
 import { useBuilder, useBuilderApi } from "../model/context";
 import { FieldLogic, StepLogic } from "./LogicEditor";

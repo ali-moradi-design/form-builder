@@ -1,13 +1,13 @@
 "use client";
 
-import { compile, type CompiledField, type CompiledForm } from "@formweave/engine";
-import { isRtl, resolveText } from "@formweave/engine/i18n";
-import type { FieldNode, FormDocument, Locale } from "@formweave/schema";
+import { compile, type CompiledField, type CompiledForm } from "@formcanvas/engine";
+import { isRtl, resolveText } from "@formcanvas/engine/i18n";
+import type { FieldNode, FormDocument, Locale } from "@formcanvas/schema";
 import { ArrowDown, ArrowUp, Copy, GitBranch, GripVertical, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Fragment, useMemo, type ReactNode } from "react";
 import { addStep, uniqueKey } from "@/entities/form";
-import { registry, renderers } from "@/shared/formweave";
+import { registry, renderers } from "@/shared/formcanvas";
 import { CONTAINER_TYPES } from "@/shared/config";
 import { cn } from "@/shared/lib";
 import { Button } from "@/shared/ui";
@@ -216,7 +216,7 @@ function FieldCard({
     );
   } else {
     body = (
-      <div inert className="fw-form pointer-events-none" data-layout="classic">
+      <div inert className="fc-form pointer-events-none" data-layout="classic">
         <FieldPreview node={node} form={form} locale={locale} />
       </div>
     );

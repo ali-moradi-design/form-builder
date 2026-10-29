@@ -1,4 +1,4 @@
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import { describe, expect, it } from "vitest";
 import { allFields } from "./fields/all.js";
 import { compile, createRegistry, evalExpression, MAX_TEXT_LENGTH, validate } from "./index.js";

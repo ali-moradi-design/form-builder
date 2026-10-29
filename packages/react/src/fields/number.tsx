@@ -1,5 +1,5 @@
-import type { CurrencySettings } from "@formweave/engine/fields";
-import { normalizeDigits } from "@formweave/engine/i18n";
+import type { CurrencySettings } from "@formcanvas/engine/fields";
+import { normalizeDigits } from "@formcanvas/engine/i18n";
 import { useState, type ReactNode, type Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
 import { controlProps, FieldShell } from "./shell.js";
@@ -12,7 +12,7 @@ function NumberInput(p: FieldRendererProps & { readonly unit?: string }): ReactN
     <input
       {...controlProps(p)}
       ref={p.inputRef as Ref<HTMLInputElement>}
-      className="fw-input"
+      className="fc-input"
       type="text"
       inputMode="decimal"
       dir="ltr"
@@ -31,8 +31,8 @@ function NumberInput(p: FieldRendererProps & { readonly unit?: string }): ReactN
       {p.unit === undefined ? (
         input
       ) : (
-        <div className="fw-slider" dir="ltr">
-          <span className="fw-slider-value" aria-hidden>
+        <div className="fc-slider" dir="ltr">
+          <span className="fc-slider-value" aria-hidden>
             {p.unit}
           </span>
           {input}

@@ -1,4 +1,4 @@
-import { isRtl } from "@formweave/engine/i18n";
+import { isRtl } from "@formcanvas/engine/i18n";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
@@ -11,7 +11,7 @@ const vazirmatn = Vazirmatn({ subsets: ["arabic", "latin"], variable: "--font-va
 const comic = Comic_Neue({ subsets: ["latin"], weight: "700", variable: "--font-comic" });
 
 export const metadata: Metadata = {
-  title: "formweave",
+  title: "formcanvas",
   description: "Schema-driven forms with a visual builder.",
   icons: { icon: "/favicon.svg" },
 };

@@ -1,4 +1,4 @@
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import { eq } from "drizzle-orm";
 import { beforeAll, describe, expect, it } from "vitest";
 import { createForm, getUpload, openDb, publishForm, tables, type Db } from "@/shared/db";

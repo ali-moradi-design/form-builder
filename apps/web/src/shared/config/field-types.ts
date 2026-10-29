@@ -1,4 +1,4 @@
-import type { FieldNode } from "@formweave/schema";
+import type { FieldNode } from "@formcanvas/schema";
 import {
   MapPin,
   ImageUp,

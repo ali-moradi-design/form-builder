@@ -1,4 +1,4 @@
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import { describe, expect, it } from "vitest";
 import { formatAnswer, responseColumns } from "./columns";
 

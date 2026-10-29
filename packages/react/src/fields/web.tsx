@@ -1,4 +1,4 @@
-import { normalizePhone, type PhoneSettings } from "@formweave/engine/fields";
+import { normalizePhone, type PhoneSettings } from "@formcanvas/engine/fields";
 import { useState, type ReactNode, type Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
 import { controlProps, FieldShell } from "./shell.js";
@@ -15,7 +15,7 @@ export const urlRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("url", (p
     <input
       {...controlProps(p)}
       ref={p.inputRef as Ref<HTMLInputElement>}
-      className="fw-input"
+      className="fc-input"
       type="url"
       dir="ltr"
       inputMode="url"
@@ -38,7 +38,7 @@ function PhoneInput(p: FieldRendererProps): ReactNode {
       <input
         {...controlProps(p)}
         ref={p.inputRef as Ref<HTMLInputElement>}
-        className="fw-input"
+        className="fc-input"
         type="tel"
         dir="ltr"
         inputMode="tel"

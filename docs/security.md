@@ -48,7 +48,7 @@ anyone can open the demo, and published forms take answers from anyone.
 ## Publishing to npm
 
 - npm account with two-factor authentication for publishing.
-- A granular access token limited to the `@formweave` scope, stored only as
+- A granular access token limited to the `@formcanvas` scope, stored only as
   the `NPM_TOKEN` repository secret.
 - Publish from GitHub Actions with provenance (`npm publish --provenance`),
   never from a laptop.

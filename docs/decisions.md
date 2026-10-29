@@ -57,6 +57,12 @@ Short log of what the user agreed. Newest first.
   `@formweave/schema`, `@formweave/engine` and `@formweave/react` (scope to be
   registered when the npm account exists). Logo files are in `docs/brand`;
   the wordmark uses Comic Neue Bold.
+- 2026-10-29: Renamed to **formcanvas** (`@formcanvas/schema`,
+  `@formcanvas/engine`, `@formcanvas/react`; the npm names and scope were
+  free). New mark: an "F" built from two form fields with a pointer. Same
+  palette and wordmark font. Webhook headers are now `X-Formcanvas-Event`,
+  `X-Formcanvas-Timestamp` and `X-Formcanvas-Signature`; the CSS class and
+  variable prefix is `fc-` (was `fw-`).
 - 2026-10-18: Every app and hosted form shows the credit "Made with ♥ by Ali
   Moradi" (Persian: «ساخته‌شده با ♥ توسط علی مرادی»).
 

@@ -1,5 +1,5 @@
 import * as z from "zod/mini";
-import type { LocalizedText } from "@formweave/schema";
+import type { LocalizedText } from "@formcanvas/schema";
 import { defineField, type FieldDefinition } from "../registry.js";
 
 const localized: z.ZodMiniType<LocalizedText> = /*#__PURE__*/ z.union([

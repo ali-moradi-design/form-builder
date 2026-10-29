@@ -3,8 +3,8 @@ import {
   type FileRef,
   type FileSettings,
   type ImageUploadSettings,
-} from "@formweave/engine/fields";
-import { formatNumber } from "@formweave/engine/i18n";
+} from "@formcanvas/engine/fields";
+import { formatNumber } from "@formcanvas/engine/i18n";
 import {
   useEffect,
   useRef,
@@ -152,7 +152,7 @@ function Files(p: FieldRendererProps): ReactNode {
   if (!p.upload) {
     return (
       <FieldShell props={p}>
-        <p className="fw-help">{w.off}</p>
+        <p className="fc-help">{w.off}</p>
       </FieldShell>
     );
   }
@@ -160,7 +160,7 @@ function Files(p: FieldRendererProps): ReactNode {
   return (
     <FieldShell props={p}>
       <label
-        className="fw-drop"
+        className="fc-drop"
         data-over={over ? "" : undefined}
         data-disabled={full || p.state.disabled ? "" : undefined}
         onDragOver={(e: DragEvent) => {
@@ -179,7 +179,7 @@ function Files(p: FieldRendererProps): ReactNode {
         <input
           id={p.id}
           ref={p.inputRef as Ref<HTMLInputElement>}
-          className="fw-visually-hidden"
+          className="fc-visually-hidden"
           type="file"
           name={p.name}
           multiple={max > 1}
@@ -196,21 +196,21 @@ function Files(p: FieldRendererProps): ReactNode {
         <span>
           {w.drop} <u>{w.choose}</u>
         </span>
-        <span className="fw-help">{hint}</span>
+        <span className="fc-help">{hint}</span>
       </label>
       {(saved.length > 0 || pending.length > 0) && (
-        <ul className="fw-files">
+        <ul className="fc-files">
           {saved.map((f) => (
             <li key={f.id}>
-              <span className="fw-file-name">
+              <span className="fc-file-name">
                 {f.name}
-                <span className="fw-help">
+                <span className="fc-help">
                   {size(f.size, p.locale)} · {w.saved}
                 </span>
               </span>
               <button
                 type="button"
-                className="fw-row-tool"
+                className="fc-row-tool"
                 aria-label={`${w.remove}: ${f.name}`}
                 disabled={p.state.disabled}
                 onClick={() => {
@@ -223,10 +223,10 @@ function Files(p: FieldRendererProps): ReactNode {
           ))}
           {pending.map((f) => (
             <li key={f.key} data-error={f.error ? "" : undefined}>
-              <span className="fw-file-name">
+              <span className="fc-file-name">
                 {f.name}
                 {f.error ? (
-                  <span className="fw-error" role="alert">
+                  <span className="fc-error" role="alert">
                     {f.error}
                   </span>
                 ) : (
@@ -236,7 +236,7 @@ function Files(p: FieldRendererProps): ReactNode {
               {f.error && (
                 <button
                   type="button"
-                  className="fw-row-tool"
+                  className="fc-row-tool"
                   aria-label={`${w.remove}: ${f.name}`}
                   onClick={() => {
                     setPending((x) => x.filter((it) => it.key !== f.key));
@@ -371,16 +371,16 @@ function ImageUpload(p: FieldRendererProps): ReactNode {
   if (!p.upload) {
     return (
       <FieldShell props={p}>
-        <p className="fw-help">{w.off}</p>
+        <p className="fc-help">{w.off}</p>
       </FieldShell>
     );
   }
   const chooser = (label: string) => (
-    <label className="fw-button">
+    <label className="fc-button">
       <input
         id={source ? undefined : p.id}
         ref={source ? undefined : (p.inputRef as Ref<HTMLInputElement>)}
-        className="fw-visually-hidden"
+        className="fc-visually-hidden"
         type="file"
         accept="image/png,image/jpeg,image/webp"
         disabled={p.state.disabled}
@@ -398,7 +398,7 @@ function ImageUpload(p: FieldRendererProps): ReactNode {
   return (
     <FieldShell props={p}>
       {source ? (
-        <div className="fw-crop">
+        <div className="fc-crop">
           <canvas
             ref={canvasRef}
             width={box}
@@ -416,11 +416,11 @@ function ImageUpload(p: FieldRendererProps): ReactNode {
               drag.current = null;
             }}
           />
-          <div className="fw-crop-tools">
-            <label className="fw-slider">
-              <span className="fw-help">{w.zoom}</span>
+          <div className="fc-crop-tools">
+            <label className="fc-slider">
+              <span className="fc-help">{w.zoom}</span>
               <input
-                className="fw-range"
+                className="fc-range"
                 type="range"
                 min={1}
                 max={4}
@@ -431,10 +431,10 @@ function ImageUpload(p: FieldRendererProps): ReactNode {
                 }}
               />
             </label>
-            <div className="fw-tags">
+            <div className="fc-tags">
               <button
                 type="button"
-                className="fw-button"
+                className="fc-button"
                 onClick={() => {
                   setView((v) => ({ ...v, turn: (v.turn + 1) % 4 }));
                 }}
@@ -444,7 +444,7 @@ function ImageUpload(p: FieldRendererProps): ReactNode {
               {chooser(w.anotherPhoto)}
               <button
                 type="button"
-                className="fw-button fw-button-primary"
+                className="fc-button fc-button-primary"
                 disabled={busy}
                 onClick={() => {
                   void save();
@@ -454,22 +454,22 @@ function ImageUpload(p: FieldRendererProps): ReactNode {
               </button>
             </div>
             {failed && (
-              <p className="fw-error" role="alert">
+              <p className="fc-error" role="alert">
                 {w.failed}
               </p>
             )}
           </div>
         </div>
       ) : (
-        <div className="fw-tags">
+        <div className="fc-tags">
           {has && preview && (
-            <img className="fw-photo" src={preview} alt="" data-round={square ? "" : undefined} />
+            <img className="fc-photo" src={preview} alt="" data-round={square ? "" : undefined} />
           )}
           {chooser(has ? w.anotherPhoto : w.chooseOne)}
           {has && (
             <button
               type="button"
-              className="fw-button"
+              className="fc-button"
               onClick={() => {
                 setPreview(null);
                 p.onChange(undefined);
@@ -558,7 +558,7 @@ function Signature(p: FieldRendererProps): ReactNode {
   if (!p.upload) {
     return (
       <FieldShell props={p}>
-        <p className="fw-help">{w.off}</p>
+        <p className="fc-help">{w.off}</p>
       </FieldShell>
     );
   }
@@ -568,7 +568,7 @@ function Signature(p: FieldRendererProps): ReactNode {
         <input
           id={p.id}
           ref={p.inputRef as Ref<HTMLInputElement>}
-          className="fw-input fw-signature-typed"
+          className="fc-input fc-signature-typed"
           aria-describedby={p.describedBy}
           aria-invalid={p.error !== undefined}
           placeholder={w.typed}
@@ -592,7 +592,7 @@ function Signature(p: FieldRendererProps): ReactNode {
       ) : null}
       <canvas
         ref={canvas}
-        className="fw-signature"
+        className="fc-signature"
         width={width}
         height={height}
         role="img"
@@ -621,11 +621,11 @@ function Signature(p: FieldRendererProps): ReactNode {
           later();
         }}
       />
-      <div className="fw-tags">
-        <span className="fw-help">{typing ? "" : w.sign}</span>
+      <div className="fc-tags">
+        <span className="fc-help">{typing ? "" : w.sign}</span>
         <button
           type="button"
-          className="fw-button"
+          className="fc-button"
           ref={typing ? undefined : (p.inputRef as Ref<HTMLButtonElement>)}
           onClick={() => {
             setTyping(!typing);
@@ -638,7 +638,7 @@ function Signature(p: FieldRendererProps): ReactNode {
         </button>
         <button
           type="button"
-          className="fw-button"
+          className="fc-button"
           onClick={() => {
             clearTimeout(timer.current);
             clear();
@@ -650,7 +650,7 @@ function Signature(p: FieldRendererProps): ReactNode {
         </button>
       </div>
       {failed && (
-        <p className="fw-error" role="alert">
+        <p className="fc-error" role="alert">
           {w.failed}
         </p>
       )}

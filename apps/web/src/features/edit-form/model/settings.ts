@@ -1,6 +1,6 @@
-import type { FieldNode, FormDocument, Locale, LocalizedText, Step } from "@formweave/schema";
+import type { FieldNode, FormDocument, Locale, LocalizedText, Step } from "@formcanvas/schema";
 
-// The settings panel is itself a formweave form (dogfooding). These helpers
+// The settings panel is itself a formcanvas form (dogfooding). These helpers
 // build its document from the selected item and turn its values back into a
 // patch. Keys of localized texts are `<prop>_<locale>`, e.g. `label_fa`.
 

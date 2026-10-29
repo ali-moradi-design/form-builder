@@ -69,7 +69,7 @@ describe("webhook delivery", () => {
     expect(result).toMatchObject({ ok: true, status: 200, attempt: 1 });
     const init = fetch.mock.calls[0]?.[1];
     const headers = init?.headers as Record<string, string>;
-    expect(headers["X-Formweave-Signature"]).toBe(sign("s", 5, '{"a":1}'));
+    expect(headers["X-Formcanvas-Signature"]).toBe(sign("s", 5, '{"a":1}'));
   });
 
   it("retries server errors but not client errors", async () => {

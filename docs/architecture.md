@@ -104,11 +104,11 @@ Tree-shaking rules for every package:
   `enum` (string unions and `as const` objects instead).
 - Nothing registers itself. Field types are imported and passed in explicitly:
   ```ts
-  import { createRegistry } from "@formweave/form-engine";
-  import { text, email, rating } from "@formweave/form-engine/fields";
+  import { createRegistry } from "@formcanvas/form-engine";
+  import { text, email, rating } from "@formcanvas/form-engine/fields";
   const registry = createRegistry([text, email, rating]);
   ```
-  A convenience preset (`@formweave/form-engine/fields/all`) exists, but only apps
+  A convenience preset (`@formcanvas/form-engine/fields/all`) exists, but only apps
   that import it pay for it.
 - Subpath exports for optional features: `/expr`, `/infer`, `/migrate`,
   `/i18n`, `/fields/*`, and the same per renderer in `form-react`.

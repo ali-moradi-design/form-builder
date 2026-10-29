@@ -1,4 +1,4 @@
-import { resolveText } from "@formweave/engine/i18n";
+import { resolveText } from "@formcanvas/engine/i18n";
 import { CircleCheck, CircleX } from "lucide-react";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -11,10 +11,10 @@ import { ResponsesNav } from "@/widgets/responses-nav";
 const VERIFY = `import { createHmac, timingSafeEqual } from "node:crypto";
 
 // In your endpoint: reject old or unsigned requests.
-const timestamp = request.headers.get("x-formweave-timestamp");
-const signature = request.headers.get("x-formweave-signature") ?? "";
+const timestamp = request.headers.get("x-formcanvas-timestamp");
+const signature = request.headers.get("x-formcanvas-signature") ?? "";
 const body = await request.text();
-const expected = "sha256=" + createHmac("sha256", process.env.FORMWEAVE_SECRET)
+const expected = "sha256=" + createHmac("sha256", process.env.FORMCANVAS_SECRET)
   .update(\`\${timestamp}.\${body}\`).digest("hex");
 const fresh = Math.abs(Date.now() / 1000 - Number(timestamp)) < 300;
 const valid = fresh && expected.length === signature.length &&

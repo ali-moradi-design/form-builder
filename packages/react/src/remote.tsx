@@ -1,6 +1,6 @@
-import { createRegistry, type FieldRegistry } from "@formweave/engine";
-import { allFields } from "@formweave/engine/fields/all";
-import type { FormDocument } from "@formweave/schema";
+import { createRegistry, type FieldRegistry } from "@formcanvas/engine";
+import { allFields } from "@formcanvas/engine/fields/all";
+import type { FormDocument } from "@formcanvas/schema";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { allRenderers } from "./fields/index.js";
 import { Form as LocalForm, type FormProps, type Values } from "./Form.js";
@@ -19,7 +19,7 @@ export interface RemoteFormProps extends Omit<
   /** The form's link name (slug), as in `/f/<slug>`. */
   readonly formId: string;
   /**
-   * Address of the formweave app, without a trailing slash.
+   * Address of the formcanvas app, without a trailing slash.
    *
    * @defaultValue `""` (the same site)
    */
@@ -95,7 +95,7 @@ function uploader(base: string): UploadFile {
 }
 
 /**
- * A published formweave form, loaded from the app's API by its link name.
+ * A published formcanvas form, loaded from the app's API by its link name.
  * Answers are validated in the browser, sent to the API and validated again
  * there; files go to the upload API.
  *
@@ -103,8 +103,8 @@ function uploader(base: string): UploadFile {
  * @returns The form, or a loading or error message.
  * @example
  * ```tsx
- * import { Form } from "@formweave/react/remote";
- * import "@formweave/react/styles.css";
+ * import { Form } from "@formcanvas/react/remote";
+ * import "@formcanvas/react/styles.css";
  *
  * <Form formId="product-feedback" endpoint="https://forms.example.com" />;
  * ```
@@ -141,12 +141,12 @@ export function Form(props: RemoteFormProps): ReactNode {
     };
   }, [base]);
 
-  if (doc === null) return loading ?? <p className="fw-help">{text.loading}</p>;
-  if (doc === "missing") return <p className="fw-error">{text.missing}</p>;
+  if (doc === null) return loading ?? <p className="fc-help">{text.loading}</p>;
+  if (doc === "missing") return <p className="fc-error">{text.missing}</p>;
   if (state === "done")
     return (
       done ?? (
-        <p className="fw-help" role="status">
+        <p className="fc-help" role="status">
           {text.done}
         </p>
       )
@@ -179,7 +179,7 @@ export function Form(props: RemoteFormProps): ReactNode {
         onSubmit={submit}
       />
       {state === "failed" && (
-        <p className="fw-error" role="alert">
+        <p className="fc-error" role="alert">
           {text.failed}
         </p>
       )}
