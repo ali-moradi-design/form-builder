@@ -34,7 +34,10 @@ services:
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?BETTER_AUTH_SECRET is not set}
       # enables POST /api/demo/reset (nightly cron on the server)
       DEMO_RESET_TOKEN: ${DEMO_RESET_TOKEN:?DEMO_RESET_TOKEN is not set}
-      # PUBLIC_SIGN_UP stays unset: only the demo account can sign in
+      # "off" except while an owner account is being created: put
+      # PUBLIC_SIGN_UP=on in .env, `docker compose up -d`, sign up, then remove
+      # the line and `docker compose up -d` again
+      PUBLIC_SIGN_UP: ${PUBLIC_SIGN_UP:-off}
     # Nginx on the host proxies to this; Docker bypasses ufw, so loopback only
     ports:
       - "127.0.0.1:3112:3000"
