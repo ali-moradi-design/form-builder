@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { fileURLToPath } from "node:url";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./src/shared/i18n/request.ts");
@@ -31,6 +32,10 @@ const common = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // The server image holds only .next/standalone (scripts/standalone.mjs completes it).
+  // The monorepo root is the tracing root, so the workspace packages are traced too.
+  output: "standalone",
+  outputFileTracingRoot: fileURLToPath(new URL("../../", import.meta.url)),
   // PGlite loads its WebAssembly files from its own folder, so it must not be bundled.
   serverExternalPackages: ["@electric-sql/pglite"],
   // The repo keeps its own agent notes in CLAUDE.md.

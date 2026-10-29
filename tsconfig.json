@@ -15,6 +15,7 @@
     "apps/*/*.ts",
     "apps/*/*.js",
     "apps/*/*.mjs",
+    "apps/*/scripts/*.mjs",
     "scripts/*.mjs"
   ]
 }
