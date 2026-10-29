@@ -10,7 +10,7 @@ import { useRef, useState, useSyncExternalStore } from "react";
 import { useBuilder, useBuilderApi } from "../model/context";
 import { formatPath, readJson, toJson } from "../model/json";
 
-const SCHEMA_URI = "https://github.com/ali-moradi-design/form-builder/schema/form-document.json";
+const SCHEMA_URI = "https://github.com/ali-moradi-design/formcanvas/schema/form-document.json";
 
 const darkQuery = "(prefers-color-scheme: dark)";
 function subscribeDark(listener: () => void): () => void {

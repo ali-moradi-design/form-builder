@@ -7,7 +7,7 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ali-moradi-design/form-builder.git",
+    "url": "git+https://github.com/ali-moradi-design/formcanvas.git",
     "directory": "packages/schema"
   },
   "exports": {

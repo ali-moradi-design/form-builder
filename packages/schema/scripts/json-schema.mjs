@@ -7,7 +7,7 @@ import { formDocumentSchema } from "../dist/meta.js";
 
 const schema = {
   ...z.toJSONSchema(formDocumentSchema, { unrepresentable: "any" }),
-  $id: "https://github.com/ali-moradi-design/form-builder/schema/form-document.json",
+  $id: "https://github.com/ali-moradi-design/formcanvas/schema/form-document.json",
   title: "formcanvas form document",
 };
 writeFileSync(
