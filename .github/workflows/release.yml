@@ -36,5 +36,5 @@ jobs:
           commit: Version packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Only for the first release; replaced by npm trusted publishing.
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # npm accepts this workflow through trusted publishing (OIDC), so
+          # no npm token is stored anywhere.
