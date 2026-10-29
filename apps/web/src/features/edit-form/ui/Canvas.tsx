@@ -5,7 +5,7 @@ import { isRtl, resolveText } from "@formcanvas/engine/i18n";
 import type { FieldNode, FormDocument, Locale } from "@formcanvas/schema";
 import { ArrowDown, ArrowUp, Copy, GitBranch, GripVertical, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Fragment, useMemo, type ReactNode } from "react";
+import { Fragment, memo, useMemo, type ReactNode } from "react";
 import { addStep, uniqueKey } from "@/entities/form";
 import { registry, renderers } from "@/shared/formcanvas";
 import { CONTAINER_TYPES } from "@/shared/config";
@@ -116,7 +116,39 @@ function ConditionBadge() {
   );
 }
 
-function FieldList({
+/**
+ * Field cards only depend on their own nodes, so the lists and cards skip
+ * re-rendering when an edit leaves their nodes untouched (edits copy only the
+ * changed path). The compiled form is ignored in the comparison: it is rebuilt
+ * on every edit, but a card's part of it only changes with its node.
+ */
+type ListProps = Parameters<typeof FieldListImpl>[0];
+type CardProps = Parameters<typeof FieldCardImpl>[0];
+const sameFallback = (a: CompiledForm, b: CompiledForm): boolean =>
+  a.document.locales.default === b.document.locales.default;
+
+const FieldList = memo(
+  FieldListImpl,
+  (a: ListProps, b: ListProps) =>
+    a.fields === b.fields &&
+    a.locale === b.locale &&
+    a.step === b.step &&
+    a.parent === b.parent &&
+    sameFallback(a.form, b.form),
+);
+
+const FieldCard = memo(
+  FieldCardImpl,
+  (a: CardProps, b: CardProps) =>
+    a.node === b.node &&
+    a.locale === b.locale &&
+    a.step === b.step &&
+    a.first === b.first &&
+    a.last === b.last &&
+    sameFallback(a.form, b.form),
+);
+
+function FieldListImpl({
   fields,
   form,
   locale,
@@ -154,7 +186,7 @@ function FieldList({
   );
 }
 
-function FieldCard({
+function FieldCardImpl({
   node,
   form,
   locale,

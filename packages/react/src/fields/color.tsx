@@ -5,7 +5,7 @@ import {
   type ColorSettings,
 } from "@formcanvas/engine/fields";
 import { formatNumber } from "@formcanvas/engine/i18n";
-import { useState, type ReactNode, type Ref } from "react";
+import { useState, useSyncExternalStore, type ReactNode, type Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
 import { controlProps, FieldShell } from "./shell.js";
 
@@ -29,13 +29,26 @@ function eyeDropper(): EyeDropperApi | undefined {
   return Ctor ? new Ctor() : undefined;
 }
 
+const noSubscribe = (): (() => void) => () => undefined;
+
+/**
+ * Whether the browser has an eyedropper. Always `false` while rendering on the
+ * server and hydrating, so the server HTML matches; the button then appears.
+ */
+const useCanDrop = (): boolean =>
+  useSyncExternalStore(
+    noSubscribe,
+    () => "EyeDropper" in globalThis,
+    () => false,
+  );
+
 function Swatches(p: {
   swatches: readonly string[];
   selected: ReadonlySet<string>;
   disabled: boolean;
   onPick: (hex: string) => void;
 }): ReactNode {
-  const canDrop = typeof globalThis !== "undefined" && "EyeDropper" in globalThis;
+  const canDrop = useCanDrop();
   return (
     <div className="fc-swatches">
       {p.swatches.map((hex) => (

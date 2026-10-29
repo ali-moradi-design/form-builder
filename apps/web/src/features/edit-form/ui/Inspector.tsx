@@ -101,13 +101,11 @@ export function Inspector({ locale }: { locale: Locale }) {
     values: Values,
     onChange: (v: Values, name: string | undefined) => void,
   ) => (
-    <Form
-      key={panel.key}
-      schema={{ ...document, locales: { default: locale } }}
-      registry={registry}
-      renderers={renderers}
-      defaultValues={values}
-      actions={false}
+    <LiveSettings
+      key={`${panel.key}:${locale}`}
+      document={document}
+      values={values}
+      locale={locale}
       onChange={onChange}
     />
   );
@@ -217,6 +215,36 @@ export function Inspector({ locale }: { locale: Locale }) {
       {body}
       <p className="mt-2 text-xs text-ink-3">{t("shortcuts")}</p>
     </section>
+  );
+}
+
+/**
+ * The settings form. Its schema and starting values are read once: the
+ * parent remounts it (through `key`) when they have to change, so typing does
+ * not recompile the form and re-render every setting.
+ */
+function LiveSettings({
+  document,
+  values,
+  locale,
+  onChange,
+}: {
+  document: FormDocument;
+  values: Values;
+  locale: Locale;
+  onChange: (v: Values, name: string | undefined) => void;
+}) {
+  const [schema] = useState(() => ({ ...document, locales: { default: locale } }));
+  const [defaults] = useState(values);
+  return (
+    <Form
+      schema={schema}
+      registry={registry}
+      renderers={renderers}
+      defaultValues={defaults}
+      actions={false}
+      onChange={onChange}
+    />
   );
 }
 

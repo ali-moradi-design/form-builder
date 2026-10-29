@@ -11,6 +11,7 @@ import { en, fa, formatIssue, type MessageCatalog } from "@formcanvas/engine/mes
 import type { FormDocument, Locale } from "@formcanvas/schema";
 import {
   createContext,
+  memo,
   useCallback,
   useContext,
   useEffect,
@@ -19,6 +20,7 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
+  type NamedExoticComponent,
   type ReactNode,
 } from "react";
 import {
@@ -497,11 +499,16 @@ export interface FieldProps {
  * renderer. Renders nothing while the field is hidden. Useful for custom
  * layouts that place fields by hand.
  *
+ * Memoized: it reads its own state and value from the form, so a re-render
+ * of the surrounding form does not re-render every field.
+ *
  * @param props - See {@link FieldProps}.
  * @returns The field, or `null`.
  * @since 0.2.0
  */
-export function Field({ fieldKey }: FieldProps): ReactNode {
+export const Field: NamedExoticComponent<FieldProps> = memo(function Field({
+  fieldKey,
+}: FieldProps): ReactNode {
   const { form, renderers, locale, fallback, idPrefix, prefix } = useFormcanvas();
   const state = useFieldState(fieldKey);
   const field = form.fields.get(fieldKey);
@@ -553,7 +560,7 @@ export function Field({ fieldKey }: FieldProps): ReactNode {
       Renderer={Renderer}
     />
   );
-}
+});
 
 type Renderer = NonNullable<ReturnType<RendererMap["get"]>>;
 
