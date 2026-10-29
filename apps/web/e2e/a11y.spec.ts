@@ -7,6 +7,12 @@ import { expect, test, type Page } from "@playwright/test";
  */
 const scan = async (page: Page, name: string) => {
   await page.waitForLoadState("networkidle");
+  // After a client-side navigation (router.push) the URL changes before the
+  // new page's <title> is in place. Wait for it; a page that never gets a
+  // title is still reported by axe below.
+  await page
+    .waitForFunction(() => document.title.trim() !== "", undefined, { timeout: 5_000 })
+    .catch(() => undefined);
   const results = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "best-practice"])
     .analyze();
