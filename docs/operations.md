@@ -20,6 +20,10 @@ Live at https://formcanvas.ali-moradi-develop.com (one VPS, Nginx on the host).
   internal network). Uploaded files live in Postgres, so the database volume
   is the only state. Secrets are in `.env` next to it (`deploy/.env.example`).
 - Nginx: `deploy/nginx.conf`, with a certificate from certbot.
+- Owner accounts (forms that must survive the nightly demo reset, such as the
+  `arvand-contact` form behind arvand-company's contact page): open sign-up
+  for a minute with `PUBLIC_SIGN_UP=on` in `.env`, create the account, then
+  remove the line; both times run `docker compose up -d`.
 - `GET /api/health` answers 200 when the database is reachable and migrated;
   the container healthcheck uses it.
 
