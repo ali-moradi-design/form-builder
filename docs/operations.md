@@ -46,7 +46,7 @@ The app has no scheduler of its own. The server calls the route once a
 night, for example from cron (03:17 UTC):
 
 ```cron
-17 3 * * * curl -fsS -X POST -H "Authorization: Bearer $DEMO_RESET_TOKEN" https://form-builder.ali-moradi-develop.com/api/demo/reset
+17 3 * * * curl -fsS -X POST -H "Authorization: Bearer $DEMO_RESET_TOKEN" https://formcanvas.ali-moradi-develop.com/api/demo/reset
 ```
 
 The answer is `{ "reset": true }`, or `{ "reset": false }` when nobody has

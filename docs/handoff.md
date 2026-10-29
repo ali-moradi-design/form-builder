@@ -91,7 +91,7 @@ after code changes.
      changesets are waiting; the first release will be 0.1.0 of each package.
 2. **Deploy pipeline** (1.0): Docker image built in CI, pushed to ghcr.io,
    pulled on the VPS (see the roadmap repo's decisions); subdomain
-   `form-builder.ali-moradi-develop.com`. Server setup must follow the
+   `formcanvas.ali-moradi-develop.com`. Server setup must follow the
    checklist in `docs/security.md` and `docs/operations.md` (Nginx
    `X-Real-IP`, port on `127.0.0.1`, container memory limits, cron entry for
    the demo reset).

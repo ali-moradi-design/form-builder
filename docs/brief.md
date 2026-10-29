@@ -1,4 +1,4 @@
-# Form builder: brief
+# formcanvas: brief
 
 Decisions from 2026-10-18. Demo 2 in notes/demos.md (form builder), now a full
 product with a database (the old "stage 1 static / stage 2 database" split is
@@ -179,6 +179,6 @@ apps/
 ## Repo
 
 - `ali-moradi-design/formcanvas` (public), subdomain
-  `form-builder.ali-moradi-develop.com`.
+  `formcanvas.ali-moradi-develop.com`.
 - README: the two-layer idea, a schema example, how to use the npm package, how
   to embed, API overview, screenshots.

@@ -76,7 +76,7 @@ Thin adapter: state lives in React Hook Form, logic lives in the engine.
   - headless: hooks (`useField`, `useStep`, `useRepeater`) and unstyled
     components that expose `data-*` state attributes;
   - styled: an optional stylesheet built on CSS variables inside a cascade
-    layer (`@layer form-builder`), so host styles always win. Logical
+    layer (`@layer formcanvas`), so host styles always win. Logical
     properties only, so RTL works with `dir="rtl"`.
 - Renderer registry: `defineRenderer("rating", Component)`. Host apps add or
   replace renderers; slots let them replace parts (label, error, help).
