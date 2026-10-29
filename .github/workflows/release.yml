@@ -29,12 +29,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm check:package
-      - uses: changesets/action@v1
+      # v2 renamed the inputs and takes the token from `github-token`
+      # (default: this workflow's token), not from the environment.
+      - uses: changesets/action@v2
         with:
-          publish: pnpm changeset publish
-          title: Version packages
-          commit: Version packages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # npm accepts this workflow through trusted publishing (OIDC), so
-          # no npm token is stored anywhere.
+          publish-script: pnpm changeset publish
+          pr-title: Version packages
+          commit-message: Version packages
+        # npm accepts this workflow through trusted publishing (OIDC), so
+        # no npm token is stored anywhere.
