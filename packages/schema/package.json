@@ -1,6 +1,6 @@
 {
   "name": "@formcanvas/schema",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Types and the meta-schema of formcanvas form documents.",
   "keywords": [
     "form",
