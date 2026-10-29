@@ -12,7 +12,12 @@ export {
 } from "./expr.js";
 export type { ValueReader } from "./expr.js";
 export { createRegistry, defineField } from "./registry.js";
-export type { FieldDefinition, FieldRegistry, ValidatorContext } from "./registry.js";
+export type {
+  AnyFieldDefinition,
+  FieldDefinition,
+  FieldRegistry,
+  ValidatorContext,
+} from "./registry.js";
 export { isEmptyValue, toStandardSchema, validate } from "./validate.js";
 export type {
   StandardSchema,

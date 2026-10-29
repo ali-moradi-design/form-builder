@@ -2,7 +2,23 @@
   "name": "@formcanvas/engine",
   "version": "0.0.0",
   "description": "Framework-free formcanvas engine: compile, evaluate, validate.",
+  "keywords": [
+    "form",
+    "forms",
+    "form-engine",
+    "validation",
+    "conditional-logic",
+    "zod",
+    "i18n",
+    "rtl",
+    "typescript"
+  ],
   "license": "MIT",
+  "author": "Ali Moradi",
+  "homepage": "https://github.com/ali-moradi-design/formcanvas/tree/main/packages/engine#readme",
+  "bugs": {
+    "url": "https://github.com/ali-moradi-design/formcanvas/issues"
+  },
   "type": "module",
   "sideEffects": false,
   "repository": {
@@ -96,5 +112,9 @@
   ],
   "peerDependencies": {
     "zod": "^4.6.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
