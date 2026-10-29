@@ -4,7 +4,7 @@ import type { FieldPlace } from "@/entities/form";
 import { pointerDistance } from "@dnd-kit/collision";
 import { DragDropProvider, useDraggable, useDroppable } from "@dnd-kit/react";
 import { useTranslations } from "next-intl";
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, memo, useContext, useState, type ReactNode } from "react";
 import { fieldType } from "@/shared/config";
 import { cn } from "@/shared/lib";
 import { dropField, dropNewField, type DragSource } from "../model/actions";
@@ -56,7 +56,17 @@ export function useBuilderDraggable(id: string, data: DragSource) {
 }
 
 /** A place between fields where a dragged field can land. */
-export function DropSlot({ place, empty }: { place: FieldPlace; empty?: ReactNode }) {
+export const DropSlot = memo(
+  DropSlotImpl,
+  // `place` is a new object on every render of the list; compare what it holds.
+  (a, b) =>
+    a.place.step === b.place.step &&
+    a.place.parent === b.place.parent &&
+    a.place.index === b.place.index &&
+    (a.empty === undefined) === (b.empty === undefined),
+);
+
+function DropSlotImpl({ place, empty }: { place: FieldPlace; empty?: ReactNode }) {
   const t = useTranslations("builder");
   const dragging = useDragging();
   const id = `slot:${place.step}:${place.parent ?? ""}:${String(place.index)}`;

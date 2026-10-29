@@ -2,15 +2,18 @@
 
 import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { FIELD_GROUPS, FIELD_TYPES, type FieldTypeInfo } from "@/shared/config";
 import { cn } from "@/shared/lib";
 import { addField } from "../model/actions";
 import { useBuilderApi } from "../model/context";
 import { useBuilderDraggable } from "./dnd";
 
-/** Field types to add, grouped, with a search box. */
-export function Palette() {
+/**
+ * Field types to add, grouped, with a search box. Memoized: it reads nothing
+ * from the document, so edits must not re-render its items.
+ */
+export const Palette = memo(function Palette() {
   const t = useTranslations("builder");
   const tt = useTranslations("fieldTypes");
   const { store } = useBuilderApi();
@@ -65,7 +68,7 @@ export function Palette() {
       })}
     </nav>
   );
-}
+});
 
 function PaletteItem({
   info,

@@ -4,7 +4,7 @@ import { resolveText } from "@formcanvas/engine/i18n";
 import { Eye, Inbox, PencilRuler } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
-import { useState } from "react";
+import { memo, useState } from "react";
 import type { FormDocument } from "@formcanvas/schema";
 import { saveMyDraft } from "@/entities/form";
 import {
@@ -49,17 +49,22 @@ export function FormBuilder({
   );
 }
 
-function Workspace({ id, live }: { id: string; live: LiveInfo | null }) {
+/**
+ * The builder screen. Memoized, and it reads only the title and languages, so
+ * edits re-render the panels that show them, not the whole screen.
+ */
+const Workspace = memo(function Workspace({ id, live }: { id: string; live: LiveInfo | null }) {
   useBuilderShortcuts();
   const t = useTranslations("builder");
   const tf = useTranslations("forms");
   const appLocale = useLocale();
-  const doc = useBuilder((s) => s.doc);
+  const locales = useBuilder((s) => s.doc.locales);
+  const docTitle = useBuilder((s) => s.doc.title);
   const { store } = useBuilderApi();
   const [panel, setPanel] = useState<"settings" | "json">("settings");
-  const supported = doc.locales.supported ?? [doc.locales.default];
-  const contentLocale = supported.includes(appLocale) ? appLocale : doc.locales.default;
-  const title = resolveText(doc.title, contentLocale, doc.locales.default);
+  const supported = locales.supported ?? [locales.default];
+  const contentLocale = supported.includes(appLocale) ? appLocale : locales.default;
+  const title = resolveText(docTitle, contentLocale, locales.default);
   const tab =
     "flex h-8 items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium text-ink-2 aria-[current=page]:bg-surface aria-[current=page]:text-ink aria-[current=page]:shadow-xs";
   return (
@@ -144,4 +149,4 @@ function Workspace({ id, live }: { id: string; live: LiveInfo | null }) {
       </div>
     </div>
   );
-}
+});
