@@ -9,12 +9,12 @@ const i = (name, cls = "") =>
     .replace(/<!--.*?-->/gs, "")
     .replace("<svg", `<svg class="icon ${cls}"`);
 const fa = (v) => String(v).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
-export const LOGO = `<svg class="mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="formweave"><g transform="translate(0 0) scale(1)">
+export const LOGO = `<svg class="mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="formcanvas"><g transform="translate(0 0) scale(1)">
   <rect width="64" height="64" rx="16" fill="#5f0f40"/>
-  <path d="M22 50.5 V27 Q22 18.5 30.5 18.5 H47.5" fill="none" stroke-linecap="round" stroke="#fb8b24" stroke-width="9.5"/>
-  <path d="M13.5 35 H39" fill="none" stroke-linecap="round" stroke="#5f0f40" stroke-width="16"/>
-  <path d="M13.5 35 H39" fill="none" stroke-linecap="round" stroke="#fff4e8" stroke-width="9.5"/>
-  <circle cx="45.5" cy="47" r="5" fill="#e36414"/>
+  <rect x="13" y="13" width="34" height="9.5" rx="4.75" fill="#fb8b24"/>
+  <rect x="13" y="13" width="9.5" height="38" rx="4.75" fill="#fb8b24"/>
+  <rect x="13" y="28.5" width="25" height="9.5" rx="4.75" fill="#fff4e8"/>
+  <path transform="translate(39.5 38) scale(0.92)" d="M0 0 L0 19 L4.6 14.6 L8.2 22.4 L12 20.6 L8.4 13 L14.6 13 Z" fill="#e36414" stroke="#5f0f40" stroke-width="3.2" stroke-linejoin="round" paint-order="stroke"/>
 </g></svg>`;
 const heart = () => i("heart", "icon-sm heart");
 export const CREDIT_EN = () => `<div class="credit">Made with ${heart()} by Ali Moradi</div>`;
@@ -54,7 +54,7 @@ const sidebar = (on, dark = false) => {
   const sub = (t, extra = "") => `<div class="nav ${on === t ? "on" : ""}">${t}${extra}</div>`;
   return `
 <aside class="sb">
-  <div class="sb-brand"><span class="logo">${LOGO}</span><span class="wm">formweave</span><div class="grow"></div><span class="faint">${i("panel-left")}</span></div>
+  <div class="sb-brand"><span class="logo">${LOGO}</span><span class="wm">formcanvas</span><div class="grow"></div><span class="faint">${i("panel-left")}</span></div>
   <div class="sb-search">${i("search", "icon-sm")}Search<div class="grow"></div><span class="kbd">⌘ K</span></div>
   <div class="sb-label">Main menu</div>
   ${nav("layout-dashboard", "Dashboard")}
@@ -387,7 +387,7 @@ const summary = shell("Analytics", ["Product feedback", "Analytics"], `
 /* ---------------- 10 Sign in ---------------- */
 const signIn = `<style>.si .mark{width:32px;height:32px}</style><div class="si" style="display:grid;grid-template-columns:1fr 1fr;height:100vh;background:var(--frame)">
   <div style="display:flex;flex-direction:column;padding:32px 56px">
-    <div class="row" style="gap:10px">${LOGO}<span class="wm" style="font-family:'Comic Neue',cursive;font-weight:700;font-size:20px">formweave</span></div>
+    <div class="row" style="gap:10px">${LOGO}<span class="wm" style="font-family:'Comic Neue',cursive;font-weight:700;font-size:20px">formcanvas</span></div>
     <div style="margin:auto 0;width:100%;max-width:400px;display:grid;gap:14px">
       <div><h1 style="font-size:28px;font-weight:600;letter-spacing:-0.02em">Welcome back</h1><p class="muted">Sign in to build, publish and collect.</p></div>
       <div class="seg" style="display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:11px;background:var(--surface-2);border:1px solid var(--line)"><span style="text-align:center;padding:7px;border-radius:8px;background:var(--surface);box-shadow:var(--shadow-sm);font-weight:500;font-size:13px">Sign in</span><span style="text-align:center;padding:7px;font-size:13px;color:var(--ink-2)">Create account</span></div>

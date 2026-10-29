@@ -1,11 +1,11 @@
 "use client";
 
-import { resolveText } from "@formweave/engine/i18n";
+import { resolveText } from "@formcanvas/engine/i18n";
 import { Eye, Inbox, PencilRuler } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import { saveMyDraft } from "@/entities/form";
 import {
   BuilderDnd,

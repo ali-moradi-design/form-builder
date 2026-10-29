@@ -1,5 +1,5 @@
 {
-  "name": "@formweave/web",
+  "name": "@formcanvas/web",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,9 +16,9 @@
     "@dnd-kit/collision": "0.5.1",
     "@dnd-kit/react": "0.5.1",
     "@electric-sql/pglite": "0.5.8",
-    "@formweave/engine": "workspace:^",
-    "@formweave/react": "workspace:^",
-    "@formweave/schema": "workspace:^",
+    "@formcanvas/engine": "workspace:^",
+    "@formcanvas/react": "workspace:^",
+    "@formcanvas/schema": "workspace:^",
     "@monaco-editor/react": "4.7.0",
     "better-auth": "1.7.7",
     "class-variance-authority": "0.7.1",

@@ -1,7 +1,7 @@
-import type { Locale, LocalizedText } from "@formweave/schema";
+import type { Locale, LocalizedText } from "@formcanvas/schema";
 
 /**
- * Picks the text for a locale from a `LocalizedText` (from `@formweave/schema`).
+ * Picks the text for a locale from a `LocalizedText` (from `@formcanvas/schema`).
  *
  * Tries the exact locale (`"fa-IR"`), then its language (`"fa"`), then the
  * fallback locale, then any available text.

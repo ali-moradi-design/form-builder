@@ -55,19 +55,19 @@ test("delivers signed events to a webhook", async ({ page }) => {
     await expect.poll(() => received.length).toBe(2);
 
     const [ping, created] = received;
-    expect(ping?.headers["x-formweave-event"]).toBe("ping");
-    expect(created?.headers["x-formweave-event"]).toBe("response.created");
+    expect(ping?.headers["x-formcanvas-event"]).toBe("ping");
+    expect(created?.headers["x-formcanvas-event"]).toBe("response.created");
     const event = JSON.parse(created?.body ?? "{}") as {
       form: { slug: string };
       response: { data: unknown };
     };
     expect(event.form.slug).toBe(slug);
     expect(event.response.data).toEqual({ name: "Sara", plan: "free", satisfaction: 5 });
-    const timestamp = String(created?.headers["x-formweave-timestamp"]);
+    const timestamp = String(created?.headers["x-formcanvas-timestamp"]);
     const expected = `sha256=${createHmac("sha256", secret)
       .update(`${timestamp}.${created?.body ?? ""}`)
       .digest("hex")}`;
-    expect(created?.headers["x-formweave-signature"]).toBe(expected);
+    expect(created?.headers["x-formcanvas-signature"]).toBe(expected);
 
     await page.reload();
     await expect(page.getByRole("heading", { name: "Recent deliveries" })).toBeVisible();

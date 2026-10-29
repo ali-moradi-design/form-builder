@@ -17,7 +17,7 @@ export interface ValidationIssue {
   /**
    * What is wrong, as a code such as `"required"`, `"tooLong"` or
    * `"invalidEmail"`. Turn it into text with `formatIssue` from
-   * `@formweave/engine/messages`.
+   * `@formcanvas/engine/messages`.
    */
   readonly code: string;
   /** Limits of the failed check, used in messages: `min` and `max`. */
@@ -205,7 +205,7 @@ export interface StandardSchema<Output> {
 /**
  * Wraps {@link validate} in the Standard Schema interface, so any library
  * that accepts Standard Schema (for example React Hook Form's
- * `standardSchemaResolver`) can validate a formweave form. Issue messages are
+ * `standardSchemaResolver`) can validate a formcanvas form. Issue messages are
  * the issue codes.
  *
  * @param form - A compiled form.
@@ -216,7 +216,7 @@ export function toStandardSchema(form: CompiledForm): StandardSchema<Record<stri
   return {
     "~standard": {
       version: 1,
-      vendor: "formweave",
+      vendor: "formcanvas",
       validate: (value) => {
         const values =
           value !== null && typeof value === "object" ? (value as Record<string, unknown>) : {};

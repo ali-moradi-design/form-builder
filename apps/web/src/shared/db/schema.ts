@@ -1,4 +1,4 @@
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import {
   boolean,
   customType,
@@ -78,7 +78,7 @@ export const verification = pgTable("verification", {
   updatedAt: updated(),
 });
 
-// formweave tables.
+// formcanvas tables.
 
 /** A form and its working draft. Published versions are kept in `form_version`. */
 export const form = pgTable(

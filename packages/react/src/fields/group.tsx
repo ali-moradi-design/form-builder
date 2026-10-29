@@ -7,17 +7,17 @@ import { defineRenderer, type FieldRenderer } from "../renderers.js";
  */
 export const groupRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("group", (p) => (
   <fieldset
-    className="fw-group"
+    className="fc-group"
     data-width={p.field.node.width ?? "full"}
     disabled={p.state.disabled}
     aria-describedby={p.help ? p.describedBy : undefined}
   >
-    {p.label && <legend className="fw-group-title">{p.label}</legend>}
+    {p.label && <legend className="fc-group-title">{p.label}</legend>}
     {p.help && (
-      <p id={p.describedBy} className="fw-help">
+      <p id={p.describedBy} className="fc-help">
         {p.help}
       </p>
     )}
-    <div className="fw-fields">{p.children}</div>
+    <div className="fc-fields">{p.children}</div>
   </fieldset>
 ));

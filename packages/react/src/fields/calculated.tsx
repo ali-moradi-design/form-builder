@@ -1,5 +1,5 @@
-import type { CalculatedSettings } from "@formweave/engine/fields";
-import { formatNumber, localizeDigits } from "@formweave/engine/i18n";
+import type { CalculatedSettings } from "@formcanvas/engine/fields";
+import { formatNumber, localizeDigits } from "@formcanvas/engine/i18n";
 import { defineRenderer, type FieldRenderer } from "../renderers.js";
 import { FieldShell } from "./shell.js";
 
@@ -38,7 +38,7 @@ export const calculatedRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("c
   <FieldShell props={p}>
     <output
       id={p.id}
-      className="fw-input fw-calculated"
+      className="fc-input fc-calculated"
       aria-live="polite"
       aria-describedby={p.describedBy}
     >

@@ -1,7 +1,7 @@
 "use client";
 
-import { inferForm } from "@formweave/engine/infer";
-import type { FieldNode, FormDocument } from "@formweave/schema";
+import { inferForm } from "@formcanvas/engine/infer";
+import type { FieldNode, FormDocument } from "@formcanvas/schema";
 import { Braces, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Dialog } from "radix-ui";

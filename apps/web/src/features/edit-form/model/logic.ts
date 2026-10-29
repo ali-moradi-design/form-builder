@@ -1,4 +1,4 @@
-import type { Expression, Operator } from "@formweave/schema";
+import type { Expression, Operator } from "@formcanvas/schema";
 
 // The logic editor edits conditions as a tree of groups and comparisons and
 // stores them as expressions. Only shapes the editor can show are read back;

@@ -3,7 +3,7 @@ import { eventTemplate, feedbackTemplate, jobTemplate } from "@/shared/config";
 import { addResponse, createForm, getLiveForm, publishForm, tables, type Db } from "@/shared/db";
 
 /** Email of the shared demo account. */
-export const DEMO_EMAIL = "demo@formweave.dev";
+export const DEMO_EMAIL = "demo@formcanvas.dev";
 
 const PLANS = ["free", "team", "enterprise"] as const;
 const COLORS = ["#0f4c5c", "#e36414", "#fb8b24", "#9a031e", "#5f0f40"];

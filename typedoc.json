@@ -2,7 +2,7 @@
   "$schema": "https://typedoc.org/schema.json",
   "entryPointStrategy": "packages",
   "entryPoints": ["packages/schema", "packages/engine", "packages/react"],
-  "name": "formweave",
+  "name": "formcanvas",
   "out": "docs-site",
   "includeVersion": false,
   "validation": {

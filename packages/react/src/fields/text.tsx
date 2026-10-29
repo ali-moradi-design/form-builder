@@ -10,7 +10,7 @@ function Input(p: FieldRendererProps & { type: string; autoComplete?: string }):
       <input
         {...controlProps(p)}
         ref={p.inputRef as Ref<HTMLInputElement>}
-        className="fw-input"
+        className="fc-input"
         type={p.type}
         autoComplete={p.autoComplete}
         placeholder={p.placeholder || undefined}
@@ -51,7 +51,7 @@ export const longTextRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("lon
     <textarea
       {...controlProps(p)}
       ref={p.inputRef as Ref<HTMLTextAreaElement>}
-      className="fw-input fw-textarea"
+      className="fc-input fc-textarea"
       rows={4}
       placeholder={p.placeholder || undefined}
       value={str(p.value)}

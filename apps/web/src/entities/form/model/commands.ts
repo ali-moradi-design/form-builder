@@ -1,5 +1,5 @@
-import { readsFields } from "@formweave/engine";
-import type { Expression, FieldNode, FormDocument, Step } from "@formweave/schema";
+import { readsFields } from "@formcanvas/engine";
+import type { Expression, FieldNode, FormDocument, Step } from "@formcanvas/schema";
 
 // Pure edit operations on a form document. Each returns a new document and
 // leaves the input untouched, so the builder store can keep snapshots for

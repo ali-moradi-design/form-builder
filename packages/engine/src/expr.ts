@@ -1,4 +1,4 @@
-import type { Call, Expression, Operator } from "@formweave/schema";
+import type { Call, Expression, Operator } from "@formcanvas/schema";
 
 /**
  * Reads the current value of a field by its key. Returns `undefined` for an
@@ -181,7 +181,7 @@ function run(expr: Expression, read: ValueReader, depth: number): unknown {
 }
 
 /**
- * Evaluates an `Expression` (from `@formweave/schema`) against the current form values.
+ * Evaluates an `Expression` (from `@formcanvas/schema`) against the current form values.
  *
  * Total and safe: it never throws and never runs code. Operators with bad
  * input return `null` (for example dividing by zero, or adding text to a

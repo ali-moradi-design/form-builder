@@ -1,4 +1,4 @@
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import { and, count, desc, eq, gte, inArray, lte, type SQL } from "drizzle-orm";
 import type { Db } from "./client";
 import { form, formVersion, response } from "./schema";

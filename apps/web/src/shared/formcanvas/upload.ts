@@ -1,4 +1,4 @@
-import type { UploadFile } from "@formweave/react";
+import type { UploadFile } from "@formcanvas/react";
 
 /**
  * Uploads to a published form's upload API, reporting progress. The server

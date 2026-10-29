@@ -9,11 +9,11 @@ import { controlProps } from "./shell.js";
  */
 export const switchRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("switch", (p) => (
   <div
-    className="fw-field fw-switch-field"
+    className="fc-field fc-switch-field"
     data-width={p.field.node.width ?? "full"}
     data-invalid={p.error ? "" : undefined}
   >
-    <label className="fw-switch" htmlFor={p.id}>
+    <label className="fc-switch" htmlFor={p.id}>
       <input
         {...controlProps(p)}
         ref={p.inputRef as Ref<HTMLInputElement>}
@@ -24,19 +24,19 @@ export const switchRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("switc
           p.onChange(e.target.checked);
         }}
       />
-      <span className="fw-label">
+      <span className="fc-label">
         {p.label}
         {p.state.required && (
-          <span className="fw-required" aria-hidden="true">
+          <span className="fc-required" aria-hidden="true">
             *
           </span>
         )}
       </span>
     </label>
-    <div id={p.describedBy} className="fw-messages">
-      {p.help && <p className="fw-help">{p.help}</p>}
+    <div id={p.describedBy} className="fc-messages">
+      {p.help && <p className="fc-help">{p.help}</p>}
       {p.error && (
-        <p className="fw-error" role="alert">
+        <p className="fc-error" role="alert">
           {p.error}
         </p>
       )}

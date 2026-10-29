@@ -1,13 +1,13 @@
 "use client";
 
-import { Form } from "@formweave/react";
-import { resolveText } from "@formweave/engine/i18n";
+import { Form } from "@formcanvas/react";
+import { resolveText } from "@formcanvas/engine/i18n";
 import { CircleCheck, Languages, ListOrdered, PencilLine, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Dialog } from "radix-ui";
 import { useState } from "react";
 import { countInputs, type GalleryTemplate } from "@/shared/config";
-import { previewUpload, registry, renderers } from "@/shared/formweave";
+import { previewUpload, registry, renderers } from "@/shared/formcanvas";
 import { cn } from "@/shared/lib";
 import { Button } from "@/shared/ui";
 import { TONES } from "./tones";

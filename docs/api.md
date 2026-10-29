@@ -37,7 +37,7 @@ unknown keys are dropped. The response records its version and language.
 | 429    | `{ "error": "rateLimited" }` + `Retry-After`                      | Over 10 submissions per minute per address and form |
 
 Issue codes are the engine's codes (`required`, `tooShort`, `invalidOption`,
-…); translate them with `formatIssue` from `@formweave/engine/messages`.
+…); translate them with `formatIssue` from `@formcanvas/engine/messages`.
 
 ### Spam protection
 
@@ -57,14 +57,14 @@ Issue codes are the engine's codes (`required`, `tooShort`, `invalidOption`,
 The script adds a frame with the hosted form (`/f/<slug>?embed=1`, without
 page chrome). The form sends its height to the page, so the frame grows
 with it. After a submission the script tag fires a bubbling
-`formweave:submitted` event. Only `/f/…` pages may be framed by other
+`formcanvas:submitted` event. Only `/f/…` pages may be framed by other
 sites; the rest of the app sends `frame-ancestors 'self'`.
 
 ## In a React app
 
 ```tsx
-import { Form } from "@formweave/react/remote";
-import "@formweave/react/styles.css";
+import { Form } from "@formcanvas/react/remote";
+import "@formcanvas/react/styles.css";
 
 <Form formId="SLUG" endpoint="https://YOUR-APP" onSubmitted={(r) => console.log(r.id)} />;
 ```
@@ -75,11 +75,11 @@ uploads files to the upload API.
 
 ### Styling, theme and values
 
-- `className` adds classes to the `<form>`; the `fw-form` class the
+- `className` adds classes to the `<form>`; the `fc-form` class the
   stylesheet needs always stays.
 - `theme="light" | "dark" | "system"` picks the colours. Without it the form
   follows an ancestor's `data-theme` (for example `<html data-theme="dark">`)
-  and otherwise the operating system. Override any `--fw-*` variable to
+  and otherwise the operating system. Override any `--fc-*` variable to
   match your app.
 - Choice values are text. A number or `true`/`false` in `defaultValues`
   selects the option with the same text (`2` selects `"2"`), and submitted
@@ -132,9 +132,9 @@ this JSON body:
 
 Headers:
 
-- `X-Formweave-Event`: `response.created`, or `ping` for the test button.
-- `X-Formweave-Timestamp`: Unix seconds.
-- `X-Formweave-Signature`: `sha256=` + hex HMAC-SHA256 of
+- `X-Formcanvas-Event`: `response.created`, or `ping` for the test button.
+- `X-Formcanvas-Timestamp`: Unix seconds.
+- `X-Formcanvas-Signature`: `sha256=` + hex HMAC-SHA256 of
   `<timestamp>.<raw body>` with the webhook's secret (`whsec_…`).
 
 Check the signature with a constant-time compare and reject timestamps older

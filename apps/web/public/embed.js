@@ -1,6 +1,6 @@
 /* global document, window */
 /*
- * formweave embed. Put this where the form should appear:
+ * formcanvas embed. Put this where the form should appear:
  *   <script src="https://YOUR-APP/embed.js" data-form="SLUG" async></script>
  * It adds a frame with the hosted form that grows with its content.
  */
@@ -21,11 +21,11 @@
     if (event.origin !== origin || event.source !== frame.contentWindow) return;
     var data = event.data;
     if (!data || data.slug !== slug) return;
-    if (data.type === "formweave:height" && typeof data.height === "number") {
+    if (data.type === "formcanvas:height" && typeof data.height === "number") {
       frame.style.height = Math.ceil(data.height) + "px";
-    } else if (data.type === "formweave:submitted") {
+    } else if (data.type === "formcanvas:submitted") {
       script.dispatchEvent(
-        new CustomEvent("formweave:submitted", { bubbles: true, detail: { slug: slug } }),
+        new CustomEvent("formcanvas:submitted", { bubbles: true, detail: { slug: slug } }),
       );
     }
   });

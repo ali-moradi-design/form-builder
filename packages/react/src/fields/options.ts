@@ -1,4 +1,4 @@
-import type { ChoiceOption, ChoiceSettings } from "@formweave/engine/fields";
+import type { ChoiceOption, ChoiceSettings } from "@formcanvas/engine/fields";
 import { useEffect, useState } from "react";
 import type { FieldRendererProps } from "../renderers.js";
 

@@ -1,5 +1,5 @@
-import { readsFields } from "@formweave/engine";
-import type { FieldNode, FormDocument } from "@formweave/schema";
+import { readsFields } from "@formcanvas/engine";
+import type { FieldNode, FormDocument } from "@formcanvas/schema";
 import { allFields, findField } from "@/entities/form";
 
 /** Key of the nearest repeater around a field, or `undefined` at the top level. */

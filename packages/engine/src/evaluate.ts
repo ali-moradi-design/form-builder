@@ -1,4 +1,4 @@
-import type { Expression } from "@formweave/schema";
+import type { Expression } from "@formcanvas/schema";
 import { calculateValues } from "./calculate.js";
 import type { CompiledForm } from "./compile.js";
 import type { ChoiceOption } from "./fields/shared.js";

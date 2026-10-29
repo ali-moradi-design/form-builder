@@ -1,7 +1,7 @@
-import { evaluate, type CompiledForm, type FormState } from "@formweave/engine";
+import { evaluate, type CompiledForm, type FormState } from "@formcanvas/engine";
 
 /**
- * Holds the derived `FormState` (from `@formweave/engine`) of a form and tells subscribers when it
+ * Holds the derived `FormState` (from `@formcanvas/engine`) of a form and tells subscribers when it
  * changes. Field components read their own slice, so a change only re-renders
  * the fields whose state object changed.
  *

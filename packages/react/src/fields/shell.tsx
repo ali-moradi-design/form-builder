@@ -35,17 +35,17 @@ export function FieldShell({ props, children, asFieldset }: FieldShellProps): Re
     <>
       {label}
       {state.required && (
-        <span className="fw-required" aria-hidden="true">
+        <span className="fc-required" aria-hidden="true">
           *
         </span>
       )}
     </>
   );
   const messages = (
-    <div id={describedBy} className="fw-messages">
-      {help && <p className="fw-help">{help}</p>}
+    <div id={describedBy} className="fc-messages">
+      {help && <p className="fc-help">{help}</p>}
       {error && (
-        <p className="fw-error" role="alert">
+        <p className="fc-error" role="alert">
           {error}
         </p>
       )}
@@ -54,21 +54,21 @@ export function FieldShell({ props, children, asFieldset }: FieldShellProps): Re
   if (asFieldset) {
     return (
       <fieldset
-        className="fw-field"
+        className="fc-field"
         data-width={width}
         data-invalid={error ? "" : undefined}
         aria-describedby={describedBy}
         disabled={state.disabled}
       >
-        <legend className="fw-label">{labelContent}</legend>
+        <legend className="fc-label">{labelContent}</legend>
         {children}
         {messages}
       </fieldset>
     );
   }
   return (
-    <div className="fw-field" data-width={width} data-invalid={error ? "" : undefined}>
-      <label className="fw-label" htmlFor={id}>
+    <div className="fc-field" data-width={width} data-invalid={error ? "" : undefined}>
+      <label className="fc-label" htmlFor={id}>
         {labelContent}
       </label>
       {children}

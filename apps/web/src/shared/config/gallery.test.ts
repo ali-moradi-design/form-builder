@@ -1,6 +1,6 @@
-import { compile, createRegistry } from "@formweave/engine";
-import { allFields } from "@formweave/engine/fields/all";
-import { parseFormDocument } from "@formweave/schema/meta";
+import { compile, createRegistry } from "@formcanvas/engine";
+import { allFields } from "@formcanvas/engine/fields/all";
+import { parseFormDocument } from "@formcanvas/schema/meta";
 import { describe, expect, it } from "vitest";
 import { chartTemplate, countInputs, findTemplate, jobTemplate, TEMPLATES } from "./gallery";
 

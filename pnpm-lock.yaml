@@ -231,13 +231,13 @@ importers:
 
   apps/playground:
     dependencies:
-      '@formweave/engine':
+      '@formcanvas/engine':
         specifier: workspace:^
         version: link:../../packages/engine
-      '@formweave/react':
+      '@formcanvas/react':
         specifier: workspace:^
         version: link:../../packages/react
-      '@formweave/schema':
+      '@formcanvas/schema':
         specifier: workspace:^
         version: link:../../packages/schema
       react:
@@ -280,13 +280,13 @@ importers:
       '@electric-sql/pglite':
         specifier: 0.5.8
         version: 0.5.8
-      '@formweave/engine':
+      '@formcanvas/engine':
         specifier: workspace:^
         version: link:../../packages/engine
-      '@formweave/react':
+      '@formcanvas/react':
         specifier: workspace:^
         version: link:../../packages/react
-      '@formweave/schema':
+      '@formcanvas/schema':
         specifier: workspace:^
         version: link:../../packages/schema
       '@monaco-editor/react':
@@ -386,7 +386,7 @@ importers:
 
   packages/engine:
     dependencies:
-      '@formweave/schema':
+      '@formcanvas/schema':
         specifier: workspace:^
         version: link:../schema
     devDependencies:
@@ -399,10 +399,10 @@ importers:
 
   packages/react:
     dependencies:
-      '@formweave/engine':
+      '@formcanvas/engine':
         specifier: workspace:^
         version: link:../engine
-      '@formweave/schema':
+      '@formcanvas/schema':
         specifier: workspace:^
         version: link:../schema
     devDependencies:

@@ -1,5 +1,5 @@
-import type { Expression } from "@formweave/schema";
-import { OPERATORS } from "@formweave/schema";
+import type { Expression } from "@formcanvas/schema";
+import { OPERATORS } from "@formcanvas/schema";
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
 import { evalExpression, MAX_EXPRESSION_DEPTH, readsFields, truthy } from "./expr.js";

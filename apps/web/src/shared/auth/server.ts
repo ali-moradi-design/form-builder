@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 import { getDb, tables } from "@/shared/db";
 
 // Development only: production must set BETTER_AUTH_SECRET (Better Auth refuses to start otherwise).
-const DEV_SECRET = "formweave-development-secret-not-for-production-use-0123456789";
+const DEV_SECRET = "formcanvas-development-secret-not-for-production-use-0123456789";
 
 async function createAuth() {
   const db = await getDb();
@@ -36,12 +36,12 @@ async function createAuth() {
 /** The Better Auth instance (created once per server process). */
 export type Auth = Awaited<ReturnType<typeof createAuth>>;
 
-const globalAuth = globalThis as unknown as { formweaveAuth?: Promise<Auth> };
+const globalAuth = globalThis as unknown as { formcanvasAuth?: Promise<Auth> };
 
 /** Returns the shared auth instance. */
 export function getAuth(): Promise<Auth> {
-  globalAuth.formweaveAuth ??= createAuth();
-  return globalAuth.formweaveAuth;
+  globalAuth.formcanvasAuth ??= createAuth();
+  return globalAuth.formcanvasAuth;
 }
 
 /** The signed-in user of the current request, or `null`. */

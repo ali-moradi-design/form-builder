@@ -1,4 +1,4 @@
-import { resolveText } from "@formweave/engine/i18n";
+import { resolveText } from "@formcanvas/engine/i18n";
 import { CalendarDays, History, Inbox } from "lucide-react";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";

@@ -1,4 +1,4 @@
-import type { Expression } from "@formweave/schema";
+import type { Expression } from "@formcanvas/schema";
 import { describe, expect, it } from "vitest";
 import { fromExpression, setAt, toExpression, type Group } from "./logic";
 

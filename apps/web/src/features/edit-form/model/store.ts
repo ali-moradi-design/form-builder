@@ -1,5 +1,5 @@
-import type { FormDocument } from "@formweave/schema";
-import { parseFormDocument } from "@formweave/schema/meta";
+import type { FormDocument } from "@formcanvas/schema";
+import { parseFormDocument } from "@formcanvas/schema/meta";
 import { temporal } from "zundo";
 import { createStore, type StoreApi } from "zustand/vanilla";
 

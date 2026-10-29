@@ -57,9 +57,9 @@ after code changes.
 - 0.1–0.6 are merged (engine, renderer, builder, publish, responses, every
   0.6 field type, logic editor, calculated fields, repeaters, uploads,
   address, dynamic options).
-- 0.7: the embed script, `@formweave/react/remote` (`<Form formId>`),
+- 0.7: the embed script, `@formcanvas/react/remote` (`<Form formId>`),
   link/embed/React snippets in the publish dialog, forms from a sample JSON
-  record (`@formweave/engine/infer`), and the template gallery (`/templates`,
+  record (`@formcanvas/engine/infer`), and the template gallery (`/templates`,
   five templates, filter, search, live preview; #35).
 - 1.0 so far:
   - Accessibility audit: axe on every page in en/fa, light/dark, plus a
@@ -81,7 +81,7 @@ after code changes.
 
 1. **npm publishing** (0.7, next after the walkthrough). Needs the user:
    - an npm account with two-factor authentication;
-   - the `@formweave` scope (package names were free on 2026-10-19);
+   - the `@formcanvas` scope (package names were free on 2026-10-19);
    - a granular token for that scope, saved as the `NPM_TOKEN` repository
      secret.
      Then add a release workflow (Changesets "Version packages" PR, publish
@@ -107,7 +107,7 @@ after code changes.
   local checks at the user's request (all green locally, including e2e).
 - Force-pushing to an old branch is blocked; use a fresh `claude/*` branch
   per PR.
-- The backup branch `claude/formweave-1.0-work` is no longer needed.
+- The backup branch `claude/formcanvas-1.0-work` is no longer needed.
 
 ## How the work is done
 

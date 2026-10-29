@@ -1,4 +1,4 @@
-import type { FieldNode, FormDocument } from "@formweave/schema";
+import type { FieldNode, FormDocument } from "@formcanvas/schema";
 
 // Builds form fields from one sample record, so a form can start from the
 // data it should collect. Types are guessed from values; people review and

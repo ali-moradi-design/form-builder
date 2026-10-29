@@ -1,4 +1,4 @@
-import type { FieldNode, FormDocument } from "@formweave/schema";
+import type { FieldNode, FormDocument } from "@formcanvas/schema";
 import { describe, expect, it } from "vitest";
 import { compile, SchemaError } from "./compile.js";
 import { evaluate } from "./evaluate.js";

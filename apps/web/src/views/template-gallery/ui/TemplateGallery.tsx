@@ -1,7 +1,7 @@
 "use client";
 
-import { resolveText } from "@formweave/engine/i18n";
-import type { FormDocument } from "@formweave/schema";
+import { resolveText } from "@formcanvas/engine/i18n";
+import type { FormDocument } from "@formcanvas/schema";
 import { Eye, FilePlus2, Search } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";

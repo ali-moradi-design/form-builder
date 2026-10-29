@@ -3,8 +3,8 @@ import {
   normalizeHex,
   type ColorSetSettings,
   type ColorSettings,
-} from "@formweave/engine/fields";
-import { formatNumber } from "@formweave/engine/i18n";
+} from "@formcanvas/engine/fields";
+import { formatNumber } from "@formcanvas/engine/i18n";
 import { useState, type ReactNode, type Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
 import { controlProps, FieldShell } from "./shell.js";
@@ -37,12 +37,12 @@ function Swatches(p: {
 }): ReactNode {
   const canDrop = typeof globalThis !== "undefined" && "EyeDropper" in globalThis;
   return (
-    <div className="fw-swatches">
+    <div className="fc-swatches">
       {p.swatches.map((hex) => (
         <button
           key={hex}
           type="button"
-          className="fw-swatch"
+          className="fc-swatch"
           style={{ background: hex }}
           aria-label={hex}
           aria-pressed={p.selected.has(hex)}
@@ -55,7 +55,7 @@ function Swatches(p: {
       {canDrop && (
         <button
           type="button"
-          className="fw-swatch fw-eyedropper"
+          className="fc-swatch fc-eyedropper"
           aria-label="Eyedropper"
           disabled={p.disabled}
           onClick={() => {
@@ -87,10 +87,10 @@ function ColorInput(p: FieldRendererProps): ReactNode {
   };
   return (
     <FieldShell props={p}>
-      <div className="fw-color" dir="ltr">
+      <div className="fc-color" dir="ltr">
         <input
           type="color"
-          className="fw-color-native"
+          className="fc-color-native"
           aria-label={p.label}
           value={normalizeHex(value) ?? "#000000"}
           disabled={p.state.disabled}
@@ -101,7 +101,7 @@ function ColorInput(p: FieldRendererProps): ReactNode {
         <input
           {...controlProps(p)}
           ref={p.inputRef as Ref<HTMLInputElement>}
-          className="fw-input fw-mono"
+          className="fc-input fc-mono"
           type="text"
           spellCheck={false}
           placeholder="#0f4c5c"
@@ -144,17 +144,17 @@ function ColorSetInput(p: FieldRendererProps): ReactNode {
   };
   return (
     <FieldShell props={p} asFieldset>
-      <div className="fw-colorset">
+      <div className="fc-colorset">
         {chosen.map((hex) => (
           <div
             key={hex}
-            className="fw-colorset-item"
+            className="fc-colorset-item"
             dir="ltr"
             style={{ background: hex, color: inkOn(hex) }}
           >
             <button
               type="button"
-              className="fw-colorset-remove"
+              className="fc-colorset-remove"
               aria-label={`× ${hex}`}
               disabled={p.state.disabled}
               onClick={() => {
@@ -163,17 +163,17 @@ function ColorSetInput(p: FieldRendererProps): ReactNode {
             >
               ×
             </button>
-            <span className="fw-mono">{hex}</span>
+            <span className="fc-mono">{hex}</span>
           </div>
         ))}
         {(chosen.length < max || picking !== null) && (
-          <label className="fw-colorset-add">
+          <label className="fc-colorset-add">
             <span aria-hidden="true">+ {formatNumber(chosen.length + 1, p.locale)}</span>
             <input
               id={p.id}
               ref={p.inputRef as Ref<HTMLInputElement>}
               type="color"
-              className="fw-visually-hidden"
+              className="fc-visually-hidden"
               aria-label={`${p.label} +`}
               aria-describedby={p.describedBy}
               aria-invalid={p.error !== undefined}

@@ -5,10 +5,10 @@ import {
   type CompiledForm,
   type FieldRegistry,
   type FieldState,
-} from "@formweave/engine";
-import { isRtl, localizeDigits, resolveText, type DigitStyle } from "@formweave/engine/i18n";
-import { en, fa, formatIssue, type MessageCatalog } from "@formweave/engine/messages";
-import type { FormDocument, Locale } from "@formweave/schema";
+} from "@formcanvas/engine";
+import { isRtl, localizeDigits, resolveText, type DigitStyle } from "@formcanvas/engine/i18n";
+import { en, fa, formatIssue, type MessageCatalog } from "@formcanvas/engine/messages";
+import type { FormDocument, Locale } from "@formcanvas/schema";
 import {
   createContext,
   useCallback,
@@ -145,7 +145,7 @@ export interface FormProps {
    */
   readonly layout?: "classic" | "focus" | undefined;
   /**
-   * Extra class names for the `<form>` element. They are added to `fw-form`,
+   * Extra class names for the `<form>` element. They are added to `fc-form`,
    * which the default stylesheet needs.
    */
   readonly className?: string | undefined;
@@ -167,7 +167,7 @@ export interface FormProps {
   readonly upload?: UploadFile | undefined;
 }
 
-interface FormweaveContextValue {
+interface FormcanvasContextValue {
   readonly form: CompiledForm;
   readonly store: StateStore;
   readonly renderers: RendererMap;
@@ -222,11 +222,11 @@ const setPath = (obj: Record<string, unknown>, path: string, value: unknown): vo
 /** Field types that have nothing to answer in the focus layout. */
 const NO_PAGE = new Set(["hidden", "divider"]);
 
-const Ctx = createContext<FormweaveContextValue | null>(null);
+const Ctx = createContext<FormcanvasContextValue | null>(null);
 
-const useFormweave = (): FormweaveContextValue => {
+const useFormcanvas = (): FormcanvasContextValue => {
   const value = useContext(Ctx);
-  if (!value) throw new Error("formweave fields must be rendered inside <Form>.");
+  if (!value) throw new Error("formcanvas fields must be rendered inside <Form>.");
   return value;
 };
 
@@ -238,7 +238,7 @@ const useFormweave = (): FormweaveContextValue => {
  * @since 0.2.0
  */
 export function useFieldState(key: string): FieldState | undefined {
-  const { store } = useFormweave();
+  const { store } = useFormcanvas();
   const get = useCallback(() => store.get().fields[key], [store, key]);
   return useSyncExternalStore(store.subscribe, get, get);
 }
@@ -246,7 +246,7 @@ export function useFieldState(key: string): FieldState | undefined {
 /**
  * Renders a form document: validation, conditions, steps and submission.
  *
- * State lives in React Hook Form; logic lives in `@formweave/engine`. Each
+ * State lives in React Hook Form; logic lives in `@formcanvas/engine`. Each
  * field subscribes only to its own value and state, so typing in one field
  * does not re-render the others.
  *
@@ -254,11 +254,11 @@ export function useFieldState(key: string): FieldState | undefined {
  * @returns The form element.
  * @example
  * ```tsx
- * import { Form, createRenderers } from "@formweave/react";
- * import { basicRenderers } from "@formweave/react/fields";
- * import { createRegistry } from "@formweave/engine";
- * import { allFields } from "@formweave/engine/fields/all";
- * import "@formweave/react/styles.css";
+ * import { Form, createRenderers } from "@formcanvas/react";
+ * import { basicRenderers } from "@formcanvas/react/fields";
+ * import { createRegistry } from "@formcanvas/engine";
+ * import { allFields } from "@formcanvas/engine/fields/all";
+ * import "@formcanvas/react/styles.css";
  *
  * <Form
  *   schema={doc}
@@ -365,7 +365,7 @@ export function Form(props: FormProps): ReactNode {
     if (await methods.trigger(page.check, { shouldFocus: true })) setPageIndex(index + 1);
   };
 
-  const ctx = useMemo<FormweaveContextValue>(
+  const ctx = useMemo<FormcanvasContextValue>(
     () => ({
       form,
       store,
@@ -386,7 +386,7 @@ export function Form(props: FormProps): ReactNode {
     <Ctx.Provider value={ctx}>
       <FormProvider {...methods}>
         <form
-          className={props.className ? `fw-form ${props.className}` : "fw-form"}
+          className={props.className ? `fc-form ${props.className}` : "fc-form"}
           data-theme={props.theme}
           data-layout={layout}
           dir={isRtl(locale) ? "rtl" : "ltr"}
@@ -406,9 +406,9 @@ export function Form(props: FormProps): ReactNode {
           }}
         >
           {layout === "focus" ? (
-            <div className="fw-progress">
+            <div className="fc-progress">
               <div
-                className="fw-progress-bar"
+                className="fc-progress-bar"
                 role="progressbar"
                 aria-valuemin={0}
                 aria-valuemax={100}
@@ -417,7 +417,7 @@ export function Form(props: FormProps): ReactNode {
               >
                 <span style={{ inlineSize: `${String(progress)}%` }} />
               </div>
-              <span className="fw-counter">
+              <span className="fc-counter">
                 {localizeDigits(
                   labels.question
                     .replace("{n}", String(index + 1))
@@ -428,7 +428,7 @@ export function Form(props: FormProps): ReactNode {
             </div>
           ) : (
             visibleSteps.length > 1 && (
-              <ol className="fw-steps" aria-label={resolveText(schema.title, locale, fallback)}>
+              <ol className="fc-steps" aria-label={resolveText(schema.title, locale, fallback)}>
                 {visibleSteps.map((s, i) => (
                   <li
                     key={s.key}
@@ -446,24 +446,24 @@ export function Form(props: FormProps): ReactNode {
             )
           )}
           {showStepHeading && stepDef?.title !== undefined && (
-            <h2 className="fw-step-title">{resolveText(stepDef.title, locale, fallback)}</h2>
+            <h2 className="fc-step-title">{resolveText(stepDef.title, locale, fallback)}</h2>
           )}
           {showStepHeading && stepDef?.description !== undefined && (
-            <p className="fw-step-description">
+            <p className="fc-step-description">
               {resolveText(stepDef.description, locale, fallback)}
             </p>
           )}
-          <div className="fw-fields">
+          <div className="fc-fields">
             {page?.fields.map((k) => (
               <Field key={k} fieldKey={k} />
             ))}
           </div>
           {props.actions !== false && (
-            <div className="fw-actions">
+            <div className="fc-actions">
               {index > 0 && (
                 <button
                   type="button"
-                  className="fw-button"
+                  className="fc-button"
                   onClick={() => {
                     setPageIndex(index - 1);
                   }}
@@ -471,7 +471,7 @@ export function Form(props: FormProps): ReactNode {
                   {labels.back}
                 </button>
               )}
-              <button type="submit" className="fw-button fw-button-primary">
+              <button type="submit" className="fc-button fc-button-primary">
                 {isLast ? labels.submit : layout === "focus" ? labels.ok : labels.next}
               </button>
             </div>
@@ -502,7 +502,7 @@ export interface FieldProps {
  * @since 0.2.0
  */
 export function Field({ fieldKey }: FieldProps): ReactNode {
-  const { form, renderers, locale, fallback, idPrefix, prefix } = useFormweave();
+  const { form, renderers, locale, fallback, idPrefix, prefix } = useFormcanvas();
   const state = useFieldState(fieldKey);
   const field = form.fields.get(fieldKey);
   if (!field || !state?.visible) return null;
@@ -565,7 +565,7 @@ function RowsField(p: {
   state: FieldState;
   Renderer: Renderer;
 }): ReactNode {
-  const ctx = useFormweave();
+  const ctx = useFormcanvas();
   const { control } = useFormContext();
   const { fields, append, remove, move } = useFieldArray({ control, name: p.name });
   const { errors } = useFormState({ control, name: p.name });
@@ -610,7 +610,7 @@ function RowsField(p: {
 
 /** The fields of one row, with their own state from that row's values. */
 function RowScope(p: {
-  ctx: FormweaveContextValue;
+  ctx: FormcanvasContextValue;
   form: CompiledForm;
   prefix: string;
 }): ReactNode {
@@ -623,13 +623,13 @@ function RowScope(p: {
     store.update(values ?? {});
     syncCalculated(p.form, values ?? {}, p.prefix, setValue);
   }, [store, values, p.form, p.prefix, setValue]);
-  const value = useMemo<FormweaveContextValue>(
+  const value = useMemo<FormcanvasContextValue>(
     () => ({ ...p.ctx, form: p.form, store, prefix: p.prefix }),
     [p.ctx, p.form, store, p.prefix],
   );
   return (
     <Ctx.Provider value={value}>
-      <div className="fw-fields">
+      <div className="fc-fields">
         {p.form.order
           .filter((k) => p.form.fields.get(k)?.parent === undefined)
           .map((k) => (
@@ -648,7 +648,7 @@ function ControlledField(p: {
   state: FieldState;
   Renderer: NonNullable<ReturnType<RendererMap["get"]>>;
 }): ReactNode {
-  const { form, locale, fallback, upload } = useFormweave();
+  const { form, locale, fallback, upload } = useFormcanvas();
   const { control } = useFormContext();
   const { field: rhf, fieldState } = useController({ name: p.name, control });
   const field = form.fields.get(p.fieldKey);

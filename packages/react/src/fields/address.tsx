@@ -1,4 +1,4 @@
-import type { AddressPart, AddressSettings } from "@formweave/engine/fields";
+import type { AddressPart, AddressSettings } from "@formcanvas/engine/fields";
 import type { ReactNode, Ref } from "react";
 import { defineRenderer, type FieldRenderer, type FieldRendererProps } from "../renderers.js";
 import { FieldShell } from "./shell.js";
@@ -50,18 +50,18 @@ function Address(p: FieldRendererProps): ReactNode {
   };
   return (
     <FieldShell props={p} asFieldset>
-      <div className="fw-address">
+      <div className="fc-address">
         {keys.map((k) => {
           const id = `${p.id}-${k}`;
           return (
-            <div key={k} className="fw-address-part" data-part={k}>
-              <label htmlFor={id} className="fw-help">
+            <div key={k} className="fc-address-part" data-part={k}>
+              <label htmlFor={id} className="fc-help">
                 {words[k]}
               </label>
               <input
                 id={id}
                 ref={k === "line1" ? (p.inputRef as Ref<HTMLInputElement>) : undefined}
-                className="fw-input"
+                className="fc-input"
                 autoComplete={AUTOCOMPLETE[k]}
                 dir={k === "postalCode" ? "ltr" : undefined}
                 value={value[k] ?? ""}

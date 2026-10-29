@@ -1,8 +1,8 @@
-import { createRegistry } from "@formweave/engine";
-import { allFields } from "@formweave/engine/fields/all";
-import { createRenderers, Form, type Values } from "@formweave/react";
-import { basicRenderers } from "@formweave/react/fields";
-import "@formweave/react/styles.css";
+import { createRegistry } from "@formcanvas/engine";
+import { allFields } from "@formcanvas/engine/fields/all";
+import { createRenderers, Form, type Values } from "@formcanvas/react";
+import { basicRenderers } from "@formcanvas/react/fields";
+import "@formcanvas/react/styles.css";
 import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { feedbackForm } from "./sample.js";
@@ -48,7 +48,7 @@ function App(): React.ReactNode {
   return (
     <div className="pg" data-theme={theme}>
       <header className="pg-bar">
-        <strong className="pg-brand">formweave playground</strong>
+        <strong className="pg-brand">formcanvas playground</strong>
         <Toggle
           label="Layout"
           value={layout}

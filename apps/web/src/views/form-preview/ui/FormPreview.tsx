@@ -1,12 +1,12 @@
 "use client";
 
-import { Form, type Values } from "@formweave/react";
+import { Form, type Values } from "@formcanvas/react";
 import { PencilRuler } from "lucide-react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
-import type { FormDocument } from "@formweave/schema";
-import { previewUpload, registry, renderers } from "@/shared/formweave";
+import type { FormDocument } from "@formcanvas/schema";
+import { previewUpload, registry, renderers } from "@/shared/formcanvas";
 import { Button } from "@/shared/ui";
 
 /** Fills in a draft with the real renderer and shows the submitted data. */

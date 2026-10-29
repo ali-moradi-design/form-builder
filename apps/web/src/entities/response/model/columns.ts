@@ -1,5 +1,5 @@
-import { resolveText } from "@formweave/engine/i18n";
-import type { FieldNode, FormDocument, Locale } from "@formweave/schema";
+import { resolveText } from "@formcanvas/engine/i18n";
+import type { FieldNode, FormDocument, Locale } from "@formcanvas/schema";
 import { DISPLAY_TYPES } from "@/shared/config";
 
 /** One answer column of the responses table and exports. */

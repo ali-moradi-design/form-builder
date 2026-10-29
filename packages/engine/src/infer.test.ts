@@ -1,4 +1,4 @@
-import { parseFormDocument } from "@formweave/schema/meta";
+import { parseFormDocument } from "@formcanvas/schema/meta";
 import { describe, expect, it } from "vitest";
 import { compile } from "./compile.js";
 import { allFields } from "./fields/all.js";

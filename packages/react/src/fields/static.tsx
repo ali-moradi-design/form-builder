@@ -13,9 +13,9 @@ export const hiddenRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("hidde
  * @since 0.6.0
  */
 export const headingRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("heading", (p) => (
-  <div className="fw-static" data-width="full">
-    <h3 className="fw-heading">{p.label}</h3>
-    {p.help && <p className="fw-help">{p.help}</p>}
+  <div className="fc-static" data-width="full">
+    <h3 className="fc-heading">{p.label}</h3>
+    {p.help && <p className="fc-help">{p.help}</p>}
   </div>
 ));
 
@@ -25,7 +25,7 @@ export const headingRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("head
  * @since 0.6.0
  */
 export const paragraphRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("paragraph", (p) => (
-  <p className="fw-static fw-paragraph" data-width="full">
+  <p className="fc-static fc-paragraph" data-width="full">
     {p.label}
   </p>
 ));
@@ -36,5 +36,5 @@ export const paragraphRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("pa
  * @since 0.6.0
  */
 export const dividerRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("divider", () => (
-  <hr className="fw-static fw-divider" data-width="full" />
+  <hr className="fc-static fc-divider" data-width="full" />
 ));

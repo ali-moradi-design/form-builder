@@ -1,4 +1,4 @@
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import { beforeAll, describe, expect, it } from "vitest";
 import { openDb, type Db } from "./client";
 import { addResponse, createForm, getLiveForm, publishForm, saveDraft } from "./forms";

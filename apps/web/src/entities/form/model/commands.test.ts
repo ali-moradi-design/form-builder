@@ -1,5 +1,5 @@
-import type { FieldNode, FormDocument } from "@formweave/schema";
-import { parseFormDocument } from "@formweave/schema/meta";
+import type { FieldNode, FormDocument } from "@formcanvas/schema";
+import { parseFormDocument } from "@formcanvas/schema/meta";
 import { describe, expect, it } from "vitest";
 import {
   addStep,

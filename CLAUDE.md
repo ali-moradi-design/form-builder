@@ -1,6 +1,6 @@
-# formweave
+# formcanvas
 
-formweave (repo `form-builder`): a schema-driven form engine with a visual builder. The plan and all product
+formcanvas (repo `form-builder`): a schema-driven form engine with a visual builder. The plan and all product
 decisions are in `docs/brief.md`; read it before starting new work.
 
 ## Working rules

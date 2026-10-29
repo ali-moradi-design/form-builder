@@ -1,5 +1,5 @@
-import { normalizeDigits } from "@formweave/engine/i18n";
-import type { Expression, Operator } from "@formweave/schema";
+import { normalizeDigits } from "@formcanvas/engine/i18n";
+import type { Expression, Operator } from "@formcanvas/schema";
 
 // A small infix syntax for calculated fields, so people can type
 // `quantity * price + 5` instead of writing expression JSON:

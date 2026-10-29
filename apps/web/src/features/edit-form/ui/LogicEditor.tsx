@@ -1,7 +1,7 @@
 "use client";
 
-import { resolveText } from "@formweave/engine/i18n";
-import type { Expression, FieldNode, FormDocument, Locale } from "@formweave/schema";
+import { resolveText } from "@formcanvas/engine/i18n";
+import type { Expression, FieldNode, FormDocument, Locale } from "@formcanvas/schema";
 import { Eye, Plus, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useId, useState, type ReactNode } from "react";

@@ -111,7 +111,7 @@ export const richRenderers: readonly FieldRenderer[] = [
 
 /**
  * Renderers for every built-in field type. Pair it with `allFields` from
- * `@formweave/engine/fields/all`.
+ * `@formcanvas/engine/fields/all`.
  *
  * @since 0.6.0
  */

@@ -1,6 +1,6 @@
-import { createRegistry } from "@formweave/engine";
-import { allFields } from "@formweave/engine/fields/all";
-import type { FormDocument } from "@formweave/schema";
+import { createRegistry } from "@formcanvas/engine";
+import { allFields } from "@formcanvas/engine/fields/all";
+import type { FormDocument } from "@formcanvas/schema";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";

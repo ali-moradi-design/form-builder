@@ -1,5 +1,5 @@
-import type { RepeaterSettings } from "@formweave/engine/fields";
-import { formatNumber, resolveText } from "@formweave/engine/i18n";
+import type { RepeaterSettings } from "@formcanvas/engine/fields";
+import { formatNumber, resolveText } from "@formcanvas/engine/i18n";
 import { defineRenderer, type FieldRenderer } from "../renderers.js";
 
 const WORDS = {
@@ -23,22 +23,22 @@ export const repeaterRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("rep
   const count = rows.keys.length;
   return (
     <fieldset
-      className="fw-group"
+      className="fc-group"
       data-width={p.field.node.width ?? "full"}
       disabled={p.state.disabled}
       aria-describedby={p.describedBy}
       data-invalid={p.error ? "" : undefined}
     >
       {p.label && (
-        <legend className="fw-group-title">
+        <legend className="fc-group-title">
           {p.label}
-          {p.state.required && <span className="fw-required"> *</span>}
+          {p.state.required && <span className="fc-required"> *</span>}
         </legend>
       )}
       <div id={p.describedBy}>
-        {p.help && <p className="fw-help">{p.help}</p>}
+        {p.help && <p className="fc-help">{p.help}</p>}
         {p.error && (
-          <p className="fw-error" role="alert">
+          <p className="fc-error" role="alert">
             {p.error}
           </p>
         )}
@@ -46,15 +46,15 @@ export const repeaterRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("rep
       {rows.keys.map((key, i) => {
         const title = `${row} ${n(i + 1)}`;
         return (
-          <section key={key} className="fw-row" aria-label={title}>
-            <div className="fw-row-head">
-              <span className="fw-row-n" aria-hidden>
+          <section key={key} className="fc-row" aria-label={title}>
+            <div className="fc-row-head">
+              <span className="fc-row-n" aria-hidden>
                 {n(i + 1)}
               </span>
               <b>{title}</b>
               <button
                 type="button"
-                className="fw-row-tool"
+                className="fc-row-tool"
                 aria-label={`${w.up}: ${title}`}
                 disabled={i === 0}
                 onClick={() => {
@@ -65,7 +65,7 @@ export const repeaterRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("rep
               </button>
               <button
                 type="button"
-                className="fw-row-tool"
+                className="fc-row-tool"
                 aria-label={`${w.down}: ${title}`}
                 disabled={i === count - 1}
                 onClick={() => {
@@ -76,7 +76,7 @@ export const repeaterRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("rep
               </button>
               <button
                 type="button"
-                className="fw-row-tool"
+                className="fc-row-tool"
                 aria-label={`${w.remove}: ${title}`}
                 disabled={!rows.canRemove}
                 onClick={() => {
@@ -92,14 +92,14 @@ export const repeaterRenderer: FieldRenderer = /*#__PURE__*/ defineRenderer("rep
       })}
       <button
         type="button"
-        className="fw-row-add"
+        className="fc-row-add"
         disabled={!rows.canAdd}
         onClick={() => {
           rows.add();
         }}
       >
         + {w.add} {row}{" "}
-        <span className="fw-help">
+        <span className="fc-help">
           ({n(count)} {w.of} {n(rows.max)})
         </span>
       </button>

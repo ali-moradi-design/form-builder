@@ -2,8 +2,8 @@
 
 import Editor from "@monaco-editor/react";
 import type * as MonacoApi from "monaco-editor";
-import schema from "@formweave/schema/schema.json";
-import type { FormDocument } from "@formweave/schema";
+import schema from "@formcanvas/schema/schema.json";
+import type { FormDocument } from "@formcanvas/schema";
 import { AlertCircle, Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState, useSyncExternalStore } from "react";

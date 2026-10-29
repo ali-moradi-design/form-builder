@@ -43,7 +43,7 @@ import {
 /**
  * Every built-in field type. Convenient for apps such as the builder that
  * offer all types; libraries that render only some forms should import the
- * types they need from `@formweave/engine/fields` to keep bundles small.
+ * types they need from `@formcanvas/engine/fields` to keep bundles small.
  *
  * @since 0.1.0
  */

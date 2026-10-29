@@ -129,7 +129,7 @@ export type FieldRegistry = ReadonlyMap<string, FieldDefinition>;
  * @returns The registry.
  * @example
  * ```ts
- * import { shortText, email } from "@formweave/engine/fields";
+ * import { shortText, email } from "@formcanvas/engine/fields";
  * const registry = createRegistry([shortText, email]);
  * ```
  * @since 0.1.0

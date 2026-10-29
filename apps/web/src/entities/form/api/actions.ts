@@ -1,10 +1,10 @@
 "use server";
 
-import type { FormDocument } from "@formweave/schema";
+import type { FormDocument } from "@formcanvas/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getUser } from "@/shared/auth";
-import { resolveText } from "@formweave/engine/i18n";
+import { resolveText } from "@formcanvas/engine/i18n";
 import { createForm, deleteForm, getDb, publishForm, saveDraft, type Published } from "@/shared/db";
 
 async function owner(): Promise<string> {

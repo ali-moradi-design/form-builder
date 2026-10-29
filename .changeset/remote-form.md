@@ -1,5 +1,5 @@
 ---
-"@formweave/react": minor
+"@formcanvas/react": minor
 ---
 
-Add `@formweave/react/remote`: a `Form` that loads a published form by `formId` from a formweave app (`endpoint`), submits to its API and uploads files there.
+Add `@formcanvas/react/remote`: a `Form` that loads a published form by `formId` from a formcanvas app (`endpoint`), submits to its API and uploads files there.
