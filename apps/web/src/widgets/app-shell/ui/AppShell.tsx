@@ -54,7 +54,7 @@ export async function AppShell({
           {t("support")}
         </p>
         <a
-          href="https://github.com/ali-moradi-design/form-builder"
+          href="https://github.com/ali-moradi-design/formcanvas"
           className="flex h-[34px] items-center gap-2.5 rounded-[9px] px-2.5 text-[13px] text-ink-2"
         >
           <BookOpen size={16} aria-hidden />

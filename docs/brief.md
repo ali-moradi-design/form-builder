@@ -2,7 +2,7 @@
 
 Decisions from 2026-10-18. Demo 2 in notes/demos.md (form builder), now a full
 product with a database (the old "stage 1 static / stage 2 database" split is
-merged into one plan). Built in the public repo `ali-moradi-design/form-builder`
+merged into one plan). Built in the public repo `ali-moradi-design/formcanvas`
 in its own sessions; this file is the handoff and is safe to make public.
 
 ## How the build session starts
@@ -25,7 +25,7 @@ experience is reused, everything is written from scratch.
 
 - `git --version`, `node --version` (current LTS), `pnpm --version`,
   `docker --version` (Postgres runs in Docker locally).
-- The folder is a clone of `ali-moradi-design/form-builder` (`git remote -v`),
+- The folder is a clone of `ali-moradi-design/formcanvas` (`git remote -v`),
   on `main`, clean; report what is already in the repo before changing anything.
 - GitHub fetch/push works.
 - An npm account exists (needed later to publish the packages); check whether the
@@ -178,7 +178,7 @@ apps/
 
 ## Repo
 
-- `ali-moradi-design/form-builder` (public), subdomain
+- `ali-moradi-design/formcanvas` (public), subdomain
   `form-builder.ali-moradi-develop.com`.
 - README: the two-layer idea, a schema example, how to use the npm package, how
   to embed, API overview, screenshots.
