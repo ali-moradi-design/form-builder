@@ -1,6 +1,6 @@
 {
   "name": "@formcanvas/react",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "React renderer for formcanvas forms, built on React Hook Form.",
   "keywords": [
     "react",
