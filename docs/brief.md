@@ -1,4 +1,4 @@
-# Form builder: brief
+# formcanvas: brief
 
 Decisions from 2026-10-18. Demo 2 in notes/demos.md (form builder), now a full
 product with a database (the old "stage 1 static / stage 2 database" split is
@@ -136,10 +136,10 @@ package), and their responses are collected, analysed and exported.
 
 ```
 packages/
-  form-schema   types + the Zod schema that validates form JSON itself
-  form-engine   pure TypeScript: schema → Zod, conditions, calculations,
+  schema        types + the Zod schema that validates form JSON itself
+  engine        pure TypeScript: schema → Zod, conditions, calculations,
                 migrations, infer schema from sample data (no React)
-  form-react    renderer: React Hook Form + field registry + default theme
+  react         renderer: React Hook Form + field registry + default theme
 apps/
   web           Next.js: builder, responses, hosted forms, REST API
 ```
@@ -150,7 +150,7 @@ apps/
 - The renderer must work in a host project that does not use Tailwind: ship
   compiled CSS based on CSS variables (themeable), plus an unstyled option.
   Decide the exact approach in the build session.
-- `form-engine` is framework-free and has the most unit tests.
+- `@formcanvas/engine` is framework-free and has the most unit tests.
 - The web app: Next.js (App Router) with route handlers for the API. No separate
   service is needed (no cron or persistent connections in this project).
 - Database: Postgres. Tables for users, forms, form versions (schema as JSONB),
@@ -179,6 +179,6 @@ apps/
 ## Repo
 
 - `ali-moradi-design/formcanvas` (public), subdomain
-  `form-builder.ali-moradi-develop.com`.
+  `formcanvas.ali-moradi-develop.com`.
 - README: the two-layer idea, a schema example, how to use the npm package, how
   to embed, API overview, screenshots.

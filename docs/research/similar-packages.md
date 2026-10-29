@@ -152,7 +152,7 @@ design observations so our engine and builder avoid known problems.
    min/max count.
 7. **Persian and RTL as first-class**: logical CSS, native digits with a
    Latin-digit option, bilingual labels inside the schema.
-8. **Small, framework-free core**: `form-engine` with no React and no heavy
+8. **Small, framework-free core**: `@formcanvas/engine` with no React and no heavy
    dependencies; renderer with React Hook Form per-field subscriptions;
    themeable CSS variables, usable without Tailwind.
 9. **Accessible builder**: keyboard drag and drop (dnd-kit), screen-reader

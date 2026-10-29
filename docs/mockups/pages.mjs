@@ -261,7 +261,7 @@ const publish = `${builder(settings, "", `<span class="pill live">Live, v3</span
       <div class="share-c"><span class="tile o">${i("code")}</span><b>Embed</b><span>One script tag on any website.</span></div>
       <div class="share-c"><span class="tile p">${i("package")}</span><b>React package</b><span>&lt;Form formId /&gt; in your own app.</span></div>
     </div>
-    <div class="copy"><span class="grow">https://form-builder.ali-moradi-develop.com/f/senior-frontend</span><button class="btn">${i("copy", "icon-sm")}Copy link</button></div>
+    <div class="copy"><span class="grow">https://formcanvas.ali-moradi-develop.com/f/senior-frontend</span><button class="btn">${i("copy", "icon-sm")}Copy link</button></div>
     <div class="nest row" style="gap:12px;background:var(--brand-soft);border-color:transparent"><span class="tile p" style="background:var(--surface)">${i("history")}</span><span style="font-size:13px">Responses keep the version they were filled in. Edits from now on go into a draft of version 4.</span></div>
   </div>
   <div class="foot-actions"><button class="btn">${i("external-link", "icon-sm")}Open form</button><button class="btn primary">Done</button></div>

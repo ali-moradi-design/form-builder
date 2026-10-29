@@ -14,15 +14,15 @@ Status: approved 2026-10-18. Decisions already agreed are in `docs/decisions.md`
 ## Packages and their direction of dependency
 
 ```
-form-schema  ←  form-engine  ←  form-react  ←  apps/web
- (types,         (pure TS,       (React         (Next.js,
-  meta-schema)    no React)       adapter)        FSD inside)
+@formcanvas/schema  ←  @formcanvas/engine  ←  @formcanvas/react  ←  apps/web
+ (types,                (pure TS,              (React                (Next.js,
+  meta-schema)           no React)              adapter)               FSD inside)
 ```
 
-Arrows point to what a package imports. Nothing imports "up". `form-engine`
-never imports React; `form-schema` imports only Zod.
+Arrows point to what a package imports. Nothing imports "up". `@formcanvas/engine`
+never imports React; `@formcanvas/schema` imports only Zod.
 
-### `form-schema`
+### `@formcanvas/schema`
 
 - TypeScript types and the Zod "meta-schema" that validates a form document.
 - Exports the meta-schema as JSON Schema too, so the Monaco editor in the
@@ -34,7 +34,7 @@ never imports React; `form-schema` imports only Zod.
   The builder may show a text formula, but it is parsed into this AST before
   saving.
 
-### `form-engine` (framework-free core)
+### `@formcanvas/engine` (framework-free core)
 
 Functional core: pure functions over plain data, so it is easy to test and runs
 on any runtime.
@@ -64,7 +64,7 @@ dependsOn })`, where `settings` is itself a Zod schema. The builder renders a
   submitted values when the schema is written as a literal (`as const` or
   `satisfies FormDocument`).
 
-### `form-react`
+### `@formcanvas/react`
 
 Thin adapter: state lives in React Hook Form, logic lives in the engine.
 
@@ -76,7 +76,7 @@ Thin adapter: state lives in React Hook Form, logic lives in the engine.
   - headless: hooks (`useField`, `useStep`, `useRepeater`) and unstyled
     components that expose `data-*` state attributes;
   - styled: an optional stylesheet built on CSS variables inside a cascade
-    layer (`@layer form-builder`), so host styles always win. Logical
+    layer (`@layer formcanvas`), so host styles always win. Logical
     properties only, so RTL works with `dir="rtl"`.
 - Renderer registry: `defineRenderer("rating", Component)`. Host apps add or
   replace renderers; slots let them replace parts (label, error, help).
@@ -104,14 +104,14 @@ Tree-shaking rules for every package:
   `enum` (string unions and `as const` objects instead).
 - Nothing registers itself. Field types are imported and passed in explicitly:
   ```ts
-  import { createRegistry } from "@formcanvas/form-engine";
-  import { text, email, rating } from "@formcanvas/form-engine/fields";
+  import { createRegistry } from "@formcanvas/engine";
+  import { text, email, rating } from "@formcanvas/engine/fields";
   const registry = createRegistry([text, email, rating]);
   ```
-  A convenience preset (`@formcanvas/form-engine/fields/all`) exists, but only apps
+  A convenience preset (`@formcanvas/engine/fields/all`) exists, but only apps
   that import it pay for it.
 - Subpath exports for optional features: `/expr`, `/infer`, `/migrate`,
-  `/i18n`, `/fields/*`, and the same per renderer in `form-react`.
+  `/i18n`, `/fields/*`, and the same per renderer in `@formcanvas/react`.
 - Heavy renderers (rich text, signature, image crop, color picker) are loaded
   with dynamic `import()` only when the form contains that field.
 - A CI test bundles "one text field" with esbuild and fails if code for other
@@ -119,14 +119,14 @@ Tree-shaking rules for every package:
 
 Budgets (min + gzip, peers excluded; tightened once real numbers exist):
 
-| Entry                                               | Budget |
-| --------------------------------------------------- | ------ |
-| `form-engine` core (compile, evaluate, validator)   | 6 KB   |
-| `form-engine/expr`                                  | 2 KB   |
-| one basic field definition                          | 0.5 KB |
-| `form-react` core (`<Form>`, hooks, headless parts) | 8 KB   |
-| one basic field renderer                            | 1 KB   |
-| default stylesheet                                  | 6 KB   |
+| Entry                                                      | Budget |
+| ---------------------------------------------------------- | ------ |
+| `@formcanvas/engine` core (compile, evaluate, validator)   | 6 KB   |
+| `@formcanvas/engine/expr`                                  | 2 KB   |
+| one basic field definition                                 | 0.5 KB |
+| `@formcanvas/react` core (`<Form>`, hooks, headless parts) | 8 KB   |
+| one basic field renderer                                   | 1 KB   |
+| default stylesheet                                         | 6 KB   |
 
 Zod is a peer dependency. Zod 4 ships a smaller functional build
 (`zod/mini`); whether the engine targets it is decided after reading the
